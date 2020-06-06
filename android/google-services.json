@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "651695185074",
+    "firebase_url": "https://uberfood-cb74c.firebaseio.com",
+    "project_id": "uberfood-cb74c",
+    "storage_bucket": "uberfood-cb74c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:651695185074:android:cd6d367dec38cea1b23dab",
+        "android_client_info": {
+          "package_name": "com.example.uber_food"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "651695185074-rkgv346rr3mpivijfgcphad1mfeeicpg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSTnUb7MxYbDxsuKCqS7cr-engAioaV7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "651695185074-rkgv346rr3mpivijfgcphad1mfeeicpg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
