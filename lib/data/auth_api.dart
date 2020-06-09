@@ -1,23 +1,58 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:uber_food/models/auth/app_user.dart';
 
 class AuthApi {
-  AuthApi({@required FirebaseAuth auth, @required Firestore firestore})
+  AuthApi({@required FirebaseAuth auth, @required Firestore firestore, @required GoogleSignIn googleSignIn})
       : assert(auth != null),
         assert(firestore != null),
+        _googleSignIn = googleSignIn,
         _auth = auth,
         _firestore = firestore;
 
   final FirebaseAuth _auth;
   final Firestore _firestore;
-  final GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
+  final GoogleSignIn _googleSignIn;
 
   ///Login the user.
   Future<AppUser> login(String email, String password) async {
     final AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
     return _buildUser(result.user);
+  }
+
+  ///Create a firebase account with email and password.
+  Future<AppUser> registerWithEmailAndPassword({
+    @required String email,
+    @required String password,
+    @required String username,
+  }) async {
+    AuthResult result;
+    if (email != null) {
+      result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    }
+    return _buildUser(result.user, username);
+  }
+
+  /// Create a firebase user using an google account.
+  Future<AppUser> createGoogleUser() async {
+    final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
+    final AuthResult authResult = await _auth.signInWithCredential(credential);
+    return _buildUser(authResult.user, authResult.user.displayName);
+  }
+
+  Future<void> logOut() async {
+    await _auth.signOut();
+  }
+
+  /// Returns the current login in user or null if there is no user logged in.
+  Future<AppUser> getUser() async {
+    final FirebaseUser user = await _auth.currentUser();
+    return _buildUser(user);
   }
 
   ///Create a Firebase user and store the data in Firestore if not exists.
@@ -29,25 +64,14 @@ class AuthApi {
     if (snapshot.exists) {
       return AppUser.fromJson(snapshot.data);
     }
-    assert(username != null);
     final AppUser appUser = AppUser((AppUserBuilder b) {
       b
         ..username = username
         ..email = user.email
         ..uid = user.uid;
     });
+
     await _firestore.document('users/${user.uid}').setData(appUser.json);
     return appUser;
   }
-
-  ///Create a firebase account with email and password.
-  Future<AppUser> registerWithEmailAndPassword(String email, String password, [String username]) async {
-    AuthResult result;
-    if (email != null) {
-      result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    }
-    return _buildUser(result.user, username);
-  }
-
-  Future<void> createGoogleUser() async {}
 }

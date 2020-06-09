@@ -1,5 +1,6 @@
 import 'package:uber_food/actions/actions.dart';
 import 'package:uber_food/models/app_state.dart';
+import 'package:uber_food/reducer/auth_reducer.dart';
 
 AppState reducer(AppState state, dynamic action) {
   if (action is ErrorAction) {
@@ -10,5 +11,7 @@ AppState reducer(AppState state, dynamic action) {
     } catch (_) {}
   }
   print(action);
-  return state.rebuild((AppStateBuilder b) {});
+  return state.rebuild((AppStateBuilder b) {
+    b.auth = authReducer(state.auth, action).toBuilder();
+  });
 }

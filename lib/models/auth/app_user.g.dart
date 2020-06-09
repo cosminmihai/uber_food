@@ -20,13 +20,10 @@ class _$AppUserSerializer implements StructuredSerializer<AppUser> {
     final result = <Object>[
       'uid',
       serializers.serialize(object.uid, specifiedType: const FullType(String)),
+      'email',
+      serializers.serialize(object.email,
+          specifiedType: const FullType(String)),
     ];
-    if (object.email != null) {
-      result
-        ..add('email')
-        ..add(serializers.serialize(object.email,
-            specifiedType: const FullType(String)));
-    }
     if (object.username != null) {
       result
         ..add('username')
@@ -80,6 +77,9 @@ class _$AppUser extends AppUser {
   _$AppUser._({this.uid, this.email, this.username}) : super._() {
     if (uid == null) {
       throw new BuiltValueNullFieldError('AppUser', 'uid');
+    }
+    if (email == null) {
+      throw new BuiltValueNullFieldError('AppUser', 'email');
     }
   }
 

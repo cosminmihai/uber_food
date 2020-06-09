@@ -64,11 +64,14 @@ class InitializeAppBuilder
 }
 
 class _$InitializeAppSuccessful extends InitializeAppSuccessful {
+  @override
+  final AppUser user;
+
   factory _$InitializeAppSuccessful(
           [void Function(InitializeAppSuccessfulBuilder) updates]) =>
       (new InitializeAppSuccessfulBuilder()..update(updates)).build();
 
-  _$InitializeAppSuccessful._() : super._();
+  _$InitializeAppSuccessful._({this.user}) : super._();
 
   @override
   InitializeAppSuccessful rebuild(
@@ -82,17 +85,19 @@ class _$InitializeAppSuccessful extends InitializeAppSuccessful {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is InitializeAppSuccessful;
+    return other is InitializeAppSuccessful && user == other.user;
   }
 
   @override
   int get hashCode {
-    return 70741268;
+    return $jf($jc(0, user.hashCode));
   }
 
   @override
   String toString() {
-    return newBuiltValueToStringHelper('InitializeAppSuccessful').toString();
+    return (newBuiltValueToStringHelper('InitializeAppSuccessful')
+          ..add('user', user))
+        .toString();
   }
 }
 
@@ -101,7 +106,19 @@ class InitializeAppSuccessfulBuilder
         Builder<InitializeAppSuccessful, InitializeAppSuccessfulBuilder> {
   _$InitializeAppSuccessful _$v;
 
+  AppUserBuilder _user;
+  AppUserBuilder get user => _$this._user ??= new AppUserBuilder();
+  set user(AppUserBuilder user) => _$this._user = user;
+
   InitializeAppSuccessfulBuilder();
+
+  InitializeAppSuccessfulBuilder get _$this {
+    if (_$v != null) {
+      _user = _$v.user?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
 
   @override
   void replace(InitializeAppSuccessful other) {
@@ -118,7 +135,20 @@ class InitializeAppSuccessfulBuilder
 
   @override
   _$InitializeAppSuccessful build() {
-    final _$result = _$v ?? new _$InitializeAppSuccessful._();
+    _$InitializeAppSuccessful _$result;
+    try {
+      _$result = _$v ?? new _$InitializeAppSuccessful._(user: _user?.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'user';
+        _user?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'InitializeAppSuccessful', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

@@ -2,6 +2,7 @@ library initialize_app;
 
 import 'package:built_value/built_value.dart';
 import 'package:uber_food/actions/actions.dart';
+import 'package:uber_food/models/auth/app_user.dart';
 
 part 'initialize_app.g.dart';
 
@@ -18,12 +19,20 @@ abstract class InitializeApp //
 abstract class InitializeAppSuccessful //
     implements
         Built<InitializeAppSuccessful, InitializeAppSuccessfulBuilder>,
-        AppAction //
+        AppAction,
+        UserAction //
 {
-  factory InitializeAppSuccessful([void Function(InitializeAppSuccessfulBuilder b) updates]) =
-      _$InitializeAppSuccessful;
+  factory InitializeAppSuccessful(AppUser user) {
+    return _$InitializeAppSuccessful((InitializeAppSuccessfulBuilder b) {
+      b.user = user?.toBuilder();
+    });
+  }
 
   InitializeAppSuccessful._();
+
+  @override
+  @nullable
+  AppUser get user;
 }
 
 abstract class InitializeAppError //
