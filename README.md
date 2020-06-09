@@ -1,6 +1,6 @@
 # uber_food
 
-A new Flutter project.
+Find your favorite food.
 
 ## Getting Started
 
