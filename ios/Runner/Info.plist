@@ -51,6 +51,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>UberFood wants to know your location to recommend you restaurants.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>UberFood wants to know your location to recommend you restaurants.</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -17,7 +17,7 @@ AuthState _userAction(AuthState state, UserAction action) {
 }
 
 AuthState _logoutSuccessful(AuthState state, LogOutSuccessful action) {
-  return AuthState();
+  return AuthState.initialState();
 }
 
 AuthState _googleConnectSuccessful(AuthState state, GoogleConnectSuccessful action) {

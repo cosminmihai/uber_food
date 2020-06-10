@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:uber_food/models/auth/app_user.dart';
@@ -73,5 +74,12 @@ class AuthApi {
 
     await _firestore.document('users/${user.uid}').setData(appUser.json);
     return appUser;
+  }
+
+  /// Get the current position of the user.
+  Future<Position> getCurrentUserPosition() async {
+    final Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+    print('${position.longitude} ${position.latitude}');
+    return position;
   }
 }

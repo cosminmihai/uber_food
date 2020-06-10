@@ -30,6 +30,12 @@ class _$AppUserSerializer implements StructuredSerializer<AppUser> {
         ..add(serializers.serialize(object.username,
             specifiedType: const FullType(String)));
     }
+    if (object.userLocation != null) {
+      result
+        ..add('userLocation')
+        ..add(serializers.serialize(object.userLocation,
+            specifiedType: const FullType(Position)));
+    }
     return result;
   }
 
@@ -56,6 +62,10 @@ class _$AppUserSerializer implements StructuredSerializer<AppUser> {
           result.username = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'userLocation':
+          result.userLocation = serializers.deserialize(value,
+              specifiedType: const FullType(Position)) as Position;
+          break;
       }
     }
 
@@ -70,11 +80,14 @@ class _$AppUser extends AppUser {
   final String email;
   @override
   final String username;
+  @override
+  final Position userLocation;
 
   factory _$AppUser([void Function(AppUserBuilder) updates]) =>
       (new AppUserBuilder()..update(updates)).build();
 
-  _$AppUser._({this.uid, this.email, this.username}) : super._() {
+  _$AppUser._({this.uid, this.email, this.username, this.userLocation})
+      : super._() {
     if (uid == null) {
       throw new BuiltValueNullFieldError('AppUser', 'uid');
     }
@@ -96,13 +109,15 @@ class _$AppUser extends AppUser {
     return other is AppUser &&
         uid == other.uid &&
         email == other.email &&
-        username == other.username;
+        username == other.username &&
+        userLocation == other.userLocation;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, uid.hashCode), email.hashCode), username.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, uid.hashCode), email.hashCode), username.hashCode),
+        userLocation.hashCode));
   }
 
   @override
@@ -110,7 +125,8 @@ class _$AppUser extends AppUser {
     return (newBuiltValueToStringHelper('AppUser')
           ..add('uid', uid)
           ..add('email', email)
-          ..add('username', username))
+          ..add('username', username)
+          ..add('userLocation', userLocation))
         .toString();
   }
 }
@@ -130,6 +146,11 @@ class AppUserBuilder implements Builder<AppUser, AppUserBuilder> {
   String get username => _$this._username;
   set username(String username) => _$this._username = username;
 
+  Position _userLocation;
+  Position get userLocation => _$this._userLocation;
+  set userLocation(Position userLocation) =>
+      _$this._userLocation = userLocation;
+
   AppUserBuilder();
 
   AppUserBuilder get _$this {
@@ -137,6 +158,7 @@ class AppUserBuilder implements Builder<AppUser, AppUserBuilder> {
       _uid = _$v.uid;
       _email = _$v.email;
       _username = _$v.username;
+      _userLocation = _$v.userLocation;
       _$v = null;
     }
     return this;
@@ -157,8 +179,12 @@ class AppUserBuilder implements Builder<AppUser, AppUserBuilder> {
 
   @override
   _$AppUser build() {
-    final _$result =
-        _$v ?? new _$AppUser._(uid: uid, email: email, username: username);
+    final _$result = _$v ??
+        new _$AppUser._(
+            uid: uid,
+            email: email,
+            username: username,
+            userLocation: userLocation);
     replace(_$result);
     return _$result;
   }
