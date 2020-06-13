@@ -1,11 +1,10 @@
-import 'package:geolocator/geolocator.dart';
+import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:uber_food/actions/actions.dart';
 import 'package:uber_food/actions/restaurants/get_recommended_restaurants.dart';
 import 'package:uber_food/data/restaurant_api.dart';
-import 'package:meta/meta.dart';
 import 'package:uber_food/models/app_state.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:uber_food/models/restaurants/restaurant.dart';
 
 class RestaurantsEpics {
@@ -23,9 +22,10 @@ class RestaurantsEpics {
   Stream<AppAction> _getRecommendedRestaurants(Stream<GetRecommendedRestaurants> actions, EpicStore<AppState> store) {
     return actions //
         .flatMap((GetRecommendedRestaurants action) => _restaurantApi
-            .getRecommendedRestaurants(Position(latitude: 45.0, longitude: 27.0))
+            .getRecommendedRestaurants(store.state.auth.user.userLocation)
             .asStream()
-            .expand<AppAction>((List<Restaurant> restaurants) => <AppAction>[GetRecommendedRestaurantsSuccessful(restaurants)])
+            .expand<AppAction>(
+                (List<Restaurant> restaurants) => <AppAction>[GetRecommendedRestaurantsSuccessful(restaurants)])
             .onErrorReturnWith((dynamic error) => GetRecommendedRestaurantsError(error)));
   }
 }

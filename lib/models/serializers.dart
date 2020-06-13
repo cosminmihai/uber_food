@@ -3,6 +3,7 @@ library serializer;
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
+import 'package:location/location.dart';
 import 'package:uber_food/models/app_state.dart';
 import 'package:uber_food/models/auth/app_user.dart';
 import 'package:uber_food/models/auth/auth_state.dart';
@@ -24,6 +25,7 @@ part 'serializers.g.dart';
 ])
 Serializers serializers = (_$serializers.toBuilder() //
       ..add(IntSerializer())
+      ..add(LocationDataSerializer())
       ..add(BoolSerializer())
       ..add(DoubleSerializer())
       ..addPlugin(StandardJsonPlugin()))
@@ -115,5 +117,28 @@ class BoolSerializer implements PrimitiveSerializer<bool> {
     } else {
       return serialized as bool;
     }
+  }
+}
+
+class LocationDataSerializer implements StructuredSerializer<LocationData> {
+  final bool structured = false;
+  @override
+  final Iterable<Type> types = <Type>[LocationData];
+  @override
+  final String wireName = 'LocationData';
+
+  @override
+  LocationData deserialize(Serializers serializers, Iterable<dynamic> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    return LocationData.fromMap(<String, double>{
+      'latitude': serialized.elementAt(1),
+      'longitude': serialized.elementAt(3),
+    });
+  }
+
+  @override
+  Iterable<dynamic> serialize(Serializers serializers, LocationData serial,
+      {FullType specifiedType = FullType.unspecified}) {
+    return <dynamic>['latitude', serial.latitude, 'longitude', serial.longitude];
   }
 }

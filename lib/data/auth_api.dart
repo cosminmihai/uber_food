@@ -1,21 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:location/location.dart';
 import 'package:meta/meta.dart';
 import 'package:uber_food/models/auth/app_user.dart';
 
 class AuthApi {
-  AuthApi({@required FirebaseAuth auth, @required Firestore firestore, @required GoogleSignIn googleSignIn})
-      : assert(auth != null),
+  AuthApi({
+    @required FirebaseAuth auth,
+    @required Firestore firestore,
+    @required GoogleSignIn googleSignIn,
+    @required Location location,
+  })  : assert(auth != null),
         assert(firestore != null),
+        assert(location != null),
         _googleSignIn = googleSignIn,
         _auth = auth,
-        _firestore = firestore;
+        _firestore = firestore,
+        _location = location;
 
   final FirebaseAuth _auth;
   final Firestore _firestore;
   final GoogleSignIn _googleSignIn;
+  final Location _location;
 
   ///Login the user.
   Future<AppUser> login(String email, String password) async {
@@ -77,9 +84,7 @@ class AuthApi {
   }
 
   /// Get the current position of the user.
-  Future<Position> getCurrentUserPosition() async {
-    final Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
-    print('${position.longitude} ${position.latitude}');
-    return position;
+  Future<LocationData> getCurrentUserPosition() async {
+    return _location.getLocation();
   }
 }

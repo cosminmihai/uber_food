@@ -30,12 +30,6 @@ class _$AppUserSerializer implements StructuredSerializer<AppUser> {
         ..add(serializers.serialize(object.username,
             specifiedType: const FullType(String)));
     }
-    if (object.userLocation != null) {
-      result
-        ..add('userLocation')
-        ..add(serializers.serialize(object.userLocation,
-            specifiedType: const FullType(Position)));
-    }
     return result;
   }
 
@@ -62,10 +56,6 @@ class _$AppUserSerializer implements StructuredSerializer<AppUser> {
           result.username = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'userLocation':
-          result.userLocation = serializers.deserialize(value,
-              specifiedType: const FullType(Position)) as Position;
-          break;
       }
     }
 
@@ -81,7 +71,7 @@ class _$AppUser extends AppUser {
   @override
   final String username;
   @override
-  final Position userLocation;
+  final LocationData userLocation;
 
   factory _$AppUser([void Function(AppUserBuilder) updates]) =>
       (new AppUserBuilder()..update(updates)).build();
@@ -146,9 +136,9 @@ class AppUserBuilder implements Builder<AppUser, AppUserBuilder> {
   String get username => _$this._username;
   set username(String username) => _$this._username = username;
 
-  Position _userLocation;
-  Position get userLocation => _$this._userLocation;
-  set userLocation(Position userLocation) =>
+  LocationData _userLocation;
+  LocationData get userLocation => _$this._userLocation;
+  set userLocation(LocationData userLocation) =>
       _$this._userLocation = userLocation;
 
   AppUserBuilder();

@@ -34,29 +34,18 @@ abstract class Restaurant implements Built<Restaurant, RestaurantBuilder> {
 
   String get timings;
 
+  String get currency;
+
+  @BuiltValueField(wireName: 'featured_image')
+  String get featuredPhoto;
+
+  BuiltList<String> get phoneNumbers;
+
+  BuiltList<String> get highlights;
 /*
-        "timings": "11am \u2013 11pm (Mon-Sun)",
-        "average_cost_for_two": 300,
-        "currency": "Rs.",
-        "highlights": [
-          "Dinner",
-          "Delivery",
-          "Credit Card",
-          "Lunch",
-          "Cash",
-          "Takeaway Available",
-          "Debit Card",
-          "Indoor Seating",
-          "Air Conditioned",
-          "Digital Payments Accepted"
-        ],
-        "all_reviews_count": 40,
         "photos_url": "https:\/\/www.zomato.com\/thiruvalla\/the-beirut-blends-thiruvalla-locality\/photos?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1#tabtop",
         "photo_count": 47,
         "menu_url": "https:\/\/www.zomato.com\/thiruvalla\/the-beirut-blends-thiruvalla-locality\/menu?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1&openSwipeBox=menu&showMinimal=1#tabtop",
-        "featured_image": "",
-        "has_online_delivery": 1,
-        "phone_numbers": "+91 7510731425, +91 8086994927",
 */
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);

@@ -40,6 +40,20 @@ class _$RestaurantSerializer implements StructuredSerializer<Restaurant> {
       'timings',
       serializers.serialize(object.timings,
           specifiedType: const FullType(String)),
+      'currency',
+      serializers.serialize(object.currency,
+          specifiedType: const FullType(String)),
+      'featured_image',
+      serializers.serialize(object.featuredPhoto,
+          specifiedType: const FullType(String)),
+      'phoneNumbers',
+      serializers.serialize(object.phoneNumbers,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
+      'highlights',
+      serializers.serialize(object.highlights,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(String)])),
     ];
 
     return result;
@@ -91,6 +105,26 @@ class _$RestaurantSerializer implements StructuredSerializer<Restaurant> {
           result.timings = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'currency':
+          result.currency = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'featured_image':
+          result.featuredPhoto = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'phoneNumbers':
+          result.phoneNumbers.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(String)]))
+              as BuiltList<Object>);
+          break;
+        case 'highlights':
+          result.highlights.replace(serializers.deserialize(value,
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(String)]))
+              as BuiltList<Object>);
+          break;
       }
     }
 
@@ -115,6 +149,14 @@ class _$Restaurant extends Restaurant {
   final BuiltList<String> cuisines;
   @override
   final String timings;
+  @override
+  final String currency;
+  @override
+  final String featuredPhoto;
+  @override
+  final BuiltList<String> phoneNumbers;
+  @override
+  final BuiltList<String> highlights;
 
   factory _$Restaurant([void Function(RestaurantBuilder) updates]) =>
       (new RestaurantBuilder()..update(updates)).build();
@@ -127,7 +169,11 @@ class _$Restaurant extends Restaurant {
       this.userRating,
       this.hasOnlineDelivery,
       this.cuisines,
-      this.timings})
+      this.timings,
+      this.currency,
+      this.featuredPhoto,
+      this.phoneNumbers,
+      this.highlights})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Restaurant', 'id');
@@ -153,6 +199,18 @@ class _$Restaurant extends Restaurant {
     if (timings == null) {
       throw new BuiltValueNullFieldError('Restaurant', 'timings');
     }
+    if (currency == null) {
+      throw new BuiltValueNullFieldError('Restaurant', 'currency');
+    }
+    if (featuredPhoto == null) {
+      throw new BuiltValueNullFieldError('Restaurant', 'featuredPhoto');
+    }
+    if (phoneNumbers == null) {
+      throw new BuiltValueNullFieldError('Restaurant', 'phoneNumbers');
+    }
+    if (highlights == null) {
+      throw new BuiltValueNullFieldError('Restaurant', 'highlights');
+    }
   }
 
   @override
@@ -173,7 +231,11 @@ class _$Restaurant extends Restaurant {
         userRating == other.userRating &&
         hasOnlineDelivery == other.hasOnlineDelivery &&
         cuisines == other.cuisines &&
-        timings == other.timings;
+        timings == other.timings &&
+        currency == other.currency &&
+        featuredPhoto == other.featuredPhoto &&
+        phoneNumbers == other.phoneNumbers &&
+        highlights == other.highlights;
   }
 
   @override
@@ -183,13 +245,23 @@ class _$Restaurant extends Restaurant {
             $jc(
                 $jc(
                     $jc(
-                        $jc($jc($jc(0, id.hashCode), name.hashCode),
-                            url.hashCode),
-                        location.hashCode),
-                    userRating.hashCode),
-                hasOnlineDelivery.hashCode),
-            cuisines.hashCode),
-        timings.hashCode));
+                        $jc(
+                            $jc(
+                                $jc(
+                                    $jc(
+                                        $jc(
+                                            $jc($jc(0, id.hashCode),
+                                                name.hashCode),
+                                            url.hashCode),
+                                        location.hashCode),
+                                    userRating.hashCode),
+                                hasOnlineDelivery.hashCode),
+                            cuisines.hashCode),
+                        timings.hashCode),
+                    currency.hashCode),
+                featuredPhoto.hashCode),
+            phoneNumbers.hashCode),
+        highlights.hashCode));
   }
 
   @override
@@ -202,7 +274,11 @@ class _$Restaurant extends Restaurant {
           ..add('userRating', userRating)
           ..add('hasOnlineDelivery', hasOnlineDelivery)
           ..add('cuisines', cuisines)
-          ..add('timings', timings))
+          ..add('timings', timings)
+          ..add('currency', currency)
+          ..add('featuredPhoto', featuredPhoto)
+          ..add('phoneNumbers', phoneNumbers)
+          ..add('highlights', highlights))
         .toString();
   }
 }
@@ -248,6 +324,27 @@ class RestaurantBuilder implements Builder<Restaurant, RestaurantBuilder> {
   String get timings => _$this._timings;
   set timings(String timings) => _$this._timings = timings;
 
+  String _currency;
+  String get currency => _$this._currency;
+  set currency(String currency) => _$this._currency = currency;
+
+  String _featuredPhoto;
+  String get featuredPhoto => _$this._featuredPhoto;
+  set featuredPhoto(String featuredPhoto) =>
+      _$this._featuredPhoto = featuredPhoto;
+
+  ListBuilder<String> _phoneNumbers;
+  ListBuilder<String> get phoneNumbers =>
+      _$this._phoneNumbers ??= new ListBuilder<String>();
+  set phoneNumbers(ListBuilder<String> phoneNumbers) =>
+      _$this._phoneNumbers = phoneNumbers;
+
+  ListBuilder<String> _highlights;
+  ListBuilder<String> get highlights =>
+      _$this._highlights ??= new ListBuilder<String>();
+  set highlights(ListBuilder<String> highlights) =>
+      _$this._highlights = highlights;
+
   RestaurantBuilder();
 
   RestaurantBuilder get _$this {
@@ -260,6 +357,10 @@ class RestaurantBuilder implements Builder<Restaurant, RestaurantBuilder> {
       _hasOnlineDelivery = _$v.hasOnlineDelivery;
       _cuisines = _$v.cuisines?.toBuilder();
       _timings = _$v.timings;
+      _currency = _$v.currency;
+      _featuredPhoto = _$v.featuredPhoto;
+      _phoneNumbers = _$v.phoneNumbers?.toBuilder();
+      _highlights = _$v.highlights?.toBuilder();
       _$v = null;
     }
     return this;
@@ -291,7 +392,11 @@ class RestaurantBuilder implements Builder<Restaurant, RestaurantBuilder> {
               userRating: userRating.build(),
               hasOnlineDelivery: hasOnlineDelivery,
               cuisines: cuisines.build(),
-              timings: timings);
+              timings: timings,
+              currency: currency,
+              featuredPhoto: featuredPhoto,
+              phoneNumbers: phoneNumbers.build(),
+              highlights: highlights.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -302,6 +407,11 @@ class RestaurantBuilder implements Builder<Restaurant, RestaurantBuilder> {
 
         _$failedField = 'cuisines';
         cuisines.build();
+
+        _$failedField = 'phoneNumbers';
+        phoneNumbers.build();
+        _$failedField = 'highlights';
+        highlights.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Restaurant', _$failedField, e.toString());

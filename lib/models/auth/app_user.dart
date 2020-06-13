@@ -2,8 +2,8 @@ library app_user;
 
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:location/location.dart';
 import 'package:uber_food/models/serializers.dart';
-import 'package:geolocator/geolocator.dart';
 
 part 'app_user.g.dart';
 
@@ -21,8 +21,10 @@ abstract class AppUser implements Built<AppUser, AppUserBuilder> {
   @nullable
   String get username;
 
+  // app related fields
   @nullable
-  Position get userLocation;
+  @BuiltValueField(serialize: false)
+  LocationData get userLocation;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

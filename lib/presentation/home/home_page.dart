@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:uber_food/actions/auth/get_current_user_location.dart';
 import 'package:uber_food/actions/auth/logout.dart';
 import 'package:uber_food/actions/restaurants/get_recommended_restaurants.dart';
 import 'package:uber_food/containers/recommended_restaurants_container.dart';
@@ -106,7 +107,8 @@ class _HomePageState extends State<HomePage> {
                           size: 40,
                         ),
                         onPressed: () {
-                          StoreProvider.of<AppState>(context).dispatch(GetRecommendedRestaurants());
+                          StoreProvider.of<AppState>(context).dispatch(GetCurrentUserLocation());
+                          //StoreProvider.of<AppState>(context).dispatch(GetRecommendedRestaurants());
                         },
                       ),
                     )

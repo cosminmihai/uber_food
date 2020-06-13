@@ -1,7 +1,6 @@
 import 'dart:convert';
-
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart';
+import 'package:location/location.dart';
 import 'package:meta/meta.dart';
 import 'package:uber_food/models/restaurants/restaurant.dart';
 
@@ -15,7 +14,7 @@ class RestaurantApi {
   final Uri _url;
   final Client _client;
 
-  Future<List<Restaurant>> getRecommendedRestaurants(Position position) async {
+  Future<List<Restaurant>> getRecommendedRestaurants(LocationData position) async {
     final Uri url = Uri(
       scheme: _url.scheme,
       host: _url.host,
@@ -35,6 +34,7 @@ class RestaurantApi {
               <String, dynamic>{
                 ...json['restaurant'],
                 'cuisines': json['restaurant']['cuisines'].split(', '),
+                'phone_numbers': json['restaurant']['phone_numbers'].split(', '),
               },
             ))
         .toList();
