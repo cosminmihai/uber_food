@@ -33,7 +33,6 @@ class AuthEpics {
             .asStream()
             .expand<AppAction>((AppUser user) => <AppAction>[
                   GoogleConnectSuccessful(user),
-                  GetCurrentUserLocation(),
                 ])
             .onErrorReturnWith((dynamic error) => RegistrationError(error))
             .doOnData(action.result));
@@ -58,8 +57,9 @@ class AuthEpics {
             .doOnData(print)
             .expand<AppAction>((LocationData location) => <AppAction>[
                   GetCurrentUserLocationSuccessful(location),
-                  GetRecommendedRestaurants(),
-                ]))
-        .onErrorReturnWith((dynamic error) => GetCurrentUserLocationError(error));
+                  //GetRecommendedRestaurants(),
+                ])
+            .onErrorReturnWith((dynamic error) => GetCurrentUserLocationError(error))
+            .doOnData(action.result));
   }
 }

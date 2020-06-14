@@ -7,11 +7,19 @@ part of get_recommended_restaurants;
 // **************************************************************************
 
 class _$GetRecommendedRestaurants extends GetRecommendedRestaurants {
+  @override
+  final LatLng location;
+
   factory _$GetRecommendedRestaurants(
           [void Function(GetRecommendedRestaurantsBuilder) updates]) =>
       (new GetRecommendedRestaurantsBuilder()..update(updates)).build();
 
-  _$GetRecommendedRestaurants._() : super._();
+  _$GetRecommendedRestaurants._({this.location}) : super._() {
+    if (location == null) {
+      throw new BuiltValueNullFieldError(
+          'GetRecommendedRestaurants', 'location');
+    }
+  }
 
   @override
   GetRecommendedRestaurants rebuild(
@@ -25,17 +33,19 @@ class _$GetRecommendedRestaurants extends GetRecommendedRestaurants {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is GetRecommendedRestaurants;
+    return other is GetRecommendedRestaurants && location == other.location;
   }
 
   @override
   int get hashCode {
-    return 635252998;
+    return $jf($jc(0, location.hashCode));
   }
 
   @override
   String toString() {
-    return newBuiltValueToStringHelper('GetRecommendedRestaurants').toString();
+    return (newBuiltValueToStringHelper('GetRecommendedRestaurants')
+          ..add('location', location))
+        .toString();
   }
 }
 
@@ -44,7 +54,19 @@ class GetRecommendedRestaurantsBuilder
         Builder<GetRecommendedRestaurants, GetRecommendedRestaurantsBuilder> {
   _$GetRecommendedRestaurants _$v;
 
+  LatLng _location;
+  LatLng get location => _$this._location;
+  set location(LatLng location) => _$this._location = location;
+
   GetRecommendedRestaurantsBuilder();
+
+  GetRecommendedRestaurantsBuilder get _$this {
+    if (_$v != null) {
+      _location = _$v.location;
+      _$v = null;
+    }
+    return this;
+  }
 
   @override
   void replace(GetRecommendedRestaurants other) {
@@ -61,7 +83,8 @@ class GetRecommendedRestaurantsBuilder
 
   @override
   _$GetRecommendedRestaurants build() {
-    final _$result = _$v ?? new _$GetRecommendedRestaurants._();
+    final _$result =
+        _$v ?? new _$GetRecommendedRestaurants._(location: location);
     replace(_$result);
     return _$result;
   }

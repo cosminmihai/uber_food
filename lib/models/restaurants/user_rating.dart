@@ -20,6 +20,8 @@ abstract class UserRating implements Built<UserRating, UserRatingBuilder> {
   int get ratingColor;
 
   int get votes;
+  @BuiltValueField(wireName: 'aggregate_rating')
+  double get rating;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

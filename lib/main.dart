@@ -14,8 +14,11 @@ import 'package:uber_food/epics/app_epics.dart';
 import 'package:uber_food/models/app_state.dart';
 import 'package:uber_food/presentation/home.dart';
 import 'package:uber_food/presentation/home/home_page.dart';
+import 'package:uber_food/presentation/home/select_location_page.dart';
 import 'package:uber_food/presentation/login_page.dart';
 import 'package:uber_food/reducer/reducer.dart';
+import 'package:google_map_location_picker/generated/i18n.dart' as location_picker;
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,11 +52,18 @@ class UberFood extends StatelessWidget {
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
+        localizationsDelegates: const [
+          location_picker.S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         home: const Home(),
         theme: ThemeData.dark(),
         routes: <String, WidgetBuilder>{
           '/loginPage': (BuildContext context) => const LoginPage(),
           '/homePage': (BuildContext context) => const HomePage(),
+          '/selectLocationPage': (BuildContext context) => const SelectLocationPage(),
         },
       ),
     );

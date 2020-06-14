@@ -17,8 +17,6 @@ abstract class RestaurantsState implements Built<RestaurantsState, RestaurantsSt
 
   RestaurantsState._();
 
-  BuiltMap<String, double> get userLocation;
-
   BuiltList<Restaurant> get searchedRestaurants;
 
   BuiltList<Restaurant> get recommendedRestaurants;

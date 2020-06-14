@@ -7,11 +7,18 @@ part of get_current_user_location;
 // **************************************************************************
 
 class _$GetCurrentUserLocation extends GetCurrentUserLocation {
+  @override
+  final ActionResult result;
+
   factory _$GetCurrentUserLocation(
           [void Function(GetCurrentUserLocationBuilder) updates]) =>
       (new GetCurrentUserLocationBuilder()..update(updates)).build();
 
-  _$GetCurrentUserLocation._() : super._();
+  _$GetCurrentUserLocation._({this.result}) : super._() {
+    if (result == null) {
+      throw new BuiltValueNullFieldError('GetCurrentUserLocation', 'result');
+    }
+  }
 
   @override
   GetCurrentUserLocation rebuild(
@@ -25,17 +32,20 @@ class _$GetCurrentUserLocation extends GetCurrentUserLocation {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is GetCurrentUserLocation;
+    final dynamic _$dynamicOther = other;
+    return other is GetCurrentUserLocation && result == _$dynamicOther.result;
   }
 
   @override
   int get hashCode {
-    return 557142235;
+    return $jf($jc(0, result.hashCode));
   }
 
   @override
   String toString() {
-    return newBuiltValueToStringHelper('GetCurrentUserLocation').toString();
+    return (newBuiltValueToStringHelper('GetCurrentUserLocation')
+          ..add('result', result))
+        .toString();
   }
 }
 
@@ -43,7 +53,19 @@ class GetCurrentUserLocationBuilder
     implements Builder<GetCurrentUserLocation, GetCurrentUserLocationBuilder> {
   _$GetCurrentUserLocation _$v;
 
+  ActionResult _result;
+  ActionResult get result => _$this._result;
+  set result(ActionResult result) => _$this._result = result;
+
   GetCurrentUserLocationBuilder();
+
+  GetCurrentUserLocationBuilder get _$this {
+    if (_$v != null) {
+      _result = _$v.result;
+      _$v = null;
+    }
+    return this;
+  }
 
   @override
   void replace(GetCurrentUserLocation other) {
@@ -60,7 +82,7 @@ class GetCurrentUserLocationBuilder
 
   @override
   _$GetCurrentUserLocation build() {
-    final _$result = _$v ?? new _$GetCurrentUserLocation._();
+    final _$result = _$v ?? new _$GetCurrentUserLocation._(result: result);
     replace(_$result);
     return _$result;
   }

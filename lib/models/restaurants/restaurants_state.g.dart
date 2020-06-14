@@ -20,10 +20,6 @@ class _$RestaurantsStateSerializer
   Iterable<Object> serialize(Serializers serializers, RestaurantsState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'userLocation',
-      serializers.serialize(object.userLocation,
-          specifiedType: const FullType(BuiltMap,
-              const [const FullType(String), const FullType(double)])),
       'searchedRestaurants',
       serializers.serialize(object.searchedRestaurants,
           specifiedType:
@@ -49,11 +45,6 @@ class _$RestaurantsStateSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'userLocation':
-          result.userLocation.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap,
-                  const [const FullType(String), const FullType(double)])));
-          break;
         case 'searchedRestaurants':
           result.searchedRestaurants.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -75,8 +66,6 @@ class _$RestaurantsStateSerializer
 
 class _$RestaurantsState extends RestaurantsState {
   @override
-  final BuiltMap<String, double> userLocation;
-  @override
   final BuiltList<Restaurant> searchedRestaurants;
   @override
   final BuiltList<Restaurant> recommendedRestaurants;
@@ -85,14 +74,8 @@ class _$RestaurantsState extends RestaurantsState {
           [void Function(RestaurantsStateBuilder) updates]) =>
       (new RestaurantsStateBuilder()..update(updates)).build();
 
-  _$RestaurantsState._(
-      {this.userLocation,
-      this.searchedRestaurants,
-      this.recommendedRestaurants})
+  _$RestaurantsState._({this.searchedRestaurants, this.recommendedRestaurants})
       : super._() {
-    if (userLocation == null) {
-      throw new BuiltValueNullFieldError('RestaurantsState', 'userLocation');
-    }
     if (searchedRestaurants == null) {
       throw new BuiltValueNullFieldError(
           'RestaurantsState', 'searchedRestaurants');
@@ -115,7 +98,6 @@ class _$RestaurantsState extends RestaurantsState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is RestaurantsState &&
-        userLocation == other.userLocation &&
         searchedRestaurants == other.searchedRestaurants &&
         recommendedRestaurants == other.recommendedRestaurants;
   }
@@ -123,14 +105,12 @@ class _$RestaurantsState extends RestaurantsState {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc(0, userLocation.hashCode), searchedRestaurants.hashCode),
-        recommendedRestaurants.hashCode));
+        $jc(0, searchedRestaurants.hashCode), recommendedRestaurants.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('RestaurantsState')
-          ..add('userLocation', userLocation)
           ..add('searchedRestaurants', searchedRestaurants)
           ..add('recommendedRestaurants', recommendedRestaurants))
         .toString();
@@ -140,12 +120,6 @@ class _$RestaurantsState extends RestaurantsState {
 class RestaurantsStateBuilder
     implements Builder<RestaurantsState, RestaurantsStateBuilder> {
   _$RestaurantsState _$v;
-
-  MapBuilder<String, double> _userLocation;
-  MapBuilder<String, double> get userLocation =>
-      _$this._userLocation ??= new MapBuilder<String, double>();
-  set userLocation(MapBuilder<String, double> userLocation) =>
-      _$this._userLocation = userLocation;
 
   ListBuilder<Restaurant> _searchedRestaurants;
   ListBuilder<Restaurant> get searchedRestaurants =>
@@ -163,7 +137,6 @@ class RestaurantsStateBuilder
 
   RestaurantsStateBuilder get _$this {
     if (_$v != null) {
-      _userLocation = _$v.userLocation?.toBuilder();
       _searchedRestaurants = _$v.searchedRestaurants?.toBuilder();
       _recommendedRestaurants = _$v.recommendedRestaurants?.toBuilder();
       _$v = null;
@@ -190,14 +163,11 @@ class RestaurantsStateBuilder
     try {
       _$result = _$v ??
           new _$RestaurantsState._(
-              userLocation: userLocation.build(),
               searchedRestaurants: searchedRestaurants.build(),
               recommendedRestaurants: recommendedRestaurants.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'userLocation';
-        userLocation.build();
         _$failedField = 'searchedRestaurants';
         searchedRestaurants.build();
         _$failedField = 'recommendedRestaurants';

@@ -87,4 +87,6 @@ class AuthApi {
   Future<LocationData> getCurrentUserPosition() async {
     return _location.getLocation();
   }
+
+
 }

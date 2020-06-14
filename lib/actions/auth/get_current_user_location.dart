@@ -11,9 +11,12 @@ abstract class GetCurrentUserLocation //
         Built<GetCurrentUserLocation, GetCurrentUserLocationBuilder>,
         AppAction //
 {
-  factory GetCurrentUserLocation([void Function(GetCurrentUserLocationBuilder b) updates]) = _$GetCurrentUserLocation;
+  factory GetCurrentUserLocation(ActionResult result){
+    return _$GetCurrentUserLocation((GetCurrentUserLocationBuilder b)=> b.result = result);
+  }
 
   GetCurrentUserLocation._();
+  ActionResult get result;
 }
 
 abstract class GetCurrentUserLocationSuccessful //

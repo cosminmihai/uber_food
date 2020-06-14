@@ -1,6 +1,7 @@
 import 'dart:convert';
+
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
-import 'package:location/location.dart';
 import 'package:meta/meta.dart';
 import 'package:uber_food/models/restaurants/restaurant.dart';
 
@@ -14,7 +15,7 @@ class RestaurantApi {
   final Uri _url;
   final Client _client;
 
-  Future<List<Restaurant>> getRecommendedRestaurants(LocationData position) async {
+  Future<List<Restaurant>> getRecommendedRestaurants(LatLng position) async {
     final Uri url = Uri(
       scheme: _url.scheme,
       host: _url.host,

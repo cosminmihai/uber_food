@@ -2,8 +2,11 @@ library get_recommended_restaurants;
 
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:uber_food/actions/actions.dart';
 import 'package:uber_food/models/restaurants/restaurant.dart';
+import 'package:meta/meta.dart';
 
 part 'get_recommended_restaurants.g.dart';
 
@@ -12,10 +15,13 @@ abstract class GetRecommendedRestaurants //
         Built<GetRecommendedRestaurants, GetRecommendedRestaurantsBuilder>,
         AppAction //
 {
-  factory GetRecommendedRestaurants([void Function(GetRecommendedRestaurantsBuilder b) updates]) =
-      _$GetRecommendedRestaurants;
+  factory GetRecommendedRestaurants({@required LatLng locationData}) {
+    return _$GetRecommendedRestaurants((GetRecommendedRestaurantsBuilder b) => b.location = locationData);
+  }
 
   GetRecommendedRestaurants._();
+
+  LatLng get location;
 }
 
 abstract class GetRecommendedRestaurantsSuccessful //

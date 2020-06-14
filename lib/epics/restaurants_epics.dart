@@ -22,7 +22,7 @@ class RestaurantsEpics {
   Stream<AppAction> _getRecommendedRestaurants(Stream<GetRecommendedRestaurants> actions, EpicStore<AppState> store) {
     return actions //
         .flatMap((GetRecommendedRestaurants action) => _restaurantApi
-            .getRecommendedRestaurants(store.state.auth.user.userLocation)
+            .getRecommendedRestaurants(action.location)
             .asStream()
             .expand<AppAction>(
                 (List<Restaurant> restaurants) => <AppAction>[GetRecommendedRestaurantsSuccessful(restaurants)])

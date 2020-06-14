@@ -26,6 +26,9 @@ class _$UserRatingSerializer implements StructuredSerializer<UserRating> {
           specifiedType: const FullType(int)),
       'votes',
       serializers.serialize(object.votes, specifiedType: const FullType(int)),
+      'aggregate_rating',
+      serializers.serialize(object.rating,
+          specifiedType: const FullType(double)),
     ];
 
     return result;
@@ -54,6 +57,10 @@ class _$UserRatingSerializer implements StructuredSerializer<UserRating> {
           result.votes = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'aggregate_rating':
+          result.rating = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double;
+          break;
       }
     }
 
@@ -68,11 +75,14 @@ class _$UserRating extends UserRating {
   final int ratingColor;
   @override
   final int votes;
+  @override
+  final double rating;
 
   factory _$UserRating([void Function(UserRatingBuilder) updates]) =>
       (new UserRatingBuilder()..update(updates)).build();
 
-  _$UserRating._({this.ratingText, this.ratingColor, this.votes}) : super._() {
+  _$UserRating._({this.ratingText, this.ratingColor, this.votes, this.rating})
+      : super._() {
     if (ratingText == null) {
       throw new BuiltValueNullFieldError('UserRating', 'ratingText');
     }
@@ -81,6 +91,9 @@ class _$UserRating extends UserRating {
     }
     if (votes == null) {
       throw new BuiltValueNullFieldError('UserRating', 'votes');
+    }
+    if (rating == null) {
+      throw new BuiltValueNullFieldError('UserRating', 'rating');
     }
   }
 
@@ -97,13 +110,16 @@ class _$UserRating extends UserRating {
     return other is UserRating &&
         ratingText == other.ratingText &&
         ratingColor == other.ratingColor &&
-        votes == other.votes;
+        votes == other.votes &&
+        rating == other.rating;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, ratingText.hashCode), ratingColor.hashCode),
-        votes.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, ratingText.hashCode), ratingColor.hashCode),
+            votes.hashCode),
+        rating.hashCode));
   }
 
   @override
@@ -111,7 +127,8 @@ class _$UserRating extends UserRating {
     return (newBuiltValueToStringHelper('UserRating')
           ..add('ratingText', ratingText)
           ..add('ratingColor', ratingColor)
-          ..add('votes', votes))
+          ..add('votes', votes)
+          ..add('rating', rating))
         .toString();
   }
 }
@@ -131,6 +148,10 @@ class UserRatingBuilder implements Builder<UserRating, UserRatingBuilder> {
   int get votes => _$this._votes;
   set votes(int votes) => _$this._votes = votes;
 
+  double _rating;
+  double get rating => _$this._rating;
+  set rating(double rating) => _$this._rating = rating;
+
   UserRatingBuilder();
 
   UserRatingBuilder get _$this {
@@ -138,6 +159,7 @@ class UserRatingBuilder implements Builder<UserRating, UserRatingBuilder> {
       _ratingText = _$v.ratingText;
       _ratingColor = _$v.ratingColor;
       _votes = _$v.votes;
+      _rating = _$v.rating;
       _$v = null;
     }
     return this;
@@ -160,7 +182,10 @@ class UserRatingBuilder implements Builder<UserRating, UserRatingBuilder> {
   _$UserRating build() {
     final _$result = _$v ??
         new _$UserRating._(
-            ratingText: ratingText, ratingColor: ratingColor, votes: votes);
+            ratingText: ratingText,
+            ratingColor: ratingColor,
+            votes: votes,
+            rating: rating);
     replace(_$result);
     return _$result;
   }

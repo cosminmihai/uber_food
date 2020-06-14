@@ -28,8 +28,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "651695185074-rkgv346rr3mpivijfgcphad1mfeeicpg.apps.googleusercontent.com",
+              "client_id": "651695185074-6u4aemvd8jnnkkj0qcrve7kvu9oqb3t6.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "651695185074-48bdnjrfmvt9cq843h4558rio8ed1g82.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.uberFood"
+              }
             }
           ]
         }
