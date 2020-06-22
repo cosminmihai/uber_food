@@ -12,7 +12,13 @@ class RecommendedRestaurantsContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<Restaurant>>(
       converter: (Store<AppState> store) {
-        return store.state.restaurantState.recommendedRestaurants.toList();
+        return store.state.restaurantState.recommendedRestaurants
+            .where((Restaurant restaurant) => restaurant.featuredPhoto != null && restaurant.featuredPhoto.isNotEmpty)
+            .where((Restaurant restaurant) =>
+                store.state.restaurantState.query == null ||
+                restaurant.name.toLowerCase().contains(store.state.restaurantState.query.toLowerCase()) ||
+                restaurant.location.address.toLowerCase().contains(store.state.restaurantState.query.toLowerCase()))
+            .toList();
       },
       builder: builder,
     );

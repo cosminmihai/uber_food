@@ -17,7 +17,10 @@ dependencies:
   google_sign_in: ^4.5.1
   location: ^3.0.2
   google_maps_flutter: ^0.5.28+1
-  google_map_location_picker: ^3.3.2
+  google_map_location_picker: ^3.3.3
+  algolia: ^0.1.7
+  font_awesome_flutter: ^8.8.1
+  shimmer: ^1.1.1
 
   redux: ^4.0.0
   flutter_redux: ^0.6.0

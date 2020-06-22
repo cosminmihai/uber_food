@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uber_food/models/restaurants/restaurant.dart';
+import 'package:uber_food/presentation/restaurants/restaurant_details_page.dart';
 
 class RestaurantCard extends StatelessWidget {
   const RestaurantCard({
@@ -12,6 +13,13 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final String tag = restaurantData.featuredPhoto.toString();
     return GestureDetector(
+      onTap: () {
+        print('${restaurantData.name}');
+        Navigator.push(
+            context,
+            MaterialPageRoute<Widget>(
+                builder: (BuildContext context) => RestaurantDetails(restaurantData: restaurantData)));
+      },
       child: Stack(
         children: <Widget>[
           Container(
@@ -58,10 +66,9 @@ class RestaurantCard extends StatelessWidget {
                   children: <Widget>[
                     Text(restaurantData.userRating.rating.toString(),
                         style: const TextStyle(color: Colors.white, fontSize: 16.0)),
-                    const Text('⭐'),
-                    Text('  (${restaurantData.userRating.votes})',
+                    const Text(' ⭐'),
+                    Text(' (${restaurantData.userRating.votes}) ${restaurantData.userRating.ratingText}',
                         style: const TextStyle(color: Colors.white, fontSize: 16.0)),
-
                   ],
                 ),
               ],

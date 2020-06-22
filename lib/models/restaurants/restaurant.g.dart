@@ -55,12 +55,7 @@ class _$RestaurantSerializer implements StructuredSerializer<Restaurant> {
           specifiedType:
               const FullType(BuiltList, const [const FullType(String)])),
     ];
-    if (object.votes != null) {
-      result
-        ..add('votes')
-        ..add(serializers.serialize(object.votes,
-            specifiedType: const FullType(int)));
-    }
+
     return result;
   }
 
@@ -130,10 +125,6 @@ class _$RestaurantSerializer implements StructuredSerializer<Restaurant> {
                       const FullType(BuiltList, const [const FullType(String)]))
               as BuiltList<Object>);
           break;
-        case 'votes':
-          result.votes = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
-          break;
       }
     }
 
@@ -166,8 +157,6 @@ class _$Restaurant extends Restaurant {
   final BuiltList<String> phoneNumbers;
   @override
   final BuiltList<String> highlights;
-  @override
-  final int votes;
 
   factory _$Restaurant([void Function(RestaurantBuilder) updates]) =>
       (new RestaurantBuilder()..update(updates)).build();
@@ -184,8 +173,7 @@ class _$Restaurant extends Restaurant {
       this.currency,
       this.featuredPhoto,
       this.phoneNumbers,
-      this.highlights,
-      this.votes})
+      this.highlights})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Restaurant', 'id');
@@ -247,8 +235,7 @@ class _$Restaurant extends Restaurant {
         currency == other.currency &&
         featuredPhoto == other.featuredPhoto &&
         phoneNumbers == other.phoneNumbers &&
-        highlights == other.highlights &&
-        votes == other.votes;
+        highlights == other.highlights;
   }
 
   @override
@@ -263,20 +250,18 @@ class _$Restaurant extends Restaurant {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc(
-                                                $jc($jc(0, id.hashCode),
-                                                    name.hashCode),
-                                                url.hashCode),
-                                            location.hashCode),
-                                        userRating.hashCode),
-                                    hasOnlineDelivery.hashCode),
-                                cuisines.hashCode),
-                            timings.hashCode),
-                        currency.hashCode),
-                    featuredPhoto.hashCode),
-                phoneNumbers.hashCode),
-            highlights.hashCode),
-        votes.hashCode));
+                                            $jc($jc(0, id.hashCode),
+                                                name.hashCode),
+                                            url.hashCode),
+                                        location.hashCode),
+                                    userRating.hashCode),
+                                hasOnlineDelivery.hashCode),
+                            cuisines.hashCode),
+                        timings.hashCode),
+                    currency.hashCode),
+                featuredPhoto.hashCode),
+            phoneNumbers.hashCode),
+        highlights.hashCode));
   }
 
   @override
@@ -293,8 +278,7 @@ class _$Restaurant extends Restaurant {
           ..add('currency', currency)
           ..add('featuredPhoto', featuredPhoto)
           ..add('phoneNumbers', phoneNumbers)
-          ..add('highlights', highlights)
-          ..add('votes', votes))
+          ..add('highlights', highlights))
         .toString();
   }
 }
@@ -361,10 +345,6 @@ class RestaurantBuilder implements Builder<Restaurant, RestaurantBuilder> {
   set highlights(ListBuilder<String> highlights) =>
       _$this._highlights = highlights;
 
-  int _votes;
-  int get votes => _$this._votes;
-  set votes(int votes) => _$this._votes = votes;
-
   RestaurantBuilder();
 
   RestaurantBuilder get _$this {
@@ -381,7 +361,6 @@ class RestaurantBuilder implements Builder<Restaurant, RestaurantBuilder> {
       _featuredPhoto = _$v.featuredPhoto;
       _phoneNumbers = _$v.phoneNumbers?.toBuilder();
       _highlights = _$v.highlights?.toBuilder();
-      _votes = _$v.votes;
       _$v = null;
     }
     return this;
@@ -417,8 +396,7 @@ class RestaurantBuilder implements Builder<Restaurant, RestaurantBuilder> {
               currency: currency,
               featuredPhoto: featuredPhoto,
               phoneNumbers: phoneNumbers.build(),
-              highlights: highlights.build(),
-              votes: votes);
+              highlights: highlights.build());
     } catch (_) {
       String _$failedField;
       try {

@@ -29,7 +29,12 @@ class _$RestaurantsStateSerializer
           specifiedType:
               const FullType(BuiltList, const [const FullType(Restaurant)])),
     ];
-
+    if (object.query != null) {
+      result
+        ..add('query')
+        ..add(serializers.serialize(object.query,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -57,6 +62,10 @@ class _$RestaurantsStateSerializer
                       BuiltList, const [const FullType(Restaurant)]))
               as BuiltList<Object>);
           break;
+        case 'query':
+          result.query = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -69,12 +78,15 @@ class _$RestaurantsState extends RestaurantsState {
   final BuiltList<Restaurant> searchedRestaurants;
   @override
   final BuiltList<Restaurant> recommendedRestaurants;
+  @override
+  final String query;
 
   factory _$RestaurantsState(
           [void Function(RestaurantsStateBuilder) updates]) =>
       (new RestaurantsStateBuilder()..update(updates)).build();
 
-  _$RestaurantsState._({this.searchedRestaurants, this.recommendedRestaurants})
+  _$RestaurantsState._(
+      {this.searchedRestaurants, this.recommendedRestaurants, this.query})
       : super._() {
     if (searchedRestaurants == null) {
       throw new BuiltValueNullFieldError(
@@ -99,20 +111,24 @@ class _$RestaurantsState extends RestaurantsState {
     if (identical(other, this)) return true;
     return other is RestaurantsState &&
         searchedRestaurants == other.searchedRestaurants &&
-        recommendedRestaurants == other.recommendedRestaurants;
+        recommendedRestaurants == other.recommendedRestaurants &&
+        query == other.query;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc(0, searchedRestaurants.hashCode), recommendedRestaurants.hashCode));
+        $jc($jc(0, searchedRestaurants.hashCode),
+            recommendedRestaurants.hashCode),
+        query.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('RestaurantsState')
           ..add('searchedRestaurants', searchedRestaurants)
-          ..add('recommendedRestaurants', recommendedRestaurants))
+          ..add('recommendedRestaurants', recommendedRestaurants)
+          ..add('query', query))
         .toString();
   }
 }
@@ -133,12 +149,17 @@ class RestaurantsStateBuilder
   set recommendedRestaurants(ListBuilder<Restaurant> recommendedRestaurants) =>
       _$this._recommendedRestaurants = recommendedRestaurants;
 
+  String _query;
+  String get query => _$this._query;
+  set query(String query) => _$this._query = query;
+
   RestaurantsStateBuilder();
 
   RestaurantsStateBuilder get _$this {
     if (_$v != null) {
       _searchedRestaurants = _$v.searchedRestaurants?.toBuilder();
       _recommendedRestaurants = _$v.recommendedRestaurants?.toBuilder();
+      _query = _$v.query;
       _$v = null;
     }
     return this;
@@ -164,7 +185,8 @@ class RestaurantsStateBuilder
       _$result = _$v ??
           new _$RestaurantsState._(
               searchedRestaurants: searchedRestaurants.build(),
-              recommendedRestaurants: recommendedRestaurants.build());
+              recommendedRestaurants: recommendedRestaurants.build(),
+              query: query);
     } catch (_) {
       String _$failedField;
       try {

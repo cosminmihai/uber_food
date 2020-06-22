@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:uber_food/models/app_state.dart';
 
 class UserLocationContainer extends StatelessWidget {
   const UserLocationContainer({Key key, @required this.builder}) : super(key: key);
-  final ViewModelBuilder<LocationData> builder;
+  final ViewModelBuilder<LatLng> builder;
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, LocationData>(
+    return StoreConnector<AppState, LatLng>(
       converter: (Store<AppState> store) {
         return store.state.auth.user.userLocation;
       },

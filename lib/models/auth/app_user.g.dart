@@ -71,7 +71,7 @@ class _$AppUser extends AppUser {
   @override
   final String username;
   @override
-  final LocationData userLocation;
+  final LatLng userLocation;
 
   factory _$AppUser([void Function(AppUserBuilder) updates]) =>
       (new AppUserBuilder()..update(updates)).build();
@@ -136,10 +136,9 @@ class AppUserBuilder implements Builder<AppUser, AppUserBuilder> {
   String get username => _$this._username;
   set username(String username) => _$this._username = username;
 
-  LocationData _userLocation;
-  LocationData get userLocation => _$this._userLocation;
-  set userLocation(LocationData userLocation) =>
-      _$this._userLocation = userLocation;
+  LatLng _userLocation;
+  LatLng get userLocation => _$this._userLocation;
+  set userLocation(LatLng userLocation) => _$this._userLocation = userLocation;
 
   AppUserBuilder();
 

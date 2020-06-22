@@ -1,6 +1,8 @@
 library get_current_user_location;
 
 import 'package:built_value/built_value.dart';
+import 'package:google_map_location_picker/google_map_location_picker.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:uber_food/actions/actions.dart';
 
@@ -11,41 +13,11 @@ abstract class GetCurrentUserLocation //
         Built<GetCurrentUserLocation, GetCurrentUserLocationBuilder>,
         AppAction //
 {
-  factory GetCurrentUserLocation(ActionResult result){
-    return _$GetCurrentUserLocation((GetCurrentUserLocationBuilder b)=> b.result = result);
+  factory GetCurrentUserLocation(LatLng result) {
+    return _$GetCurrentUserLocation((GetCurrentUserLocationBuilder b) => b.location = result);
   }
 
   GetCurrentUserLocation._();
-  ActionResult get result;
-}
 
-abstract class GetCurrentUserLocationSuccessful //
-    implements
-        Built<GetCurrentUserLocationSuccessful, GetCurrentUserLocationSuccessfulBuilder>,
-        AppAction //
-{
-  factory GetCurrentUserLocationSuccessful(LocationData location) {
-    return _$GetCurrentUserLocationSuccessful((GetCurrentUserLocationSuccessfulBuilder b) {
-      b.location = location;
-    });
-  }
-
-  GetCurrentUserLocationSuccessful._();
-
-  LocationData get location;
-}
-
-abstract class GetCurrentUserLocationError //
-    implements
-        Built<GetCurrentUserLocationError, GetCurrentUserLocationErrorBuilder>,
-        ErrorAction //
-{
-  factory GetCurrentUserLocationError(Object error) {
-    return _$GetCurrentUserLocationError((GetCurrentUserLocationErrorBuilder b) => b.error = error);
-  }
-
-  GetCurrentUserLocationError._();
-
-  @override
-  Object get error;
+  LatLng get location;
 }

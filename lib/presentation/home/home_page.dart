@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:uber_food/actions/auth/get_current_user_location.dart';
 import 'package:uber_food/actions/auth/logout.dart';
+import 'package:uber_food/actions/restaurants/filter_restaurants.dart';
 import 'package:uber_food/actions/restaurants/get_recommended_restaurants.dart';
-import 'package:uber_food/components/restaurant_card_list.dart';
 import 'package:uber_food/containers/recommended_restaurants_container.dart';
 import 'package:uber_food/containers/user_container.dart';
 import 'package:uber_food/models/app_state.dart';
 import 'package:uber_food/models/auth/app_user.dart';
 import 'package:uber_food/models/restaurants/restaurant.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
+import 'package:uber_food/presentation/restaurants/restaurant_card_list.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -23,31 +24,6 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController searchController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final int _selectedIndex = 0;
-
-  Future<void> _onResult(dynamic action) async {
-    print('Blablablabla');
-    if (action is GetCurrentUserLocationSuccessful) {
-      await Navigator.pushNamed(context, '/selectLocationPage');
-    } else if (action is GetCurrentUserLocationError) {
-      print('Action is: $action');
-      await showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Please allow the app to use your location.'),
-              content: Text(action.error.toString()),
-              actions: <Widget>[
-                FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +100,9 @@ class _HomePageState extends State<HomePage> {
                                 }
                                 return null;
                               },
+                              onChanged: (String value) {
+                                StoreProvider.of<AppState>(context).dispatch(FilterRestaurant(value));
+                              },
                             ),
                           ),
                         ),
@@ -142,8 +121,8 @@ class _HomePageState extends State<HomePage> {
                               myLocationButtonEnabled: true,
                               layersButtonEnabled: true,
                             );
-                            //StoreProvider.of<AppState>(context).dispatch(GetCurrentUserLocation(_onResult));
                             if (result != null) {
+                              StoreProvider.of<AppState>(context).dispatch(GetCurrentUserLocation(result.latLng));
                               StoreProvider.of<AppState>(context)
                                   .dispatch(GetRecommendedRestaurants(locationData: result.latLng));
                             }
@@ -157,21 +136,39 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8.0),
+                  const SizedBox(height: 2.0),
                   Expanded(
                     child: Container(
                       child: RecommendedRestaurantsContainer(
                         builder: (BuildContext context, List<Restaurant> result) {
-                          return result != null
-                              ? ListView.builder(
-                                  itemCount: result.length,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    final Restaurant restaurant = result[index];
-                                    return Container(child: RestaurantCard(restaurantData: restaurant));
-                                  },
+                          return result.length > 1
+                              ? Column(
+                                  children: <Widget>[
+                                    Container(
+                                        padding: const EdgeInsets.only(left: 10.0, bottom: 8.0),
+                                        alignment: AlignmentDirectional.centerStart,
+                                        child: const Text(
+                                          'Locations:',
+                                          style: TextStyle(fontSize: 24.0, color: Colors.white),
+                                        )),
+                                    Expanded(
+                                      child: Container(
+                                        child: ListView.builder(
+                                          itemCount: result.length,
+                                          itemBuilder: (BuildContext context, int index) {
+                                            final Restaurant restaurant = result[index];
+                                            return Container(child: RestaurantCard(restaurantData: restaurant));
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 )
                               : const Center(
-                                  child: Text('Select your location first'),
+                                  child: Text(
+                                    'Select your location first',
+                                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                                  ),
                                 );
                         },
                       ),
