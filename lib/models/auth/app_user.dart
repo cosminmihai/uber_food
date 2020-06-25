@@ -3,7 +3,6 @@ library app_user;
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:uber_food/models/serializers.dart';
 
 part 'app_user.g.dart';
@@ -21,6 +20,12 @@ abstract class AppUser implements Built<AppUser, AppUserBuilder> {
 
   @nullable
   String get username;
+
+  @nullable
+  String get photoUrl;
+
+  @nullable
+  String get phone;
 
   // app related fields
   @nullable

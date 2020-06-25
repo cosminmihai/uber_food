@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of filterRestaurants;
+part of filter_restaurants;
 
 // **************************************************************************
 // BuiltValueGenerator

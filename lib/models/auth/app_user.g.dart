@@ -30,6 +30,18 @@ class _$AppUserSerializer implements StructuredSerializer<AppUser> {
         ..add(serializers.serialize(object.username,
             specifiedType: const FullType(String)));
     }
+    if (object.photoUrl != null) {
+      result
+        ..add('photoUrl')
+        ..add(serializers.serialize(object.photoUrl,
+            specifiedType: const FullType(String)));
+    }
+    if (object.phone != null) {
+      result
+        ..add('phone')
+        ..add(serializers.serialize(object.phone,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -56,6 +68,14 @@ class _$AppUserSerializer implements StructuredSerializer<AppUser> {
           result.username = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'photoUrl':
+          result.photoUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'phone':
+          result.phone = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -71,12 +91,22 @@ class _$AppUser extends AppUser {
   @override
   final String username;
   @override
+  final String photoUrl;
+  @override
+  final String phone;
+  @override
   final LatLng userLocation;
 
   factory _$AppUser([void Function(AppUserBuilder) updates]) =>
       (new AppUserBuilder()..update(updates)).build();
 
-  _$AppUser._({this.uid, this.email, this.username, this.userLocation})
+  _$AppUser._(
+      {this.uid,
+      this.email,
+      this.username,
+      this.photoUrl,
+      this.phone,
+      this.userLocation})
       : super._() {
     if (uid == null) {
       throw new BuiltValueNullFieldError('AppUser', 'uid');
@@ -100,13 +130,20 @@ class _$AppUser extends AppUser {
         uid == other.uid &&
         email == other.email &&
         username == other.username &&
+        photoUrl == other.photoUrl &&
+        phone == other.phone &&
         userLocation == other.userLocation;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, uid.hashCode), email.hashCode), username.hashCode),
+        $jc(
+            $jc(
+                $jc($jc($jc(0, uid.hashCode), email.hashCode),
+                    username.hashCode),
+                photoUrl.hashCode),
+            phone.hashCode),
         userLocation.hashCode));
   }
 
@@ -116,6 +153,8 @@ class _$AppUser extends AppUser {
           ..add('uid', uid)
           ..add('email', email)
           ..add('username', username)
+          ..add('photoUrl', photoUrl)
+          ..add('phone', phone)
           ..add('userLocation', userLocation))
         .toString();
   }
@@ -136,6 +175,14 @@ class AppUserBuilder implements Builder<AppUser, AppUserBuilder> {
   String get username => _$this._username;
   set username(String username) => _$this._username = username;
 
+  String _photoUrl;
+  String get photoUrl => _$this._photoUrl;
+  set photoUrl(String photoUrl) => _$this._photoUrl = photoUrl;
+
+  String _phone;
+  String get phone => _$this._phone;
+  set phone(String phone) => _$this._phone = phone;
+
   LatLng _userLocation;
   LatLng get userLocation => _$this._userLocation;
   set userLocation(LatLng userLocation) => _$this._userLocation = userLocation;
@@ -147,6 +194,8 @@ class AppUserBuilder implements Builder<AppUser, AppUserBuilder> {
       _uid = _$v.uid;
       _email = _$v.email;
       _username = _$v.username;
+      _photoUrl = _$v.photoUrl;
+      _phone = _$v.phone;
       _userLocation = _$v.userLocation;
       _$v = null;
     }
@@ -173,6 +222,8 @@ class AppUserBuilder implements Builder<AppUser, AppUserBuilder> {
             uid: uid,
             email: email,
             username: username,
+            photoUrl: photoUrl,
+            phone: phone,
             userLocation: userLocation);
     replace(_$result);
     return _$result;

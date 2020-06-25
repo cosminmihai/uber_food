@@ -72,11 +72,13 @@ class AuthApi {
     if (snapshot.exists) {
       return AppUser.fromJson(snapshot.data);
     }
+
     final AppUser appUser = AppUser((AppUserBuilder b) {
       b
         ..username = username
         ..email = user.email
-        ..uid = user.uid;
+        ..uid = user.uid
+        ..photoUrl = user.photoUrl;
     });
 
     await _firestore.document('users/${user.uid}').setData(appUser.json);
@@ -87,6 +89,4 @@ class AuthApi {
   Future<LocationData> getCurrentUserPosition() async {
     return _location.getLocation();
   }
-
-
 }

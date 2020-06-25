@@ -15,6 +15,7 @@ class RestaurantApi {
   final Uri _url;
   final Client _client;
 
+  ///Search for restaurants in your area.
   Future<List<Restaurant>> getRecommendedRestaurants(LatLng position) async {
     final Uri url = Uri(
       scheme: _url.scheme,
@@ -26,7 +27,6 @@ class RestaurantApi {
         'radius': '3000',
       },
     );
-
     final Response response =
         await _client.get(url, headers: <String, String>{'user-key': '607b2a11a39f519e80280dba3285b1f8'});
 

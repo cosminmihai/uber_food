@@ -1,9 +1,7 @@
-library filterRestaurants;
+library filter_restaurants;
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/models/restaurants/restaurant.dart';
 
 part 'filter_restaurants.g.dart';
 

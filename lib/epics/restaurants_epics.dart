@@ -2,7 +2,6 @@ import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/actions/restaurants/filter_restaurants.dart';
 import 'package:uber_food/actions/restaurants/get_recommended_restaurants.dart';
 import 'package:uber_food/data/restaurant_api.dart';
 import 'package:uber_food/models/app_state.dart';
@@ -29,4 +28,6 @@ class RestaurantsEpics {
                 (List<Restaurant> restaurants) => <AppAction>[GetRecommendedRestaurantsSuccessful(restaurants)])
             .onErrorReturnWith((dynamic error) => GetRecommendedRestaurantsError(error)));
   }
+
+
 }

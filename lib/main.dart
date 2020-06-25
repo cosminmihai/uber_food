@@ -10,6 +10,7 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:uber_food/actions/initialize_app.dart';
 import 'package:uber_food/data/auth_api.dart';
 import 'package:uber_food/data/restaurant_api.dart';
+import 'package:uber_food/data/reviews_api.dart';
 import 'package:uber_food/epics/app_epics.dart';
 import 'package:uber_food/models/app_state.dart';
 import 'package:uber_food/presentation/home.dart';
@@ -26,10 +27,12 @@ Future<void> main() async {
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
   final Client client = Client();
+
   final AuthApi authApi = AuthApi(
       auth: FirebaseAuth.instance, firestore: Firestore.instance, googleSignIn: googleSignIn, location: Location());
   final RestaurantApi restaurantApi = RestaurantApi(url: Uri.parse(zomatoUrl), client: client);
-  final AppEpics epics = AppEpics(authApi: authApi, restaurantApi: restaurantApi);
+  final ReviewsApi reviewsApi = ReviewsApi(firestore: Firestore.instance);
+  final AppEpics epics = AppEpics(authApi: authApi, restaurantApi: restaurantApi, reviewsApi: reviewsApi);
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState.initialState(),
@@ -52,7 +55,7 @@ class UberFood extends StatelessWidget {
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
-        localizationsDelegates: const [
+        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
           location_picker.S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

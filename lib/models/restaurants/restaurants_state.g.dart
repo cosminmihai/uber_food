@@ -35,6 +35,12 @@ class _$RestaurantsStateSerializer
         ..add(serializers.serialize(object.query,
             specifiedType: const FullType(String)));
     }
+    if (object.selectedRestaurantId != null) {
+      result
+        ..add('selectedRestaurantId')
+        ..add(serializers.serialize(object.selectedRestaurantId,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -66,6 +72,10 @@ class _$RestaurantsStateSerializer
           result.query = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'selectedRestaurantId':
+          result.selectedRestaurantId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -80,13 +90,18 @@ class _$RestaurantsState extends RestaurantsState {
   final BuiltList<Restaurant> recommendedRestaurants;
   @override
   final String query;
+  @override
+  final String selectedRestaurantId;
 
   factory _$RestaurantsState(
           [void Function(RestaurantsStateBuilder) updates]) =>
       (new RestaurantsStateBuilder()..update(updates)).build();
 
   _$RestaurantsState._(
-      {this.searchedRestaurants, this.recommendedRestaurants, this.query})
+      {this.searchedRestaurants,
+      this.recommendedRestaurants,
+      this.query,
+      this.selectedRestaurantId})
       : super._() {
     if (searchedRestaurants == null) {
       throw new BuiltValueNullFieldError(
@@ -112,15 +127,18 @@ class _$RestaurantsState extends RestaurantsState {
     return other is RestaurantsState &&
         searchedRestaurants == other.searchedRestaurants &&
         recommendedRestaurants == other.recommendedRestaurants &&
-        query == other.query;
+        query == other.query &&
+        selectedRestaurantId == other.selectedRestaurantId;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc(0, searchedRestaurants.hashCode),
-            recommendedRestaurants.hashCode),
-        query.hashCode));
+        $jc(
+            $jc($jc(0, searchedRestaurants.hashCode),
+                recommendedRestaurants.hashCode),
+            query.hashCode),
+        selectedRestaurantId.hashCode));
   }
 
   @override
@@ -128,7 +146,8 @@ class _$RestaurantsState extends RestaurantsState {
     return (newBuiltValueToStringHelper('RestaurantsState')
           ..add('searchedRestaurants', searchedRestaurants)
           ..add('recommendedRestaurants', recommendedRestaurants)
-          ..add('query', query))
+          ..add('query', query)
+          ..add('selectedRestaurantId', selectedRestaurantId))
         .toString();
   }
 }
@@ -153,6 +172,11 @@ class RestaurantsStateBuilder
   String get query => _$this._query;
   set query(String query) => _$this._query = query;
 
+  String _selectedRestaurantId;
+  String get selectedRestaurantId => _$this._selectedRestaurantId;
+  set selectedRestaurantId(String selectedRestaurantId) =>
+      _$this._selectedRestaurantId = selectedRestaurantId;
+
   RestaurantsStateBuilder();
 
   RestaurantsStateBuilder get _$this {
@@ -160,6 +184,7 @@ class RestaurantsStateBuilder
       _searchedRestaurants = _$v.searchedRestaurants?.toBuilder();
       _recommendedRestaurants = _$v.recommendedRestaurants?.toBuilder();
       _query = _$v.query;
+      _selectedRestaurantId = _$v.selectedRestaurantId;
       _$v = null;
     }
     return this;
@@ -186,7 +211,8 @@ class RestaurantsStateBuilder
           new _$RestaurantsState._(
               searchedRestaurants: searchedRestaurants.build(),
               recommendedRestaurants: recommendedRestaurants.build(),
-              query: query);
+              query: query,
+              selectedRestaurantId: selectedRestaurantId);
     } catch (_) {
       String _$failedField;
       try {

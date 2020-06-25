@@ -3,6 +3,7 @@ library app_state;
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:uber_food/models/auth/auth_state.dart';
+import 'package:uber_food/models/restaurant_reviews/reviews_state.dart';
 import 'package:uber_food/models/restaurants/restaurants_state.dart';
 import 'package:uber_food/models/serializers.dart';
 
@@ -24,6 +25,8 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   AuthState get auth;
 
   RestaurantsState get restaurantState;
+
+  ReviewsState get reviewsState;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

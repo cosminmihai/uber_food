@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:uber_food/actions/restaurants/set_selected_restaurant.dart';
+import 'package:uber_food/actions/reviews/listen_for_restaurant_reviews.dart';
+import 'package:uber_food/models/app_state.dart';
 import 'package:uber_food/models/restaurants/restaurant.dart';
 import 'package:uber_food/presentation/restaurants/restaurant_details_page.dart';
 
@@ -15,6 +19,9 @@ class RestaurantCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         print('${restaurantData.name}');
+        StoreProvider.of<AppState>(context).dispatch(SetSelectedRestaurant(restaurantData.id));
+        StoreProvider.of<AppState>(context).dispatch(ListenForReviews());
+        print(restaurantData.id);
         Navigator.push(
             context,
             MaterialPageRoute<Widget>(
@@ -66,7 +73,10 @@ class RestaurantCard extends StatelessWidget {
                   children: <Widget>[
                     Text(restaurantData.userRating.rating.toString(),
                         style: const TextStyle(color: Colors.white, fontSize: 16.0)),
-                    const Text(' ⭐'),
+                    const Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                    ),
                     Text(' (${restaurantData.userRating.votes}) ${restaurantData.userRating.ratingText}',
                         style: const TextStyle(color: Colors.white, fontSize: 16.0)),
                   ],

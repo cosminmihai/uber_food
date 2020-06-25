@@ -24,6 +24,9 @@ abstract class RestaurantsState implements Built<RestaurantsState, RestaurantsSt
   @nullable
   String get query;
 
+  @nullable
+  String get selectedRestaurantId;
+
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 
   static Serializer<RestaurantsState> get serializer => _$restaurantsStateSerializer;

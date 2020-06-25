@@ -24,6 +24,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'restaurantState',
       serializers.serialize(object.restaurantState,
           specifiedType: const FullType(RestaurantsState)),
+      'reviewsState',
+      serializers.serialize(object.reviewsState,
+          specifiedType: const FullType(ReviewsState)),
     ];
 
     return result;
@@ -49,6 +52,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
                   specifiedType: const FullType(RestaurantsState))
               as RestaurantsState);
           break;
+        case 'reviewsState':
+          result.reviewsState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ReviewsState)) as ReviewsState);
+          break;
       }
     }
 
@@ -61,16 +68,22 @@ class _$AppState extends AppState {
   final AuthState auth;
   @override
   final RestaurantsState restaurantState;
+  @override
+  final ReviewsState reviewsState;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.auth, this.restaurantState}) : super._() {
+  _$AppState._({this.auth, this.restaurantState, this.reviewsState})
+      : super._() {
     if (auth == null) {
       throw new BuiltValueNullFieldError('AppState', 'auth');
     }
     if (restaurantState == null) {
       throw new BuiltValueNullFieldError('AppState', 'restaurantState');
+    }
+    if (reviewsState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'reviewsState');
     }
   }
 
@@ -86,19 +99,22 @@ class _$AppState extends AppState {
     if (identical(other, this)) return true;
     return other is AppState &&
         auth == other.auth &&
-        restaurantState == other.restaurantState;
+        restaurantState == other.restaurantState &&
+        reviewsState == other.reviewsState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, auth.hashCode), restaurantState.hashCode));
+    return $jf($jc($jc($jc(0, auth.hashCode), restaurantState.hashCode),
+        reviewsState.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
           ..add('auth', auth)
-          ..add('restaurantState', restaurantState))
+          ..add('restaurantState', restaurantState)
+          ..add('reviewsState', reviewsState))
         .toString();
   }
 }
@@ -116,12 +132,19 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set restaurantState(RestaurantsStateBuilder restaurantState) =>
       _$this._restaurantState = restaurantState;
 
+  ReviewsStateBuilder _reviewsState;
+  ReviewsStateBuilder get reviewsState =>
+      _$this._reviewsState ??= new ReviewsStateBuilder();
+  set reviewsState(ReviewsStateBuilder reviewsState) =>
+      _$this._reviewsState = reviewsState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
       _auth = _$v.auth?.toBuilder();
       _restaurantState = _$v.restaurantState?.toBuilder();
+      _reviewsState = _$v.reviewsState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -146,7 +169,9 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     try {
       _$result = _$v ??
           new _$AppState._(
-              auth: auth.build(), restaurantState: restaurantState.build());
+              auth: auth.build(),
+              restaurantState: restaurantState.build(),
+              reviewsState: reviewsState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -154,6 +179,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         auth.build();
         _$failedField = 'restaurantState';
         restaurantState.build();
+        _$failedField = 'reviewsState';
+        reviewsState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());
