@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:uber_food/actions/favorite_restaurant/add_to_favorite.dart';
+import 'package:uber_food/actions/favorite_restaurant/remove_from_favorite.dart';
 import 'package:uber_food/actions/reviews/create_restaurant_review.dart';
+import 'package:uber_food/containers/favorite_restaurants_container.dart';
 import 'package:uber_food/containers/restaurant_reviews_container.dart';
+import 'package:uber_food/containers/user_container.dart';
 import 'package:uber_food/containers/user_position_container.dart';
 import 'package:uber_food/models/app_state.dart';
+import 'package:uber_food/models/auth/app_user.dart';
 import 'package:uber_food/models/restaurant_reviews/restaurant_review.dart';
+import 'package:uber_food/models/restaurants/favorite_restaurant.dart';
 import 'package:uber_food/models/restaurants/restaurant.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:uber_food/presentation/restaurants/restaurant_direction_route.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class RestaurantDetails extends StatelessWidget {
   const RestaurantDetails({
     this.restaurantData,
+    this.indexHero,
   });
 
   final Restaurant restaurantData;
+  final int indexHero;
 
   void _onResult(dynamic action) {
     if (action is CreateRestaurantReviewSuccessful) {
@@ -133,7 +142,7 @@ class RestaurantDetails extends StatelessWidget {
           Stack(
             children: <Widget>[
               Hero(
-                tag: restaurantData.name,
+                tag: indexHero,
                 child: ClipRRect(
                   child: Image(
                     color: const Color.fromRGBO(0, 0, 0, 0.4),
@@ -162,43 +171,62 @@ class RestaurantDetails extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10.0),
-                    Container(
-                      alignment: AlignmentDirectional.bottomStart,
-                      child: Row(
-                        children: <Widget>[
-                          Text('${restaurantData.userRating.votes} ',
-                              style: const TextStyle(color: Colors.white, fontSize: 16.0)),
-                          const Icon(
-                            Icons.star,
-                            color: Colors.yellow,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          alignment: AlignmentDirectional.bottomStart,
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                '${restaurantData.userRating.rating} ',
+                                style: const TextStyle(color: Colors.white, fontSize: 16.0),
+                              ),
+                              const Icon(
+                                Icons.star,
+                                color: Colors.yellow,
+                              ),
+                              Text(
+                                ' (${restaurantData.userRating.votes})',
+                                style: const TextStyle(color: Colors.white, fontSize: 16.0),
+                              )
+                            ],
                           ),
-                          Text(' (${restaurantData.userRating.votes})',
-                              style: const TextStyle(color: Colors.white, fontSize: 16.0))
-                        ],
-                      ),
+                        ),
+                        UserContainer(
+                          builder: (BuildContext context, AppUser currentUser) {
+                            return FavoriteRestaurantsContainer(
+                              builder: (BuildContext context, List<FavoriteRestaurant> favoriteRestaurants) {
+                                final List<FavoriteRestaurant> favorite = favoriteRestaurants.toList();
+                                print('This is the favorite res list: $favorite');
+                                final FavoriteRestaurant favoriteLike = favorite.firstWhere(
+                                    (FavoriteRestaurant element) => element.restaurantData.id == restaurantData.id,
+                                    orElse: () => null);
+                                print("This is favorite res: $favoriteLike");
+                                return IconButton(
+                                    icon: Icon(
+                                      favoriteLike != null ? FontAwesomeIcons.solidHeart : Icons.favorite_border,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () async {
+                                      if (favoriteLike != null) {
+                                        StoreProvider.of<AppState>(context)
+                                            .dispatch(RemoveFromFavorite(favoriteLike.id));
+                                      } else if (favoriteLike == null) {
+                                        StoreProvider.of<AppState>(context).dispatch(
+                                            AddToFavorite(userId: currentUser.uid, selectedRestaurant: restaurantData));
+                                      }
+                                    });
+                              },
+                            );
+                          },
+                        )
+                      ],
                     ),
                   ],
                 ),
               ),
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(restaurantData.name,
-                        style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white)),
-                    // (data.establishment[0] == '' ? Text('', style: TextStyle(color: Colors.grey, fontSize: 14.0)) :
-                    // Text(data.establishment[0], style: TextStyle(color: Colors.grey, fontSize: 14.0))),
-                  ],
-                ),
-                IconButton(icon: const Icon(FontAwesomeIcons.solidHeart, color: Colors.red), onPressed: () async {}),
-              ],
-            ),
           ),
           Container(padding: const EdgeInsets.symmetric(horizontal: 20.0), child: const Divider()),
           Padding(
@@ -222,7 +250,15 @@ class RestaurantDetails extends StatelessWidget {
                 const Text('Cuisines:',
                     style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10.0),
-                Text(restaurantData.cuisines.toString(), style: const TextStyle(color: Colors.white)),
+                Row(
+                  children: <Widget>[
+                    for (int i = 0; i < restaurantData.cuisines.length; i++)
+                      if (i == restaurantData.cuisines.length - 1)
+                        Text('${restaurantData.cuisines[i]}', style: const TextStyle(color: Colors.white))
+                      else
+                        Text('${restaurantData.cuisines[i]}, ', style: const TextStyle(color: Colors.white))
+                  ],
+                ),
               ],
             ),
           ),
@@ -236,7 +272,7 @@ class RestaurantDetails extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 16.0),
               child: RestaurantReviewsContainer(
                 builder: (BuildContext context, List<RestaurantReview> review) {
-                  return review.length > 0
+                  return review.isNotEmpty
                       ? ListView.builder(
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(8.0),
@@ -244,6 +280,7 @@ class RestaurantDetails extends StatelessWidget {
                           itemBuilder: (BuildContext context, int index) {
                             final RestaurantReview reviewInfo = review[index];
                             return ListTile(
+                              visualDensity: VisualDensity.comfortable,
                               leading: const CircleAvatar(
                                 child: Icon(Icons.person),
                               ),
@@ -251,7 +288,7 @@ class RestaurantDetails extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Row(
-                                    children: [
+                                    children: <Widget>[
                                       for (int i = 0; i < reviewInfo.rating; i++)
                                         const Icon(
                                           Icons.star,
@@ -260,9 +297,17 @@ class RestaurantDetails extends StatelessWidget {
                                         )
                                     ],
                                   ),
-                                  Text(
-                                    '${reviewInfo.createdAt.toUtc()}',
-                                    style: const TextStyle(color: Colors.grey, fontSize: 12.0),
+                                  Row(
+                                    children: <Widget>[
+                                      const Icon(
+                                        Icons.timer,
+                                        size: 16,
+                                      ),
+                                      Text(
+                                        ' ${timeago.format(reviewInfo.createdAt)}',
+                                        style: const TextStyle(color: Colors.grey, fontSize: 12.0),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),

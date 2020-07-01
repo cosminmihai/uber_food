@@ -10,12 +10,17 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AppState.serializer)
       ..add(AppUser.serializer)
       ..add(AuthState.serializer)
+      ..add(FavoriteRestaurant.serializer)
+      ..add(FavoriteRestaurantsState.serializer)
       ..add(Restaurant.serializer)
       ..add(RestaurantLocation.serializer)
       ..add(RestaurantReview.serializer)
       ..add(RestaurantsState.serializer)
       ..add(ReviewsState.serializer)
       ..add(UserRating.serializer)
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(FavoriteRestaurant)]),
+          () => new ListBuilder<FavoriteRestaurant>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(Restaurant)]),
           () => new ListBuilder<Restaurant>())

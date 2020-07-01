@@ -2,6 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uber_food/actions/actions.dart';
+import 'package:uber_food/actions/favorite_restaurant/get_favorite_restaurants.dart';
 import 'package:uber_food/actions/restaurants/get_recommended_restaurants.dart';
 import 'package:uber_food/data/restaurant_api.dart';
 import 'package:uber_food/models/app_state.dart';
@@ -24,10 +25,10 @@ class RestaurantsEpics {
         .flatMap((GetRecommendedRestaurants action) => _restaurantApi
             .getRecommendedRestaurants(action.location)
             .asStream()
-            .expand<AppAction>(
-                (List<Restaurant> restaurants) => <AppAction>[GetRecommendedRestaurantsSuccessful(restaurants)])
+            .expand<AppAction>((List<Restaurant> restaurants) => <AppAction>[
+                  GetRecommendedRestaurantsSuccessful(restaurants),
+                  GetFavoriteRestaurants(store.state.auth.user.uid),
+                ])
             .onErrorReturnWith((dynamic error) => GetRecommendedRestaurantsError(error)));
   }
-
-
 }

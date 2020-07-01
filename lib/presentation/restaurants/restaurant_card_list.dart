@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:uber_food/actions/restaurants/set_selected_restaurant.dart';
@@ -7,11 +9,10 @@ import 'package:uber_food/models/restaurants/restaurant.dart';
 import 'package:uber_food/presentation/restaurants/restaurant_details_page.dart';
 
 class RestaurantCard extends StatelessWidget {
-  const RestaurantCard({
-    this.restaurantData,
-  });
+  const RestaurantCard({this.restaurantData, this.indexTag});
 
   final Restaurant restaurantData;
+  final int indexTag;
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +26,14 @@ class RestaurantCard extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute<Widget>(
-                builder: (BuildContext context) => RestaurantDetails(restaurantData: restaurantData)));
+                builder: (BuildContext context) => RestaurantDetails(restaurantData: restaurantData,indexHero: indexTag,)));
       },
       child: Stack(
         children: <Widget>[
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
             child: Hero(
-              tag: tag,
+              tag: indexTag,
               child: Image(
                 // color: Color.fromRGBO(0, 0, 0, 0.4),
                 // colorBlendMode: BlendMode.darken,

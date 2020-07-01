@@ -27,6 +27,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'reviewsState',
       serializers.serialize(object.reviewsState,
           specifiedType: const FullType(ReviewsState)),
+      'favoriteRestaurantsState',
+      serializers.serialize(object.favoriteRestaurantsState,
+          specifiedType: const FullType(FavoriteRestaurantsState)),
     ];
 
     return result;
@@ -56,6 +59,11 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.reviewsState.replace(serializers.deserialize(value,
               specifiedType: const FullType(ReviewsState)) as ReviewsState);
           break;
+        case 'favoriteRestaurantsState':
+          result.favoriteRestaurantsState.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(FavoriteRestaurantsState))
+              as FavoriteRestaurantsState);
+          break;
       }
     }
 
@@ -70,11 +78,17 @@ class _$AppState extends AppState {
   final RestaurantsState restaurantState;
   @override
   final ReviewsState reviewsState;
+  @override
+  final FavoriteRestaurantsState favoriteRestaurantsState;
 
   factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.auth, this.restaurantState, this.reviewsState})
+  _$AppState._(
+      {this.auth,
+      this.restaurantState,
+      this.reviewsState,
+      this.favoriteRestaurantsState})
       : super._() {
     if (auth == null) {
       throw new BuiltValueNullFieldError('AppState', 'auth');
@@ -84,6 +98,10 @@ class _$AppState extends AppState {
     }
     if (reviewsState == null) {
       throw new BuiltValueNullFieldError('AppState', 'reviewsState');
+    }
+    if (favoriteRestaurantsState == null) {
+      throw new BuiltValueNullFieldError(
+          'AppState', 'favoriteRestaurantsState');
     }
   }
 
@@ -100,13 +118,16 @@ class _$AppState extends AppState {
     return other is AppState &&
         auth == other.auth &&
         restaurantState == other.restaurantState &&
-        reviewsState == other.reviewsState;
+        reviewsState == other.reviewsState &&
+        favoriteRestaurantsState == other.favoriteRestaurantsState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, auth.hashCode), restaurantState.hashCode),
-        reviewsState.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, auth.hashCode), restaurantState.hashCode),
+            reviewsState.hashCode),
+        favoriteRestaurantsState.hashCode));
   }
 
   @override
@@ -114,7 +135,8 @@ class _$AppState extends AppState {
     return (newBuiltValueToStringHelper('AppState')
           ..add('auth', auth)
           ..add('restaurantState', restaurantState)
-          ..add('reviewsState', reviewsState))
+          ..add('reviewsState', reviewsState)
+          ..add('favoriteRestaurantsState', favoriteRestaurantsState))
         .toString();
   }
 }
@@ -138,6 +160,14 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set reviewsState(ReviewsStateBuilder reviewsState) =>
       _$this._reviewsState = reviewsState;
 
+  FavoriteRestaurantsStateBuilder _favoriteRestaurantsState;
+  FavoriteRestaurantsStateBuilder get favoriteRestaurantsState =>
+      _$this._favoriteRestaurantsState ??=
+          new FavoriteRestaurantsStateBuilder();
+  set favoriteRestaurantsState(
+          FavoriteRestaurantsStateBuilder favoriteRestaurantsState) =>
+      _$this._favoriteRestaurantsState = favoriteRestaurantsState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -145,6 +175,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _auth = _$v.auth?.toBuilder();
       _restaurantState = _$v.restaurantState?.toBuilder();
       _reviewsState = _$v.reviewsState?.toBuilder();
+      _favoriteRestaurantsState = _$v.favoriteRestaurantsState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -171,7 +202,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
           new _$AppState._(
               auth: auth.build(),
               restaurantState: restaurantState.build(),
-              reviewsState: reviewsState.build());
+              reviewsState: reviewsState.build(),
+              favoriteRestaurantsState: favoriteRestaurantsState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -181,6 +213,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         restaurantState.build();
         _$failedField = 'reviewsState';
         reviewsState.build();
+        _$failedField = 'favoriteRestaurantsState';
+        favoriteRestaurantsState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

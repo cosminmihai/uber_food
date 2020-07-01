@@ -9,11 +9,13 @@ import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:uber_food/actions/initialize_app.dart';
 import 'package:uber_food/data/auth_api.dart';
+import 'package:uber_food/data/favorite_restaurant_api.dart';
 import 'package:uber_food/data/restaurant_api.dart';
 import 'package:uber_food/data/reviews_api.dart';
 import 'package:uber_food/epics/app_epics.dart';
 import 'package:uber_food/models/app_state.dart';
 import 'package:uber_food/presentation/home.dart';
+import 'package:uber_food/presentation/home/favorite_restaurants_page.dart';
 import 'package:uber_food/presentation/home/home_page.dart';
 import 'package:uber_food/presentation/login_page.dart';
 import 'package:uber_food/presentation/restaurants/restaurant_details_page.dart';
@@ -32,7 +34,12 @@ Future<void> main() async {
       auth: FirebaseAuth.instance, firestore: Firestore.instance, googleSignIn: googleSignIn, location: Location());
   final RestaurantApi restaurantApi = RestaurantApi(url: Uri.parse(zomatoUrl), client: client);
   final ReviewsApi reviewsApi = ReviewsApi(firestore: Firestore.instance);
-  final AppEpics epics = AppEpics(authApi: authApi, restaurantApi: restaurantApi, reviewsApi: reviewsApi);
+  final FavoriteRestaurantApi favoriteRestaurantApi = FavoriteRestaurantApi(firestore: Firestore.instance);
+  final AppEpics epics = AppEpics(
+      authApi: authApi,
+      restaurantApi: restaurantApi,
+      reviewsApi: reviewsApi,
+      favoriteRestaurantApi: favoriteRestaurantApi);
   final Store<AppState> store = Store<AppState>(
     reducer,
     initialState: AppState.initialState(),
@@ -67,6 +74,7 @@ class UberFood extends StatelessWidget {
           '/loginPage': (BuildContext context) => const LoginPage(),
           '/homePage': (BuildContext context) => const HomePage(),
           '/restaurantDetails': (BuildContext context) => const RestaurantDetails(),
+          '/FavoriteRestaurantsPage': (BuildContext context) => FavoriteRestaurantsPage(),
         },
       ),
     );

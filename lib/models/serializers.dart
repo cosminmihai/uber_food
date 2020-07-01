@@ -9,6 +9,8 @@ import 'package:uber_food/models/auth/app_user.dart';
 import 'package:uber_food/models/auth/auth_state.dart';
 import 'package:uber_food/models/restaurant_reviews/restaurant_review.dart';
 import 'package:uber_food/models/restaurant_reviews/reviews_state.dart';
+import 'package:uber_food/models/restaurants/favorite_restaurant.dart';
+import 'package:uber_food/models/restaurants/favorite_restaurants_state.dart';
 import 'package:uber_food/models/restaurants/restaurant.dart';
 import 'package:uber_food/models/restaurants/restaurant_location.dart';
 import 'package:uber_food/models/restaurants/restaurants_state.dart';
@@ -26,7 +28,8 @@ part 'serializers.g.dart';
   UserRating,
   ReviewsState,
   RestaurantReview,
-
+  FavoriteRestaurant,
+  FavoriteRestaurantsState,
 ])
 Serializers serializers = (_$serializers.toBuilder() //
       ..add(IntSerializer())
