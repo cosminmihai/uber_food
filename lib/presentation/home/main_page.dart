@@ -21,7 +21,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final TextEditingController searchController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {

@@ -17,7 +17,16 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
   @override
   Iterable<Object> serialize(Serializers serializers, AuthState object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
+    final result = <Object>[
+      'users',
+      serializers.serialize(object.users,
+          specifiedType:
+              const FullType(BuiltList, const [const FullType(AppUser)])),
+      'userReviews',
+      serializers.serialize(object.userReviews,
+          specifiedType: const FullType(
+              BuiltList, const [const FullType(RestaurantReview)])),
+    ];
     if (object.user != null) {
       result
         ..add('user')
@@ -42,6 +51,18 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
           result.user.replace(serializers.deserialize(value,
               specifiedType: const FullType(AppUser)) as AppUser);
           break;
+        case 'users':
+          result.users.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(AppUser)]))
+              as BuiltList<Object>);
+          break;
+        case 'userReviews':
+          result.userReviews.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(RestaurantReview)]))
+              as BuiltList<Object>);
+          break;
       }
     }
 
@@ -52,11 +73,22 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
 class _$AuthState extends AuthState {
   @override
   final AppUser user;
+  @override
+  final BuiltList<AppUser> users;
+  @override
+  final BuiltList<RestaurantReview> userReviews;
 
   factory _$AuthState([void Function(AuthStateBuilder) updates]) =>
       (new AuthStateBuilder()..update(updates)).build();
 
-  _$AuthState._({this.user}) : super._();
+  _$AuthState._({this.user, this.users, this.userReviews}) : super._() {
+    if (users == null) {
+      throw new BuiltValueNullFieldError('AuthState', 'users');
+    }
+    if (userReviews == null) {
+      throw new BuiltValueNullFieldError('AuthState', 'userReviews');
+    }
+  }
 
   @override
   AuthState rebuild(void Function(AuthStateBuilder) updates) =>
@@ -68,17 +100,24 @@ class _$AuthState extends AuthState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AuthState && user == other.user;
+    return other is AuthState &&
+        user == other.user &&
+        users == other.users &&
+        userReviews == other.userReviews;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, user.hashCode));
+    return $jf(
+        $jc($jc($jc(0, user.hashCode), users.hashCode), userReviews.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('AuthState')..add('user', user))
+    return (newBuiltValueToStringHelper('AuthState')
+          ..add('user', user)
+          ..add('users', users)
+          ..add('userReviews', userReviews))
         .toString();
   }
 }
@@ -90,11 +129,24 @@ class AuthStateBuilder implements Builder<AuthState, AuthStateBuilder> {
   AppUserBuilder get user => _$this._user ??= new AppUserBuilder();
   set user(AppUserBuilder user) => _$this._user = user;
 
+  ListBuilder<AppUser> _users;
+  ListBuilder<AppUser> get users =>
+      _$this._users ??= new ListBuilder<AppUser>();
+  set users(ListBuilder<AppUser> users) => _$this._users = users;
+
+  ListBuilder<RestaurantReview> _userReviews;
+  ListBuilder<RestaurantReview> get userReviews =>
+      _$this._userReviews ??= new ListBuilder<RestaurantReview>();
+  set userReviews(ListBuilder<RestaurantReview> userReviews) =>
+      _$this._userReviews = userReviews;
+
   AuthStateBuilder();
 
   AuthStateBuilder get _$this {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
+      _users = _$v.users?.toBuilder();
+      _userReviews = _$v.userReviews?.toBuilder();
       _$v = null;
     }
     return this;
@@ -117,12 +169,20 @@ class AuthStateBuilder implements Builder<AuthState, AuthStateBuilder> {
   _$AuthState build() {
     _$AuthState _$result;
     try {
-      _$result = _$v ?? new _$AuthState._(user: _user?.build());
+      _$result = _$v ??
+          new _$AuthState._(
+              user: _user?.build(),
+              users: users.build(),
+              userReviews: userReviews.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'user';
         _user?.build();
+        _$failedField = 'users';
+        users.build();
+        _$failedField = 'userReviews';
+        userReviews.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AuthState', _$failedField, e.toString());

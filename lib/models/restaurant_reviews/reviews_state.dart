@@ -17,10 +17,13 @@ abstract class ReviewsState implements Built<ReviewsState, ReviewsStateBuilder> 
 
   ReviewsState._();
 
-  BuiltMap<String,RestaurantReview> get reviews;
+  BuiltMap<String, RestaurantReview> get reviews;
 
   @nullable
   String get selectedRestaurantId;
+
+  @nullable
+  String get reviewUid;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
 

@@ -33,17 +33,16 @@ class _RestaurantDirectionRouteState extends State<RestaurantDirectionRoute> {
     );
     final CameraUpdate cameraUpdate = CameraUpdate.newLatLngBounds(bounds, 70);
     await _googleMapController.animateCamera(cameraUpdate);
-    print("The camera vas animated");
+    print('The camera vas animated');
   }
 
   Set<Marker> _createMarkers() {
-    final Set<Marker> tmp = <Marker>{};
-    tmp.add(
-      Marker(
-        markerId: MarkerId('restaurantLocation'),
-        position: widget.restaurantLocation,
-      ),
-    );
+    final Set<Marker> tmp = <Marker>{}..add(
+        Marker(
+          markerId: MarkerId('restaurantLocation'),
+          position: widget.restaurantLocation,
+        ),
+      );
     return tmp;
   }
 

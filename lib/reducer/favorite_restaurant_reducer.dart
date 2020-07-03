@@ -20,7 +20,6 @@ FavoriteRestaurantsState _addToFavoriteSuccessful(FavoriteRestaurantsState state
 FavoriteRestaurantsState _getFavoriteRestaurantsSuccessful(
     FavoriteRestaurantsState state, GetFavoriteRestaurantsSuccessful action) {
   return state.rebuild((FavoriteRestaurantsStateBuilder b) {
-    print('Se executa reducerul.');
     b.favoriteRestaurantsState = action.favoriteRestaurants.toBuilder();
   });
 }

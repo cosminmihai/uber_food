@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:uber_food/actions/favorite_restaurant/add_to_favorite.dart';
 import 'package:uber_food/actions/favorite_restaurant/remove_from_favorite.dart';
 import 'package:uber_food/actions/reviews/create_restaurant_review.dart';
 import 'package:uber_food/containers/favorite_restaurants_container.dart';
 import 'package:uber_food/containers/restaurant_reviews_container.dart';
+import 'package:uber_food/containers/review_user_container.dart';
 import 'package:uber_food/containers/user_container.dart';
 import 'package:uber_food/containers/user_position_container.dart';
 import 'package:uber_food/models/app_state.dart';
@@ -13,10 +17,7 @@ import 'package:uber_food/models/auth/app_user.dart';
 import 'package:uber_food/models/restaurant_reviews/restaurant_review.dart';
 import 'package:uber_food/models/restaurants/favorite_restaurant.dart';
 import 'package:uber_food/models/restaurants/restaurant.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:uber_food/presentation/restaurants/restaurant_direction_route.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class RestaurantDetails extends StatelessWidget {
   const RestaurantDetails({
@@ -27,6 +28,7 @@ class RestaurantDetails extends StatelessWidget {
   final Restaurant restaurantData;
   final int indexHero;
 
+  ///Check if a review was created.
   void _onResult(dynamic action) {
     if (action is CreateRestaurantReviewSuccessful) {
       print('Works');
@@ -37,7 +39,8 @@ class RestaurantDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int stars = 3;
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    int stars = 0;
     final TextEditingController textController = TextEditingController();
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -45,64 +48,82 @@ class RestaurantDetails extends StatelessWidget {
           showDialog<Widget>(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Add a comment:'),
-                  content: TextField(
-                    decoration: const InputDecoration(hintText: 'Comment', border: OutlineInputBorder()),
-                    controller: textController,
+                return Form(
+                  key: _formKey,
+                  child: AlertDialog(
+                    title: const Text('Add a review:'),
+                    content: TextFormField(
+                      validator: (String reviews) {
+                        if (reviews.length < 3) {
+                          return 'Enter a review text please.';
+                        } else if (stars == 0) {
+                          return 'Don\'t forget the stars.';
+                        } else {
+                          return null;
+                        }
+                      },
+                      decoration: const InputDecoration(
+                        hintText: 'Review',
+                        border: OutlineInputBorder(),
+                      ),
+                      controller: textController,
+                      maxLines: 4,
+                    ),
+                    actions: <Widget>[
+                      Container(
+                          alignment: AlignmentDirectional.centerStart,
+                          child: RatingBar(
+                            initialRating: 0,
+                            minRating: 0,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemSize: 20,
+                            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (BuildContext context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 2,
+                            ),
+                            onRatingUpdate: (double value) {
+                              stars = value.toInt();
+                              print(stars);
+                            },
+                          )),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Container(
+                            child: RaisedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              color: Colors.red,
+                              child: const Text('Cancel'),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 4.0,
+                          ),
+                          Container(
+                            child: RaisedButton(
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  StoreProvider.of<AppState>(context).dispatch(CreateRestaurantReview(
+                                      text: textController.text, stars: stars, result: _onResult));
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Text('Submit'),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
                   ),
-                  actions: <Widget>[
-                    Container(
-                        alignment: AlignmentDirectional.centerStart,
-                        child: RatingBar(
-                          initialRating: 3,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemSize: 20,
-                          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (BuildContext context, _) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: 2,
-                          ),
-                          onRatingUpdate: (double value) {
-                            stars = value.toInt();
-                            print(stars);
-                          },
-                        )),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          child: RaisedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            color: Colors.red,
-                            child: const Text('Cancel'),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 4.0,
-                        ),
-                        Container(
-                          child: RaisedButton(
-                            onPressed: () {
-                              StoreProvider.of<AppState>(context).dispatch(
-                                  CreateRestaurantReview(text: textController.text, stars: stars, result: _onResult));
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Submit'),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
                 );
               });
         },
@@ -198,11 +219,9 @@ class RestaurantDetails extends StatelessWidget {
                             return FavoriteRestaurantsContainer(
                               builder: (BuildContext context, List<FavoriteRestaurant> favoriteRestaurants) {
                                 final List<FavoriteRestaurant> favorite = favoriteRestaurants.toList();
-                                print('This is the favorite res list: $favorite');
                                 final FavoriteRestaurant favoriteLike = favorite.firstWhere(
                                     (FavoriteRestaurant element) => element.restaurantData.id == restaurantData.id,
                                     orElse: () => null);
-                                print("This is favorite res: $favoriteLike");
                                 return IconButton(
                                     icon: Icon(
                                       favoriteLike != null ? FontAwesomeIcons.solidHeart : Icons.favorite_border,
@@ -267,65 +286,110 @@ class RestaurantDetails extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
             child: Text('Reviews:', style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold)),
           ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: RestaurantReviewsContainer(
-                builder: (BuildContext context, List<RestaurantReview> review) {
-                  return review.isNotEmpty
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          padding: const EdgeInsets.all(8.0),
-                          itemCount: review.length <= 5 ? review.length : 5,
-                          itemBuilder: (BuildContext context, int index) {
-                            final RestaurantReview reviewInfo = review[index];
-                            return ListTile(
-                              visualDensity: VisualDensity.comfortable,
-                              leading: const CircleAvatar(
-                                child: Icon(Icons.person),
-                              ),
-                              title: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      for (int i = 0; i < reviewInfo.rating; i++)
-                                        const Icon(
-                                          Icons.star,
-                                          color: Colors.yellow,
-                                          size: 12,
-                                        )
-                                    ],
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      const Icon(
-                                        Icons.timer,
-                                        size: 16,
+          Expanded(child: ReviewUserContainer(
+            builder: (BuildContext context, AppUser userReview) {
+              return Container(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: RestaurantReviewsContainer(
+                  builder: (BuildContext context, List<RestaurantReview> review) {
+                    return review.isNotEmpty
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.all(8.0),
+                            itemCount: review.length - 1,
+                            itemBuilder: (BuildContext context, int index) {
+                              final RestaurantReview reviewInfo = review[index];
+                              //StoreProvider.of<AppState>(context).dispatch(SetSelectedReview(reviewInfo.uid));
+                              return userReview != null
+                                  ? ListTile(
+                                      visualDensity: VisualDensity.comfortable,
+                                      leading: CircleAvatar(
+                                        backgroundImage: NetworkImage('${userReview.photoUrl}'),
                                       ),
-                                      Text(
-                                        ' ${timeago.format(reviewInfo.createdAt)}',
-                                        style: const TextStyle(color: Colors.grey, fontSize: 12.0),
+                                      title: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: <Widget>[
+                                          Text('${userReview.username}    '),
+                                          Flexible(
+                                            child: Row(
+                                              children: <Widget>[
+                                                for (int i = 0; i < reviewInfo.rating; i++)
+                                                  const Icon(
+                                                    Icons.star,
+                                                    color: Colors.yellow,
+                                                    size: 12,
+                                                  )
+                                              ],
+                                            ),
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              const Icon(
+                                                Icons.timer,
+                                                size: 16,
+                                              ),
+                                              Text(
+                                                ' ${timeago.format(reviewInfo.createdAt)}',
+                                                style: const TextStyle(color: Colors.grey, fontSize: 12.0),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              subtitle: Text(
-                                reviewInfo.textReview,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                            );
-                          },
-                        )
-                      : const Center(
-                          child: Text('No reviews yet.'),
-                        );
-                },
-              ),
-            ),
-          ),
+                                      subtitle: Text(
+                                        reviewInfo.textReview,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                      ),
+                                    )
+                                  : ListTile(
+                                      visualDensity: VisualDensity.comfortable,
+                                      leading: const CircleAvatar(
+                                        child: Icon(Icons.person),
+                                      ),
+                                      title: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              for (int i = 0; i < reviewInfo.rating; i++)
+                                                const Icon(
+                                                  Icons.star,
+                                                  color: Colors.yellow,
+                                                  size: 12,
+                                                )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              const Icon(
+                                                Icons.timer,
+                                                size: 16,
+                                              ),
+                                              Text(
+                                                ' ${timeago.format(reviewInfo.createdAt)}',
+                                                style: const TextStyle(color: Colors.grey, fontSize: 12.0),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      subtitle: Text(
+                                        reviewInfo.textReview,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                      ),
+                                    );
+                            },
+                          )
+                        : const Center(
+                            child: Text('No reviews yet.'),
+                          );
+                  },
+                ),
+              );
+            },
+          )),
         ],
       ),
     );

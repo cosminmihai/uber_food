@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:uber_food/actions/restaurants/set_selected_restaurant.dart';
@@ -16,7 +14,6 @@ class RestaurantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String tag = restaurantData.featuredPhoto.toString();
     return GestureDetector(
       onTap: () {
         print('${restaurantData.name}');
@@ -24,9 +21,14 @@ class RestaurantCard extends StatelessWidget {
         StoreProvider.of<AppState>(context).dispatch(ListenForReviews());
         print(restaurantData.id);
         Navigator.push(
-            context,
-            MaterialPageRoute<Widget>(
-                builder: (BuildContext context) => RestaurantDetails(restaurantData: restaurantData,indexHero: indexTag,)));
+          context,
+          MaterialPageRoute<Widget>(
+            builder: (BuildContext context) => RestaurantDetails(
+              restaurantData: restaurantData,
+              indexHero: indexTag,
+            ),
+          ),
+        );
       },
       child: Stack(
         children: <Widget>[

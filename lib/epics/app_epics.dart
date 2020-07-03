@@ -1,6 +1,7 @@
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uber_food/actions/actions.dart';
+import 'package:uber_food/actions/auth/get_first_user_location.dart';
 import 'package:uber_food/actions/initialize_app.dart';
 import 'package:uber_food/data/auth_api.dart';
 import 'package:uber_food/data/favorite_restaurant_api.dart';
@@ -51,6 +52,7 @@ class AppEpics {
             .asStream()
             .expand<AppAction>((AppUser user) => <AppAction>[
                   InitializeAppSuccessful(user),
+                  if (user != null) GetFirstUserLocation(),
                 ])
             .onErrorReturnWith((dynamic error) => InitializeAppError(error)));
   }

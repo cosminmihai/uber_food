@@ -19,6 +19,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(ReviewsState.serializer)
       ..add(UserRating.serializer)
       ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(AppUser)]),
+          () => new ListBuilder<AppUser>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(RestaurantReview)]),
+          () => new ListBuilder<RestaurantReview>())
+      ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(FavoriteRestaurant)]),
           () => new ListBuilder<FavoriteRestaurant>())
       ..addBuilderFactory(
