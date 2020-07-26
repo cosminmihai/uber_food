@@ -5,12 +5,12 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uber_food/actions/actions.dart';
 import 'package:uber_food/actions/auth/get_first_user_location.dart';
-import 'package:uber_food/actions/auth/get_users.dart';
 import 'package:uber_food/actions/auth/google_sign_in.dart';
 import 'package:uber_food/actions/auth/logout.dart';
 import 'package:uber_food/actions/auth/registration.dart';
 import 'package:uber_food/actions/favorite_restaurant/get_favorite_restaurants.dart';
 import 'package:uber_food/actions/restaurants/get_recommended_restaurants.dart';
+import 'package:uber_food/actions/reviews/get_user_for_review.dart';
 import 'package:uber_food/data/auth_api.dart';
 import 'package:uber_food/models/app_state.dart';
 import 'package:uber_food/models/auth/app_user.dart';
@@ -26,7 +26,7 @@ class AuthEpics {
       TypedEpic<AppState, GoogleConnect>(_googleSignIn),
       TypedEpic<AppState, LogOut>(_logout),
       TypedEpic<AppState, GetFirstUserLocation>(_getFirstUserLocation),
-      TypedEpic<AppState, GetUsers>(_getUsers),
+      TypedEpic<AppState, GetUserForReview>(_getUserForReview),
     ]);
   }
 
@@ -54,15 +54,6 @@ class AuthEpics {
             .onErrorReturnWith((dynamic error) => LogOutError(error)));
   }
 
-  Stream<AppAction> _getUsers(Stream<GetUsers> actions, EpicStore<AppState> store) {
-    return actions //
-        .flatMap((GetUsers action) => _authApi
-            .getUsers()
-            .asStream()
-            .map<AppAction>((List<AppUser> users) => GetUsersSuccessful(users))
-            .onErrorReturnWith((dynamic error) => GetUsersError(error)));
-  }
-
   Stream<AppAction> _getFirstUserLocation(Stream<GetFirstUserLocation> actions, EpicStore<AppState> store) {
     return actions //
         .flatMap((GetFirstUserLocation action) => _authApi
@@ -74,5 +65,14 @@ class AuthEpics {
                   GetRecommendedRestaurants(locationData: LatLng(locationData.latitude, locationData.longitude))
                 ])
             .onErrorReturnWith((dynamic error) => GetFirstUserLocationError(error)));
+  }
+
+  Stream<AppAction> _getUserForReview(Stream<GetUserForReview> actions, EpicStore<AppState> store) {
+    return actions //
+        .flatMap((GetUserForReview action) => _authApi
+            .getUserForReview(action.uid)
+            .asStream()
+            .map<AppAction>((AppUser userForReview) => GetUserForReviewSuccessful(userForReview))
+            .onErrorReturnWith((dynamic error) => GetUserForReviewError(error)));
   }
 }

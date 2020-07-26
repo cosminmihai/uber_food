@@ -25,6 +25,16 @@ class _$ReviewsStateSerializer implements StructuredSerializer<ReviewsState> {
             const FullType(String),
             const FullType(RestaurantReview)
           ])),
+      'userReviews',
+      serializers.serialize(object.userReviews,
+          specifiedType: const FullType(BuiltMap, const [
+            const FullType(String),
+            const FullType(RestaurantReview)
+          ])),
+      'usersForReviews',
+      serializers.serialize(object.usersForReviews,
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(String), const FullType(AppUser)])),
     ];
     if (object.selectedRestaurantId != null) {
       result
@@ -67,6 +77,18 @@ class _$ReviewsStateSerializer implements StructuredSerializer<ReviewsState> {
           result.reviewUid = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'userReviews':
+          result.userReviews.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(String),
+                const FullType(RestaurantReview)
+              ])));
+          break;
+        case 'usersForReviews':
+          result.usersForReviews.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap,
+                  const [const FullType(String), const FullType(AppUser)])));
+          break;
       }
     }
 
@@ -81,14 +103,29 @@ class _$ReviewsState extends ReviewsState {
   final String selectedRestaurantId;
   @override
   final String reviewUid;
+  @override
+  final BuiltMap<String, RestaurantReview> userReviews;
+  @override
+  final BuiltMap<String, AppUser> usersForReviews;
 
   factory _$ReviewsState([void Function(ReviewsStateBuilder) updates]) =>
       (new ReviewsStateBuilder()..update(updates)).build();
 
-  _$ReviewsState._({this.reviews, this.selectedRestaurantId, this.reviewUid})
+  _$ReviewsState._(
+      {this.reviews,
+      this.selectedRestaurantId,
+      this.reviewUid,
+      this.userReviews,
+      this.usersForReviews})
       : super._() {
     if (reviews == null) {
       throw new BuiltValueNullFieldError('ReviewsState', 'reviews');
+    }
+    if (userReviews == null) {
+      throw new BuiltValueNullFieldError('ReviewsState', 'userReviews');
+    }
+    if (usersForReviews == null) {
+      throw new BuiltValueNullFieldError('ReviewsState', 'usersForReviews');
     }
   }
 
@@ -105,13 +142,19 @@ class _$ReviewsState extends ReviewsState {
     return other is ReviewsState &&
         reviews == other.reviews &&
         selectedRestaurantId == other.selectedRestaurantId &&
-        reviewUid == other.reviewUid;
+        reviewUid == other.reviewUid &&
+        userReviews == other.userReviews &&
+        usersForReviews == other.usersForReviews;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, reviews.hashCode), selectedRestaurantId.hashCode),
-        reviewUid.hashCode));
+    return $jf($jc(
+        $jc(
+            $jc($jc($jc(0, reviews.hashCode), selectedRestaurantId.hashCode),
+                reviewUid.hashCode),
+            userReviews.hashCode),
+        usersForReviews.hashCode));
   }
 
   @override
@@ -119,7 +162,9 @@ class _$ReviewsState extends ReviewsState {
     return (newBuiltValueToStringHelper('ReviewsState')
           ..add('reviews', reviews)
           ..add('selectedRestaurantId', selectedRestaurantId)
-          ..add('reviewUid', reviewUid))
+          ..add('reviewUid', reviewUid)
+          ..add('userReviews', userReviews)
+          ..add('usersForReviews', usersForReviews))
         .toString();
   }
 }
@@ -143,6 +188,18 @@ class ReviewsStateBuilder
   String get reviewUid => _$this._reviewUid;
   set reviewUid(String reviewUid) => _$this._reviewUid = reviewUid;
 
+  MapBuilder<String, RestaurantReview> _userReviews;
+  MapBuilder<String, RestaurantReview> get userReviews =>
+      _$this._userReviews ??= new MapBuilder<String, RestaurantReview>();
+  set userReviews(MapBuilder<String, RestaurantReview> userReviews) =>
+      _$this._userReviews = userReviews;
+
+  MapBuilder<String, AppUser> _usersForReviews;
+  MapBuilder<String, AppUser> get usersForReviews =>
+      _$this._usersForReviews ??= new MapBuilder<String, AppUser>();
+  set usersForReviews(MapBuilder<String, AppUser> usersForReviews) =>
+      _$this._usersForReviews = usersForReviews;
+
   ReviewsStateBuilder();
 
   ReviewsStateBuilder get _$this {
@@ -150,6 +207,8 @@ class ReviewsStateBuilder
       _reviews = _$v.reviews?.toBuilder();
       _selectedRestaurantId = _$v.selectedRestaurantId;
       _reviewUid = _$v.reviewUid;
+      _userReviews = _$v.userReviews?.toBuilder();
+      _usersForReviews = _$v.usersForReviews?.toBuilder();
       _$v = null;
     }
     return this;
@@ -176,12 +235,19 @@ class ReviewsStateBuilder
           new _$ReviewsState._(
               reviews: reviews.build(),
               selectedRestaurantId: selectedRestaurantId,
-              reviewUid: reviewUid);
+              reviewUid: reviewUid,
+              userReviews: userReviews.build(),
+              usersForReviews: usersForReviews.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'reviews';
         reviews.build();
+
+        _$failedField = 'userReviews';
+        userReviews.build();
+        _$failedField = 'usersForReviews';
+        usersForReviews.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'ReviewsState', _$failedField, e.toString());

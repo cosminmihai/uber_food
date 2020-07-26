@@ -4,15 +4,16 @@ import 'package:redux/redux.dart';
 import 'package:uber_food/models/app_state.dart';
 import 'package:uber_food/models/auth/app_user.dart';
 
-class ReviewUserContainer extends StatelessWidget {
-  const ReviewUserContainer({Key key, @required this.builder}) : super(key: key);
-  final ViewModelBuilder<AppUser> builder;
+class UsersForReviewContainer extends StatelessWidget {
+  const UsersForReviewContainer({Key key, @required this.builder}) : super(key: key);
+  final ViewModelBuilder<Map<String, AppUser>> builder;
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, AppUser>(
-      converter: (Store<AppState> store) => store.state.auth.users
-          .firstWhere((AppUser user) => user.uid == store.state.reviewsState.reviewUid, orElse: () => null),
+    return StoreConnector<AppState, Map<String, AppUser>>(
+      converter: (Store<AppState> store) {
+        return store.state.auth.usersForReviews.asMap();
+      },
       builder: builder,
     );
   }

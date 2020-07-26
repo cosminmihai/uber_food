@@ -90,8 +90,8 @@ class AuthApi {
     return _location.getLocation();
   }
 
-  Future<List<AppUser>> getUsers() async {
-    final QuerySnapshot snapshot = await _firestore.collection('users').getDocuments();
-    return snapshot.documents.map((DocumentSnapshot snapshot) => AppUser.fromJson(snapshot.data)).toList();
+  Future<AppUser> getUserForReview(String userUid) async {
+    final DocumentSnapshot snapshot = await _firestore.document('users/$userUid').get();
+    return AppUser.fromJson(snapshot.data);
   }
 }

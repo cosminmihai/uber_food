@@ -3,6 +3,7 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uber_food/actions/actions.dart';
 import 'package:uber_food/actions/reviews/create_restaurant_review.dart';
+import 'package:uber_food/actions/reviews/get_user_for_review.dart';
 import 'package:uber_food/actions/reviews/listen_for_restaurant_reviews.dart';
 import 'package:uber_food/actions/reviews/listen_for_user_reviews.dart';
 import 'package:uber_food/data/reviews_api.dart';
@@ -40,22 +41,29 @@ class ReviewsEpics {
   }
 
   Stream<AppAction> _listenForReviews(Stream<dynamic> actions, EpicStore<AppState> store) {
-    return actions.whereType<ListenForReviews>().flatMap((ListenForReviews action) => _reviewsApi
-        .listenForReviews(store.state.reviewsState.selectedRestaurantId)
-        .expand<AppAction>((List<RestaurantReview> reviews) => <AppAction>[
-              OnReviewsEvent(reviews),
-            ])
-        .takeUntil(actions.whereType<StopListenForReviews>())
-        .onErrorReturnWith((dynamic error) => ListenForReviewsError(error)));
+    return actions //
+        .whereType<ListenForReviews>()
+        .flatMap((ListenForReviews action) => _reviewsApi
+            .listenForReviews(store.state.reviewsState.selectedRestaurantId)
+            .expand<AppAction>((List<RestaurantReview> reviews) => <AppAction>[
+                  OnReviewsEvent(reviews),
+                  ...reviews
+                      .where((RestaurantReview element) => store.state.auth.usersForReviews[element.uid] == null)
+                      .map((RestaurantReview review) => GetUserForReview(review.uid))
+                ])
+            .takeUntil(actions.whereType<StopListenForReviews>())
+            .onErrorReturnWith((dynamic error) => ListenForReviewsError(error)));
   }
 
   Stream<AppAction> _listenForUserReviews(Stream<dynamic> actions, EpicStore<AppState> store) {
-    return actions.whereType<ListenForReviews>().flatMap((ListenForReviews action) => _reviewsApi
-        .listenForUserReviews(store.state.auth.user.uid)
-        .expand<AppAction>((List<RestaurantReview> reviews) => <AppAction>[
-              OnUserReviewsEvent(reviews),
-            ])
-        .takeUntil(actions.whereType<StopListenForUserReviews>())
-        .onErrorReturnWith((dynamic error) => ListenForUserReviewsError(error)));
+    return actions //
+        .whereType<ListenForReviews>()
+        .flatMap((ListenForReviews action) => _reviewsApi
+            .listenForUserReviews(store.state.auth.user.uid)
+            .expand<AppAction>((List<RestaurantReview> reviews) => <AppAction>[
+                  OnUserReviewsEvent(reviews),
+                ])
+            .takeUntil(actions.whereType<StopListenForUserReviews>())
+            .onErrorReturnWith((dynamic error) => ListenForUserReviewsError(error)));
   }
 }

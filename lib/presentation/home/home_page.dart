@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:uber_food/actions/reviews/listen_for_user_reviews.dart';
 import 'package:uber_food/containers/user_container.dart';
 import 'package:uber_food/models/app_state.dart';
 import 'package:uber_food/models/auth/app_user.dart';
@@ -29,6 +31,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
+    final Store<AppState> store = StoreProvider.of<AppState>(context);
     return UserContainer(
       builder: (BuildContext context, AppUser currentUser) {
         return Scaffold(
@@ -42,7 +45,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               setState(() {
                 _selectedIndex = index;
                 pageController.jumpToPage(index);
-                if (index == 1) {}
+                if (index == 1) {
+                  store.dispatch(ListenForUserReviews());
+                } else if (index != 1) {
+                  store.dispatch(StopListenForUserReviews());
+                }
               });
             },
             items: const <BottomNavigationBarItem>[
@@ -57,6 +64,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             ],
           ),
           body: PageView(
+            physics: const NeverScrollableScrollPhysics(),
             controller: pageController,
             children: <Widget>[
               MainPage(),

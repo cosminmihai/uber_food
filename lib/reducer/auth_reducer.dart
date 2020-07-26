@@ -2,9 +2,9 @@ import 'package:redux/redux.dart';
 import 'package:uber_food/actions/actions.dart';
 import 'package:uber_food/actions/auth/get_current_user_location.dart';
 import 'package:uber_food/actions/auth/get_first_user_location.dart';
-import 'package:uber_food/actions/auth/get_users.dart';
 import 'package:uber_food/actions/auth/google_sign_in.dart';
 import 'package:uber_food/actions/auth/logout.dart';
+import 'package:uber_food/actions/reviews/get_user_for_review.dart';
 import 'package:uber_food/models/auth/auth_state.dart';
 
 Reducer<AuthState> authReducer = combineReducers<AuthState>(<Reducer<AuthState>>[
@@ -13,7 +13,7 @@ Reducer<AuthState> authReducer = combineReducers<AuthState>(<Reducer<AuthState>>
   TypedReducer<AuthState, LogOutSuccessful>(_logoutSuccessful),
   TypedReducer<AuthState, GetCurrentUserLocation>(_getCurrentUserLocation),
   TypedReducer<AuthState, GetFirstUserLocationSuccessful>(_getFirstUserLocationSuccessful),
-  TypedReducer<AuthState, GetUsersSuccessful>(_getUsersSuccessful),
+  TypedReducer<AuthState, GetUserForReviewSuccessful>(_getUserForReviewSuccessful),
 ]);
 
 AuthState _userAction(AuthState state, UserAction action) {
@@ -38,6 +38,6 @@ AuthState _getFirstUserLocationSuccessful(AuthState state, GetFirstUserLocationS
   return state.rebuild((AuthStateBuilder b) => b.user.userLocation = action.location);
 }
 
-AuthState _getUsersSuccessful(AuthState state, GetUsersSuccessful action) {
-  return state.rebuild((AuthStateBuilder b) => b.users = action.users.toBuilder());
+AuthState _getUserForReviewSuccessful(AuthState state, GetUserForReviewSuccessful action) {
+  return state.rebuild((AuthStateBuilder b) => b.usersForReviews[action.user.uid] = action.user);
 }

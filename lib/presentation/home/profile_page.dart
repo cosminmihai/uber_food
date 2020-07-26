@@ -31,10 +31,7 @@ class ProfilePage extends StatelessWidget {
                           children: <Widget>[
                             Container(
                               width: double.infinity,
-                              height: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height * 0.33,
+                              height: MediaQuery.of(context).size.height * 0.33,
                               color: Colors.grey[700],
                             ),
                             Positioned(
@@ -77,10 +74,7 @@ class ProfilePage extends StatelessWidget {
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width * 0.9,
+                                    width: MediaQuery.of(context).size.width * 0.9,
                                     padding: const EdgeInsets.all(8),
                                     child: Text(
                                       currentUser.username,
@@ -114,29 +108,23 @@ class ProfilePage extends StatelessWidget {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                                         children: <Widget>[
-                                          GestureDetector(
-                                            onTap: (){
-                                              Navigator.pushNamed(context, '/FavoriteRestaurantsPage');
-                                            },
-                                            child: Column(
-                                              children: <Widget>[
-                                                Container(
-                                                    padding: const EdgeInsets.only(top: 15, bottom: 5),
-                                                    child: const Text('Favorite Restaurants:',
-                                                        style: TextStyle(color: Colors.black))),
-                                                Container(
-                                                    padding: const EdgeInsets.only(bottom: 15),
-                                                    child: Text('${favoriteRestaurants.length}',
-                                                        style: const TextStyle(color: Colors.black87, fontSize: 16))),
-                                              ],
-                                            ),
+                                          Column(
+                                            children: <Widget>[
+                                              Container(
+                                                  padding: const EdgeInsets.only(top: 15, bottom: 5),
+                                                  child: const Text('Favorite Restaurants:',
+                                                      style: TextStyle(color: Colors.black))),
+                                              Container(
+                                                  padding: const EdgeInsets.only(bottom: 15),
+                                                  child: Text('${favoriteRestaurants.length}',
+                                                      style: const TextStyle(color: Colors.black87, fontSize: 16))),
+                                            ],
                                           ),
                                           Column(
                                             children: <Widget>[
                                               Container(
                                                   padding: const EdgeInsets.only(top: 15, bottom: 5),
-                                                  child:
-                                                  const Text('Reviews:', style: TextStyle(color: Colors.black))),
+                                                  child: const Text('Reviews:', style: TextStyle(color: Colors.black))),
                                               Container(
                                                   padding: const EdgeInsets.only(bottom: 15),
                                                   child: Text('${userReviews.length}',
@@ -161,7 +149,7 @@ class ProfilePage extends StatelessWidget {
                                                 Container(
                                                   alignment: Alignment.topLeft,
                                                   child: const Text(
-                                                    'User Settings:',
+                                                    'User Options:',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontWeight: FontWeight.w500,
@@ -174,46 +162,59 @@ class ProfilePage extends StatelessWidget {
                                                   color: Colors.black38,
                                                 ),
                                                 Container(
-                                                    child: Column(
-                                                      children: const <Widget>[
-                                                        ListTile(
-                                                          contentPadding: EdgeInsets.symmetric(
-                                                              horizontal: 12, vertical: 4),
-                                                          leading: Icon(Icons.notifications, color: Colors.black,),
-                                                          title: Text('Show Notifications',style: TextStyle(
-                                                            color:  Colors.black,
-                                                          ),),
-                                                          subtitle: Text('On', style: TextStyle(
-                                                            color:  Colors.black54,
-                                                          ),),
-                                                          trailing: CupertinoSwitch(value: true , onChanged: null),
+                                                  child: Column(
+                                                    children: <Widget>[
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.pushNamed(context, '/FavoriteRestaurantsPage');
+                                                        },
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            shape: BoxShape.rectangle,
+                                                            border: Border.all(color: Colors.black),
+                                                          ),
+                                                          child: const ListTile(
+                                                            leading: Icon(
+                                                              Icons.restaurant,
+                                                              color: Colors.black,
+                                                            ),
+                                                            contentPadding:
+                                                                EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                                            title: Text(
+                                                              'Show Favorite Restaurants',
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
-                                                        ListTile(
-                                                          contentPadding: EdgeInsets.symmetric(
-                                                              horizontal: 12, vertical: 4),
-                                                          leading: Icon(Icons.notifications, color: Colors.black,),
-                                                          title: Text('Show Notifications',style: TextStyle(
-                                                            color:  Colors.black,
-                                                          ),),
-                                                          subtitle: Text('On', style: TextStyle(
-                                                            color:  Colors.black54,
-                                                          ),),
-                                                          trailing: CupertinoSwitch(value: true , onChanged: null),
+                                                      ),
+                                                      const Divider(),
+                                                      GestureDetector(
+                                                        onTap: () {},
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            border: Border.all(color: Colors.black),
+                                                          ),
+                                                          child: const ListTile(
+                                                            contentPadding:
+                                                                EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                                                            leading: Icon(
+                                                              Icons.rate_review,
+                                                              color: Colors.black,
+                                                            ),
+                                                            title: Text(
+                                                              'Show My Reviews',
+                                                              style: TextStyle(
+                                                                color: Colors.black,
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
-                                                        ListTile(
-                                                          contentPadding: EdgeInsets.symmetric(
-                                                              horizontal: 12, vertical: 4),
-                                                          leading: Icon(Icons.notifications, color: Colors.black,),
-                                                          title: Text('Show Notifications',style: TextStyle(
-                                                            color:  Colors.black,
-                                                          ),),
-                                                          subtitle: Text('On', style: TextStyle(
-                                                            color:  Colors.black54,
-                                                          ),),
-                                                          trailing: CupertinoSwitch(value: true , onChanged: null),
-                                                        ),
-                                                      ],
-                                                    ))
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
                                               ],
                                             ),
                                           ),

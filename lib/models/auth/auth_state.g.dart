@@ -18,14 +18,10 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
   Iterable<Object> serialize(Serializers serializers, AuthState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'users',
-      serializers.serialize(object.users,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(AppUser)])),
-      'userReviews',
-      serializers.serialize(object.userReviews,
-          specifiedType: const FullType(
-              BuiltList, const [const FullType(RestaurantReview)])),
+      'usersForReviews',
+      serializers.serialize(object.usersForReviews,
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(String), const FullType(AppUser)])),
     ];
     if (object.user != null) {
       result
@@ -51,17 +47,10 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
           result.user.replace(serializers.deserialize(value,
               specifiedType: const FullType(AppUser)) as AppUser);
           break;
-        case 'users':
-          result.users.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(AppUser)]))
-              as BuiltList<Object>);
-          break;
-        case 'userReviews':
-          result.userReviews.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(RestaurantReview)]))
-              as BuiltList<Object>);
+        case 'usersForReviews':
+          result.usersForReviews.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap,
+                  const [const FullType(String), const FullType(AppUser)])));
           break;
       }
     }
@@ -74,19 +63,14 @@ class _$AuthState extends AuthState {
   @override
   final AppUser user;
   @override
-  final BuiltList<AppUser> users;
-  @override
-  final BuiltList<RestaurantReview> userReviews;
+  final BuiltMap<String, AppUser> usersForReviews;
 
   factory _$AuthState([void Function(AuthStateBuilder) updates]) =>
       (new AuthStateBuilder()..update(updates)).build();
 
-  _$AuthState._({this.user, this.users, this.userReviews}) : super._() {
-    if (users == null) {
-      throw new BuiltValueNullFieldError('AuthState', 'users');
-    }
-    if (userReviews == null) {
-      throw new BuiltValueNullFieldError('AuthState', 'userReviews');
+  _$AuthState._({this.user, this.usersForReviews}) : super._() {
+    if (usersForReviews == null) {
+      throw new BuiltValueNullFieldError('AuthState', 'usersForReviews');
     }
   }
 
@@ -102,22 +86,19 @@ class _$AuthState extends AuthState {
     if (identical(other, this)) return true;
     return other is AuthState &&
         user == other.user &&
-        users == other.users &&
-        userReviews == other.userReviews;
+        usersForReviews == other.usersForReviews;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, user.hashCode), users.hashCode), userReviews.hashCode));
+    return $jf($jc($jc(0, user.hashCode), usersForReviews.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AuthState')
           ..add('user', user)
-          ..add('users', users)
-          ..add('userReviews', userReviews))
+          ..add('usersForReviews', usersForReviews))
         .toString();
   }
 }
@@ -129,24 +110,18 @@ class AuthStateBuilder implements Builder<AuthState, AuthStateBuilder> {
   AppUserBuilder get user => _$this._user ??= new AppUserBuilder();
   set user(AppUserBuilder user) => _$this._user = user;
 
-  ListBuilder<AppUser> _users;
-  ListBuilder<AppUser> get users =>
-      _$this._users ??= new ListBuilder<AppUser>();
-  set users(ListBuilder<AppUser> users) => _$this._users = users;
-
-  ListBuilder<RestaurantReview> _userReviews;
-  ListBuilder<RestaurantReview> get userReviews =>
-      _$this._userReviews ??= new ListBuilder<RestaurantReview>();
-  set userReviews(ListBuilder<RestaurantReview> userReviews) =>
-      _$this._userReviews = userReviews;
+  MapBuilder<String, AppUser> _usersForReviews;
+  MapBuilder<String, AppUser> get usersForReviews =>
+      _$this._usersForReviews ??= new MapBuilder<String, AppUser>();
+  set usersForReviews(MapBuilder<String, AppUser> usersForReviews) =>
+      _$this._usersForReviews = usersForReviews;
 
   AuthStateBuilder();
 
   AuthStateBuilder get _$this {
     if (_$v != null) {
       _user = _$v.user?.toBuilder();
-      _users = _$v.users?.toBuilder();
-      _userReviews = _$v.userReviews?.toBuilder();
+      _usersForReviews = _$v.usersForReviews?.toBuilder();
       _$v = null;
     }
     return this;
@@ -171,18 +146,14 @@ class AuthStateBuilder implements Builder<AuthState, AuthStateBuilder> {
     try {
       _$result = _$v ??
           new _$AuthState._(
-              user: _user?.build(),
-              users: users.build(),
-              userReviews: userReviews.build());
+              user: _user?.build(), usersForReviews: usersForReviews.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'user';
         _user?.build();
-        _$failedField = 'users';
-        users.build();
-        _$failedField = 'userReviews';
-        userReviews.build();
+        _$failedField = 'usersForReviews';
+        usersForReviews.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AuthState', _$failedField, e.toString());

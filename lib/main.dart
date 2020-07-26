@@ -25,7 +25,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const String zomatoUrl = 'https://developers.zomato.com/api/v2.1';
+  const String zomatoUrl = 'YOUR ZOMATO API KEY';
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
   final Client client = Client();
