@@ -1,6 +1,6 @@
 # uber_food
 
-Find your favorite food.
+Find your favorite restaurant.
 
 ## Getting Started
 
