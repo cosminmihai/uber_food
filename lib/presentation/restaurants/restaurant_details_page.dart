@@ -193,14 +193,13 @@ class RestaurantDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Flexible(
-                      child: Container(
-                        alignment: AlignmentDirectional.bottomCenter,
-                        child: Center(
-                          child: Text(restaurantData.name,
-                              style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white)),
-                        ),
+                        child: Container(
+                      alignment: AlignmentDirectional.bottomCenter,
+                      child: Center(
+                        child: Text(restaurantData.name,
+                            style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white)),
                       ),
-                    ),
+                    )),
                     const SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -320,31 +319,33 @@ class RestaurantDetails extends StatelessWidget {
                                           backgroundImage: NetworkImage('${usersForReview[reviewInfo.uid].photoUrl}'),
                                         ),
                                         title: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
                                             Text('${usersForReview[reviewInfo.uid].username}    '),
-                                            Flexible(
-                                              child: Row(
-                                                children: <Widget>[
-                                                  for (int i = 0; i < reviewInfo.rating; i++)
+                                            Column(
+                                              children: [
+                                                Row(
+                                                  children: <Widget>[
                                                     const Icon(
-                                                      Icons.star,
-                                                      color: Colors.yellow,
-                                                      size: 12,
-                                                    )
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                const Icon(
-                                                  Icons.timer,
-                                                  size: 16,
+                                                      Icons.timer,
+                                                      size: 16,
+                                                    ),
+                                                    Text(
+                                                      ' ${timeago.format(reviewInfo.createdAt)}',
+                                                      style: const TextStyle(color: Colors.grey, fontSize: 12.0),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Text(
-                                                  ' ${timeago.format(reviewInfo.createdAt)}',
-                                                  style: const TextStyle(color: Colors.grey, fontSize: 12.0),
-                                                ),
+                                                Row(
+                                                  children: <Widget>[
+                                                    for (int i = 0; i < reviewInfo.rating; i++)
+                                                      const Icon(
+                                                        Icons.star,
+                                                        color: Colors.yellow,
+                                                        size: 12,
+                                                      )
+                                                  ],
+                                                )
                                               ],
                                             ),
                                           ],

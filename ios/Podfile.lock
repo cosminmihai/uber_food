@@ -302,15 +302,13 @@ PODS:
   - Flutter (1.0.0)
   - flutter_plugin_android_lifecycle (0.0.1):
     - Flutter
-  - "geolocator (5.3.2+2)":
-    - Flutter
-  - google_api_availability (2.0.4):
+  - "geolocator (6.0.0+4)":
     - Flutter
   - google_map_location_picker (2.1.1):
     - Flutter
   - google_maps_flutter (0.0.1):
     - Flutter
-    - GoogleMaps
+    - GoogleMaps (< 3.10)
   - google_sign_in (0.0.1):
     - Flutter
     - GoogleSignIn (~> 5.0)
@@ -389,8 +387,6 @@ PODS:
   - leveldb-library (1.22)
   - location (0.0.1):
     - Flutter
-  - "location_permissions (3.0.0+1)":
-    - Flutter
   - location_web (0.0.1):
     - Flutter
   - nanopb (1.30905.0):
@@ -413,14 +409,12 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
-  - google_api_availability (from `.symlinks/plugins/google_api_availability/ios`)
   - google_map_location_picker (from `.symlinks/plugins/google_map_location_picker/ios`)
   - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - google_sign_in_web (from `.symlinks/plugins/google_sign_in_web/ios`)
   - GoogleSignIn
   - location (from `.symlinks/plugins/location/ios`)
-  - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - location_web (from `.symlinks/plugins/location_web/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
 
@@ -473,8 +467,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_plugin_android_lifecycle/ios"
   geolocator:
     :path: ".symlinks/plugins/geolocator/ios"
-  google_api_availability:
-    :path: ".symlinks/plugins/google_api_availability/ios"
   google_map_location_picker:
     :path: ".symlinks/plugins/google_map_location_picker/ios"
   google_maps_flutter:
@@ -485,8 +477,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/google_sign_in_web/ios"
   location:
     :path: ".symlinks/plugins/location/ios"
-  location_permissions:
-    :path: ".symlinks/plugins/location_permissions/ios"
   location_web:
     :path: ".symlinks/plugins/location_web/ios"
   package_info:
@@ -514,10 +504,9 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 2119fb3e46b0a88bfdbf12562f855ee3252462fa
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_plugin_android_lifecycle: dc0b544e129eebb77a6bfb1239d4d1c673a60a35
-  geolocator: f7622e0e7e2a24718285b73916d60c4a54b9f5b6
-  google_api_availability: 15fa42a8cd83c0a6738507ffe6e87096f12abcb8
+  geolocator: 1ae40084cc6c1586ce5ad12cfc3fd38c64d05f2f
   google_map_location_picker: 01403f2fb025f6aedf0b36b5f15eccc9415a55f1
-  google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
+  google_maps_flutter: c7f9c73576de1fbe152a227bfd6e6c4ae8088619
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
   google_sign_in_web: 52deb24929ac0992baff65c57956031c44ed44c3
   GoogleAppMeasurement: 137afe68bfa406c3f4221b9395253d9e5d4654cf
@@ -532,7 +521,6 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 6f5c8abbab8a9bce4bb3f057e317728ec6182b10
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   location: 3a2eed4dd2fab25e7b7baf2a9efefe82b512d740
-  location_permissions: 7e0f9aa0f60deb8ff93ddf0e2a164c7e8197bc94
   location_web: b94e7433cfe28c0f7c8923c2ee482824b32e55a7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62

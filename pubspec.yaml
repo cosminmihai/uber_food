@@ -9,24 +9,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^0.1.3
-  email_validator: ^1.0.4
+  cupertino_icons: ^1.0.0
+  email_validator: ^1.0.6
   password_strength: ^0.1.2
   cloud_firestore: ^0.13.7
   firebase_auth: ^0.16.1
   google_sign_in: ^4.5.1
   location: ^3.0.2
-  google_maps_flutter: ^0.5.28+1
-  google_map_location_picker: ^3.3.3
+  google_maps_flutter: ^1.0.2
+  google_map_location_picker: ^4.0.0
   algolia: ^0.1.7
-  font_awesome_flutter: ^8.8.1
+  font_awesome_flutter: ^8.10.0
   shimmer: ^1.1.1
-  google_map_polyline: ^0.2.0+1
-  flutter_rating_bar: ^3.0.1+1
-  timeago: ^2.0.26
-  bottom_navy_bar: ^5.4.0
 
-  redux: ^4.0.0
+  flutter_rating_bar: ^3.0.1+1
+  timeago: ^2.0.27
+  bottom_navy_bar: ^5.5.0
+
+  redux: ^4.0.0+3
   flutter_redux: ^0.6.0
   built_value: ^7.1.0
   redux_epics: ^0.14.0

@@ -20,12 +20,11 @@ import 'package:uber_food/presentation/home/home_page.dart';
 import 'package:uber_food/presentation/login_page.dart';
 import 'package:uber_food/presentation/restaurants/restaurant_details_page.dart';
 import 'package:uber_food/reducer/reducer.dart';
-import 'package:google_map_location_picker/generated/i18n.dart' as location_picker;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const String zomatoUrl = 'YOUR ZOMATO API KEY';
+  const String zomatoUrl = 'https://developers.zomato.com/api/v2.1';
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
   final Client client = Client();
@@ -63,7 +62,6 @@ class UberFood extends StatelessWidget {
       store: store,
       child: MaterialApp(
         localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-          location_picker.S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
