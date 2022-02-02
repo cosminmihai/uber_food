@@ -4,17 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:location/location.dart';
-import 'package:uber_food/models/app_state.dart';
-import 'package:uber_food/models/auth/app_user.dart';
-import 'package:uber_food/models/auth/auth_state.dart';
-import 'package:uber_food/models/restaurant_reviews/restaurant_review.dart';
-import 'package:uber_food/models/restaurant_reviews/reviews_state.dart';
-import 'package:uber_food/models/restaurants/favorite_restaurant.dart';
-import 'package:uber_food/models/restaurants/favorite_restaurants_state.dart';
-import 'package:uber_food/models/restaurants/restaurant.dart';
-import 'package:uber_food/models/restaurants/restaurant_location.dart';
-import 'package:uber_food/models/restaurants/restaurants_state.dart';
-import 'package:uber_food/models/restaurants/user_rating.dart';
+import 'package:uber_food/models/index.dart';
 
 part 'serializers.g.dart';
 
@@ -54,7 +44,7 @@ class IntSerializer implements PrimitiveSerializer<int> {
   @override
   int deserialize(Serializers serializers, Object serialized, {FullType specifiedType = FullType.unspecified}) {
     if (serialized is String) {
-      final int result = int.tryParse(serialized);
+      final int? result = int.tryParse(serialized);
       return result ?? int.parse(serialized, radix: 16);
     } else {
       return serialized as int;

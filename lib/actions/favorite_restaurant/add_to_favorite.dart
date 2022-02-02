@@ -1,19 +1,11 @@
-library add_to_favorite;
-
-import 'package:built_value/built_value.dart';
-import 'package:uber_food/actions/actions.dart';
-import 'package:meta/meta.dart';
-import 'package:uber_food/models/restaurants/favorite_restaurant.dart';
-import 'package:uber_food/models/restaurants/restaurant.dart';
-
-part 'add_to_favorite.g.dart';
+part of favorite_restaurant_actions;
 
 abstract class AddToFavorite //
     implements
         Built<AddToFavorite, AddToFavoriteBuilder>,
         AppAction //
 {
-  factory AddToFavorite({@required String userId, @required Restaurant selectedRestaurant}) {
+  factory AddToFavorite({required String userId, required Restaurant selectedRestaurant}) {
     return _$AddToFavorite((AddToFavoriteBuilder b) {
       b
         ..userId = userId
@@ -48,9 +40,7 @@ abstract class AddToFavoriteError //
         Built<AddToFavoriteError, AddToFavoriteErrorBuilder>,
         ErrorAction //
 {
-  factory AddToFavoriteError(Object error) {
-    return _$AddToFavoriteError((AddToFavoriteErrorBuilder b) => b.error = error);
-  }
+  factory AddToFavoriteError(Object error) => _$AddToFavoriteError((AddToFavoriteErrorBuilder b) => b.error = error);
 
   AddToFavoriteError._();
 

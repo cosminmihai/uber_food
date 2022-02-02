@@ -1,11 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:uber_food/actions/auth/google_sign_in.dart';
-import 'package:uber_food/models/app_state.dart';
+import 'package:uber_food/actions/index.dart';
+import 'package:uber_food/models/index.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -65,8 +65,9 @@ class _LoginPageState extends State<LoginPage> {
                             contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
                           ),
                           controller: emailController,
-                          validator: (String value) {
-                            if (!EmailValidator.validate(value)) {
+                          validator: (String? value) {
+                            final String text = value ?? '';
+                            if (!EmailValidator.validate(text)) {
                               return 'Please enter a valid email address.';
                             }
                             return null;
@@ -83,41 +84,46 @@ class _LoginPageState extends State<LoginPage> {
                             obscureText: true,
                             style: const TextStyle(color: Colors.black),
                             decoration: const InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.lock,
-                                  color: Colors.black26,
-                                ),
-                                hintText: 'Password',
-                                hintStyle: TextStyle(
-                                  color: Colors.black26,
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                                ),
-                                contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0)),
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Colors.black26,
+                              ),
+                              hintText: 'Password',
+                              hintStyle: TextStyle(
+                                color: Colors.black26,
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                              ),
+                              contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+                            ),
                             controller: passwordController),
                       ),
                     ),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(30.0),
-                      child: RaisedButton(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        color: Colors.blue[500],
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 16.0)),
+                          backgroundColor: MaterialStateProperty.all(Colors.blue[500]),
+                          elevation: MaterialStateProperty.all(11),
+                          shape: MaterialStateProperty.all(
+                            const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(40.0),
+                              ),
+                            ),
+                          ),
+                        ),
                         onPressed: () {
-                          if (_formKey.currentState.validate()) {
+                          if (_formKey.currentState!.validate()) {
                             print('Login Successful');
                           }
                         },
-                        elevation: 11,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(40.0),
-                          ),
-                        ),
                         child: const Text(
                           'Login',
                           style: TextStyle(color: Colors.white),
@@ -149,34 +155,26 @@ class _LoginPageState extends State<LoginPage> {
                           width: 20.0,
                         ),
                         Expanded(
-                          child: RaisedButton(
-                            textColor: Colors.white,
-                            color: Colors.blue,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(40)),
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.blue),
+                              shape: MaterialStateProperty.all(
+                                const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(40)),
+                                ),
+                              ),
                             ),
                             onPressed: () async {
                               StoreProvider.of<AppState>(context).dispatch(GoogleConnect(onResult));
                             },
-                            child: const Text('Google'),
+                            child: const Text(
+                              'Google',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                         const SizedBox(
                           width: 10.0,
-                        ),
-                        Expanded(
-                          child: RaisedButton(
-                            textColor: Colors.white,
-                            color: Colors.indigo,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(40)),
-                            ),
-                            onPressed: () {},
-                            child: const Text('Facebook'),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20.0,
                         ),
                       ],
                     ),
@@ -184,10 +182,14 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         const Text('Don\'t have an account?'),
-                        FlatButton(
-                          textColor: Colors.blue,
+                        TextButton(
                           onPressed: () {},
-                          child: const Text('Sign up'),
+                          child: const Text(
+                            'Sign up',
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
                         )
                       ],
                     )

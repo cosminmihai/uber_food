@@ -1,9 +1,4 @@
-library remove_from_favorite;
-
-import 'package:built_value/built_value.dart';
-import 'package:uber_food/actions/actions.dart';
-
-part 'remove_from_favorite.g.dart';
+part of favorite_restaurant_actions;
 
 abstract class RemoveFromFavorite //
     implements

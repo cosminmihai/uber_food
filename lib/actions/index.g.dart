@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of initialize_app;
+part of actions;
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
 class _$InitializeApp extends InitializeApp {
-  factory _$InitializeApp([void Function(InitializeAppBuilder) updates]) =>
+  factory _$InitializeApp([void Function(InitializeAppBuilder)? updates]) =>
       (new InitializeAppBuilder()..update(updates)).build();
 
   _$InitializeApp._() : super._();
@@ -38,20 +38,18 @@ class _$InitializeApp extends InitializeApp {
 
 class InitializeAppBuilder
     implements Builder<InitializeApp, InitializeAppBuilder> {
-  _$InitializeApp _$v;
+  _$InitializeApp? _$v;
 
   InitializeAppBuilder();
 
   @override
   void replace(InitializeApp other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$InitializeApp;
   }
 
   @override
-  void update(void Function(InitializeAppBuilder) updates) {
+  void update(void Function(InitializeAppBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -65,10 +63,10 @@ class InitializeAppBuilder
 
 class _$InitializeAppSuccessful extends InitializeAppSuccessful {
   @override
-  final AppUser user;
+  final AppUser? user;
 
   factory _$InitializeAppSuccessful(
-          [void Function(InitializeAppSuccessfulBuilder) updates]) =>
+          [void Function(InitializeAppSuccessfulBuilder)? updates]) =>
       (new InitializeAppSuccessfulBuilder()..update(updates)).build();
 
   _$InitializeAppSuccessful._({this.user}) : super._();
@@ -104,17 +102,18 @@ class _$InitializeAppSuccessful extends InitializeAppSuccessful {
 class InitializeAppSuccessfulBuilder
     implements
         Builder<InitializeAppSuccessful, InitializeAppSuccessfulBuilder> {
-  _$InitializeAppSuccessful _$v;
+  _$InitializeAppSuccessful? _$v;
 
-  AppUserBuilder _user;
+  AppUserBuilder? _user;
   AppUserBuilder get user => _$this._user ??= new AppUserBuilder();
-  set user(AppUserBuilder user) => _$this._user = user;
+  set user(AppUserBuilder? user) => _$this._user = user;
 
   InitializeAppSuccessfulBuilder();
 
   InitializeAppSuccessfulBuilder get _$this {
-    if (_$v != null) {
-      _user = _$v.user?.toBuilder();
+    final $v = _$v;
+    if ($v != null) {
+      _user = $v.user?.toBuilder();
       _$v = null;
     }
     return this;
@@ -122,14 +121,12 @@ class InitializeAppSuccessfulBuilder
 
   @override
   void replace(InitializeAppSuccessful other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$InitializeAppSuccessful;
   }
 
   @override
-  void update(void Function(InitializeAppSuccessfulBuilder) updates) {
+  void update(void Function(InitializeAppSuccessfulBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -139,7 +136,7 @@ class InitializeAppSuccessfulBuilder
     try {
       _$result = _$v ?? new _$InitializeAppSuccessful._(user: _user?.build());
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'user';
         _user?.build();
@@ -159,13 +156,11 @@ class _$InitializeAppError extends InitializeAppError {
   final Object error;
 
   factory _$InitializeAppError(
-          [void Function(InitializeAppErrorBuilder) updates]) =>
+          [void Function(InitializeAppErrorBuilder)? updates]) =>
       (new InitializeAppErrorBuilder()..update(updates)).build();
 
-  _$InitializeAppError._({this.error}) : super._() {
-    if (error == null) {
-      throw new BuiltValueNullFieldError('InitializeAppError', 'error');
-    }
+  _$InitializeAppError._({required this.error}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(error, 'InitializeAppError', 'error');
   }
 
   @override
@@ -198,17 +193,18 @@ class _$InitializeAppError extends InitializeAppError {
 
 class InitializeAppErrorBuilder
     implements Builder<InitializeAppError, InitializeAppErrorBuilder> {
-  _$InitializeAppError _$v;
+  _$InitializeAppError? _$v;
 
-  Object _error;
-  Object get error => _$this._error;
-  set error(Object error) => _$this._error = error;
+  Object? _error;
+  Object? get error => _$this._error;
+  set error(Object? error) => _$this._error = error;
 
   InitializeAppErrorBuilder();
 
   InitializeAppErrorBuilder get _$this {
-    if (_$v != null) {
-      _error = _$v.error;
+    final $v = _$v;
+    if ($v != null) {
+      _error = $v.error;
       _$v = null;
     }
     return this;
@@ -216,23 +212,24 @@ class InitializeAppErrorBuilder
 
   @override
   void replace(InitializeAppError other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$InitializeAppError;
   }
 
   @override
-  void update(void Function(InitializeAppErrorBuilder) updates) {
+  void update(void Function(InitializeAppErrorBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
   _$InitializeAppError build() {
-    final _$result = _$v ?? new _$InitializeAppError._(error: error);
+    final _$result = _$v ??
+        new _$InitializeAppError._(
+            error: BuiltValueNullFieldError.checkNotNull(
+                error, 'InitializeAppError', 'error'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

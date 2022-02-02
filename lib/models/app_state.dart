@@ -1,14 +1,4 @@
-library app_state;
-
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:uber_food/models/auth/auth_state.dart';
-import 'package:uber_food/models/restaurant_reviews/reviews_state.dart';
-import 'package:uber_food/models/restaurants/favorite_restaurants_state.dart';
-import 'package:uber_food/models/restaurants/restaurants_state.dart';
-import 'package:uber_food/models/serializers.dart';
-
-part 'app_state.g.dart';
+part of models;
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   factory AppState.initialState() {
@@ -20,7 +10,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
     });
   }
 
-  factory AppState.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+  factory AppState.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json)!;
 
   AppState._();
 
@@ -32,7 +22,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   FavoriteRestaurantsState get favoriteRestaurantsState;
 
-  Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
+  Map<String, dynamic> get json => serializers.serializeWith(serializer, this) as Map<String, dynamic>;
 
   static Serializer<AppState> get serializer => _$appStateSerializer;
 }

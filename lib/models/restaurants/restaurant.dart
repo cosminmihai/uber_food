@@ -1,18 +1,9 @@
-library restaurant;
-
-import 'package:built_collection/built_collection.dart';
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:uber_food/models/restaurants/restaurant_location.dart';
-import 'package:uber_food/models/restaurants/user_rating.dart';
-import 'package:uber_food/models/serializers.dart';
-
-part 'restaurant.g.dart';
+part of restaurant_models;
 
 abstract class Restaurant implements Built<Restaurant, RestaurantBuilder> {
   factory Restaurant() = _$Restaurant;
 
-  factory Restaurant.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+  factory Restaurant.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json)!;
 
   Restaurant._();
 
@@ -37,7 +28,7 @@ abstract class Restaurant implements Built<Restaurant, RestaurantBuilder> {
   String get currency;
 
   @BuiltValueField(wireName: 'featured_image')
-  String get featuredPhoto;
+  String? get featuredPhoto;
 
   BuiltList<String> get phoneNumbers;
 
@@ -46,12 +37,7 @@ abstract class Restaurant implements Built<Restaurant, RestaurantBuilder> {
   @BuiltValueField(wireName: 'menu_url')
   String get menuUrl;
 
-/*
-        "photos_url": "https:\/\/www.zomato.com\/thiruvalla\/the-beirut-blends-thiruvalla-locality\/photos?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1#tabtop",
-        "photo_count": 47,
-*/
-
-  Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
+  Map<String, dynamic> get json => serializers.serializeWith(serializer, this) as Map<String, dynamic>;
 
   static Serializer<Restaurant> get serializer => _$restaurantSerializer;
 }

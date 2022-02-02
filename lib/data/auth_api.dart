@@ -2,96 +2,87 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:location/location.dart';
-import 'package:meta/meta.dart';
-import 'package:uber_food/models/auth/app_user.dart';
+import 'package:uber_food/models/index.dart';
 
 class AuthApi {
   AuthApi({
-    @required FirebaseAuth auth,
-    @required Firestore firestore,
-    @required GoogleSignIn googleSignIn,
-    @required Location location,
-  })  : assert(auth != null),
-        assert(firestore != null),
-        assert(location != null),
-        _googleSignIn = googleSignIn,
+    required FirebaseAuth auth,
+    required FirebaseFirestore firestore,
+    required GoogleSignIn googleSignIn,
+    required Location location,
+  })  : _googleSignIn = googleSignIn,
         _auth = auth,
         _firestore = firestore,
         _location = location;
 
   final FirebaseAuth _auth;
-  final Firestore _firestore;
+  final FirebaseFirestore _firestore;
   final GoogleSignIn _googleSignIn;
   final Location _location;
 
-  ///Login the user.
   Future<AppUser> login(String email, String password) async {
-    final AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    return _buildUser(result.user);
+    final UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+    return (await _buildUser(result.user))!;
   }
 
-  ///Create a firebase account with email and password.
   Future<AppUser> registerWithEmailAndPassword({
-    @required String email,
-    @required String password,
-    @required String username,
+    required String email,
+    required String password,
+    required String username,
   }) async {
-    AuthResult result;
-    if (email != null) {
-      result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    }
-    return _buildUser(result.user, username);
+    final UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+    return (await _buildUser(result.user, username))!;
   }
 
-  /// Create a firebase user using an google account.
   Future<AppUser> createGoogleUser() async {
-    final GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final GoogleSignInAccount? account = await _googleSignIn.signIn();
+    if (account == null) {
+      throw UserCanceled();
+    }
+
+    final GoogleSignInAuthentication googleSignInAuthentication = await account.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
         idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
-    final AuthResult authResult = await _auth.signInWithCredential(credential);
-    return _buildUser(authResult.user, authResult.user.displayName);
+    final UserCredential result = await _auth.signInWithCredential(credential);
+    return (await _buildUser(result.user, result.user!.displayName))!;
   }
 
-  Future<void> logOut() async {
-    await _auth.signOut();
-  }
+  Future<void> logOut() async => _auth.signOut();
 
-  /// Returns the current login in user or null if there is no user logged in.
-  Future<AppUser> getUser() async {
-    final FirebaseUser user = await _auth.currentUser();
+  Future<AppUser?> getUser() {
+    final User? user = _auth.currentUser;
     return _buildUser(user);
   }
 
-  ///Create a Firebase user and store the data in Firestore if not exists.
-  Future<AppUser> _buildUser(FirebaseUser user, [String username]) async {
+  Future<AppUser?> _buildUser(User? user, [String? username]) async {
     if (user == null) {
       return null;
     }
-    final DocumentSnapshot snapshot = await _firestore.document('users/${user.uid}').get();
+    final DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore.doc('users/${user.uid}').get();
     if (snapshot.exists) {
-      return AppUser.fromJson(snapshot.data);
+      return AppUser.fromJson(snapshot.data()!);
     }
 
     final AppUser appUser = AppUser((AppUserBuilder b) {
       b
         ..username = username
-        ..email = user.email
+        ..email = user.email!
         ..uid = user.uid
-        ..photoUrl = user.photoUrl;
+        ..photoUrl = user.photoURL!;
     });
 
-    await _firestore.document('users/${user.uid}').setData(appUser.json);
+    await _firestore.doc('users/${user.uid}').set(appUser.json);
     return appUser;
   }
 
-  /// Get the current position of the user.
   Future<LocationData> getCurrentUserPosition() async {
     return _location.getLocation();
   }
 
   Future<AppUser> getUserForReview(String userUid) async {
-    final DocumentSnapshot snapshot = await _firestore.document('users/$userUid').get();
-    return AppUser.fromJson(snapshot.data);
+    final DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore.doc('users/$userUid').get();
+    return AppUser.fromJson(snapshot.data()!);
   }
 }
+
+class UserCanceled extends Error {}

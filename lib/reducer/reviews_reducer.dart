@@ -1,9 +1,6 @@
 import 'package:redux/redux.dart';
-import 'package:uber_food/actions/reviews/listen_for_restaurant_reviews.dart';
-import 'package:uber_food/actions/reviews/listen_for_user_reviews.dart';
-import 'package:uber_food/actions/reviews/set_selected_review.dart';
-import 'package:uber_food/models/restaurant_reviews/restaurant_review.dart';
-import 'package:uber_food/models/restaurant_reviews/reviews_state.dart';
+import 'package:uber_food/actions/index.dart';
+import 'package:uber_food/models/index.dart';
 
 Reducer<ReviewsState> reviewsReducer = combineReducers(<Reducer<ReviewsState>>[
   TypedReducer<ReviewsState, OnReviewsEvent>(_onReviewsEvent),

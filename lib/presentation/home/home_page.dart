@@ -1,18 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:uber_food/actions/reviews/listen_for_user_reviews.dart';
+import 'package:uber_food/actions/index.dart';
 import 'package:uber_food/containers/user_container.dart';
-import 'package:uber_food/models/app_state.dart';
-import 'package:uber_food/models/auth/app_user.dart';
+import 'package:uber_food/models/index.dart';
 import 'package:uber_food/presentation/home/main_page.dart';
 import 'package:uber_food/presentation/home/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({this.store});
 
-  final Store<AppState> store;
+  final Store<AppState>? store;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -21,7 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   final TextEditingController searchController = TextEditingController();
   int _selectedIndex = 0;
-  PageController pageController;
+  late PageController pageController;
 
   @override
   void initState() {
@@ -33,7 +31,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     final Store<AppState> store = StoreProvider.of<AppState>(context);
     return UserContainer(
-      builder: (BuildContext context, AppUser currentUser) {
+      builder: (BuildContext context, AppUser? currentUser) {
         return Scaffold(
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
@@ -55,11 +53,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                title: Text('Home'),
+                label: 'Home',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                title: Text('Profile'),
+                label: 'Profile',
               ),
             ],
           ),

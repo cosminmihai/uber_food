@@ -1,11 +1,4 @@
-library create_restaurant_review;
-
-import 'package:built_value/built_value.dart';
-import 'package:meta/meta.dart';
-import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/models/restaurant_reviews/restaurant_review.dart';
-
-part 'create_restaurant_review.g.dart';
+part of reviews_actions;
 
 abstract class CreateRestaurantReview //
     implements
@@ -13,9 +6,9 @@ abstract class CreateRestaurantReview //
         AppAction //
 {
   factory CreateRestaurantReview({
-    @required String text,
-    @required int stars,
-    @required ActionResult result,
+    required String text,
+    required int stars,
+    required ActionResult result,
   }) {
     return _$CreateRestaurantReview((CreateRestaurantReviewBuilder b) {
       b
@@ -31,8 +24,7 @@ abstract class CreateRestaurantReview //
 
   int get stars;
 
-  @nullable
-  ActionResult get result;
+  ActionResult? get result;
 }
 
 abstract class CreateRestaurantReviewSuccessful //

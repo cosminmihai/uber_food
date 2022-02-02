@@ -1,19 +1,11 @@
-library restaurants_state;
-
-import 'package:built_collection/built_collection.dart';
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:uber_food/models/restaurants/restaurant.dart';
-import 'package:uber_food/models/serializers.dart';
-
-part 'restaurants_state.g.dart';
+part of restaurant_models;
 
 abstract class RestaurantsState implements Built<RestaurantsState, RestaurantsStateBuilder> {
   factory RestaurantsState.initialState() {
     return _$RestaurantsState((RestaurantsStateBuilder b) {});
   }
 
-  factory RestaurantsState.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+  factory RestaurantsState.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json)!;
 
   RestaurantsState._();
 
@@ -21,13 +13,11 @@ abstract class RestaurantsState implements Built<RestaurantsState, RestaurantsSt
 
   BuiltList<Restaurant> get recommendedRestaurants;
 
-  @nullable
-  String get query;
+  String? get query;
 
-  @nullable
-  String get selectedRestaurantId;
+  String? get selectedRestaurantId;
 
-  Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
+  Map<String, dynamic> get json => serializers.serializeWith(serializer, this) as Map<String, dynamic>;
 
   static Serializer<RestaurantsState> get serializer => _$restaurantsStateSerializer;
 }

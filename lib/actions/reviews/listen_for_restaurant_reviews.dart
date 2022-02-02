@@ -1,11 +1,4 @@
-library listen_for_restaurant_reviews;
-
-import 'package:built_collection/built_collection.dart';
-import 'package:built_value/built_value.dart';
-import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/models/restaurant_reviews/restaurant_review.dart';
-
-part 'listen_for_restaurant_reviews.g.dart';
+part of reviews_actions;
 
 abstract class ListenForReviews //
     implements

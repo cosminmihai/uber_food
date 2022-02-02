@@ -1,8 +1,6 @@
 import 'package:redux/redux.dart';
-import 'package:uber_food/actions/restaurants/filter_restaurants.dart';
-import 'package:uber_food/actions/restaurants/get_recommended_restaurants.dart';
-import 'package:uber_food/actions/restaurants/set_selected_restaurant.dart';
-import 'package:uber_food/models/restaurants/restaurants_state.dart';
+import 'package:uber_food/actions/index.dart';
+import 'package:uber_food/models/restaurants/index.dart';
 
 Reducer<RestaurantsState> restaurantsState = combineReducers(<Reducer<RestaurantsState>>[
   TypedReducer<RestaurantsState, GetRecommendedRestaurantsSuccessful>(_getRecommendedRestaurantsSuccessful),

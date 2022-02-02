@@ -1,10 +1,4 @@
-library get_first_user_location;
-
-import 'package:built_value/built_value.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:uber_food/actions/actions.dart';
-
-part 'get_first_user_location.g.dart';
+part of auth_actions;
 
 abstract class GetFirstUserLocation //
     implements

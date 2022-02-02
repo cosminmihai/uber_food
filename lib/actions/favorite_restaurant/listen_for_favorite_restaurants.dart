@@ -1,11 +1,4 @@
-library listen_for_favorite_restaurants;
-
-import 'package:built_collection/built_collection.dart';
-import 'package:built_value/built_value.dart';
-import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/models/restaurants/favorite_restaurant.dart';
-
-part 'listen_for_favorite_restaurants.g.dart';
+part of favorite_restaurant_actions;
 
 abstract class ListenForFavoriteRestaurants //
     implements

@@ -1,9 +1,6 @@
 import 'package:redux/redux.dart';
-import 'package:uber_food/actions/favorite_restaurant/add_to_favorite.dart';
-import 'package:uber_food/actions/favorite_restaurant/get_favorite_restaurants.dart';
-import 'package:uber_food/actions/favorite_restaurant/remove_from_favorite.dart';
-import 'package:uber_food/models/restaurants/favorite_restaurant.dart';
-import 'package:uber_food/models/restaurants/favorite_restaurants_state.dart';
+import 'package:uber_food/actions/index.dart';
+import 'package:uber_food/models/restaurants/index.dart';
 
 Reducer<FavoriteRestaurantsState> favoriteRestaurantsState = combineReducers(<Reducer<FavoriteRestaurantsState>>[
   TypedReducer<FavoriteRestaurantsState, AddToFavoriteSuccessful>(_addToFavoriteSuccessful),

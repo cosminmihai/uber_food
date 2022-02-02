@@ -1,11 +1,4 @@
-library get_users;
-
-import 'package:built_collection/built_collection.dart';
-import 'package:built_value/built_value.dart';
-import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/models/auth/app_user.dart';
-
-part 'get_users.g.dart';
+part of auth_actions;
 
 abstract class GetUsers //
     implements

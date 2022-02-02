@@ -1,15 +1,9 @@
-library restaurant_location;
-
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:uber_food/models/serializers.dart';
-
-part 'restaurant_location.g.dart';
+part of restaurant_models;
 
 abstract class RestaurantLocation implements Built<RestaurantLocation, RestaurantLocationBuilder> {
   factory RestaurantLocation([void Function(RestaurantLocationBuilder b) updates]) = _$RestaurantLocation;
 
-  factory RestaurantLocation.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+  factory RestaurantLocation.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json)!;
 
   RestaurantLocation._();
 
@@ -26,7 +20,7 @@ abstract class RestaurantLocation implements Built<RestaurantLocation, Restauran
   @BuiltValueField(wireName: 'locality_verbose')
   String get localityVerbose;
 
-  Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
+  Map<String, dynamic> get json => serializers.serializeWith(serializer, this) as Map<String, dynamic>;
 
   static Serializer<RestaurantLocation> get serializer => _$restaurantLocationSerializer;
 }

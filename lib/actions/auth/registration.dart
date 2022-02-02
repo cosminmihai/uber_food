@@ -1,10 +1,4 @@
-library registration;
-
-import 'package:built_value/built_value.dart';
-import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/models/auth/app_user.dart';
-
-part 'registration.g.dart';
+part of auth_actions;
 
 abstract class Registration //
     implements

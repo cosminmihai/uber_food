@@ -1,16 +1,9 @@
-library app_user;
-
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:uber_food/models/serializers.dart';
-
-part 'app_user.g.dart';
+part of auth_models;
 
 abstract class AppUser implements Built<AppUser, AppUserBuilder> {
   factory AppUser([void Function(AppUserBuilder b) updates]) = _$AppUser;
 
-  factory AppUser.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+  factory AppUser.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json)!;
 
   AppUser._();
 
@@ -18,21 +11,17 @@ abstract class AppUser implements Built<AppUser, AppUserBuilder> {
 
   String get email;
 
-  @nullable
   String get username;
 
-  @nullable
-  String get photoUrl;
+  String? get photoUrl;
 
-  @nullable
   String get phone;
 
-  // app related fields
-  @nullable
+  // App related fields
   @BuiltValueField(serialize: false)
   LatLng get userLocation;
 
-  Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
+  Map<String, dynamic> get json => serializers.serializeWith(serializer, this) as Map<String, dynamic>;
 
   static Serializer<AppUser> get serializer => _$appUserSerializer;
 }

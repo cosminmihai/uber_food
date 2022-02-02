@@ -1,9 +1,4 @@
-library logout;
-
-import 'package:built_value/built_value.dart';
-import 'package:uber_food/actions/actions.dart';
-
-part 'logout.g.dart';
+part of auth_actions;
 
 abstract class LogOut //
     implements

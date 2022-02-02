@@ -1,20 +1,13 @@
-library restaurant_review;
-
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:meta/meta.dart';
-import 'package:uber_food/models/serializers.dart';
-
-part 'restaurant_review.g.dart';
+part of restaurant_review_models;
 
 abstract class RestaurantReview
     implements Built<RestaurantReview, RestaurantReviewBuilder>, Comparable<RestaurantReview> {
   factory RestaurantReview({
-    @required String id,
-    @required String uid,
-    @required String restaurantId,
-    @required String textReview,
-    @required int rating,
+    required String id,
+    required String uid,
+    required String restaurantId,
+    required String textReview,
+    required int rating,
   }) {
     return _$RestaurantReview((RestaurantReviewBuilder b) {
       b
@@ -27,7 +20,7 @@ abstract class RestaurantReview
     });
   }
 
-  factory RestaurantReview.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+  factory RestaurantReview.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json)!;
 
   RestaurantReview._();
 
@@ -48,7 +41,7 @@ abstract class RestaurantReview
     return createdAt.compareTo(review.createdAt);
   }
 
-  Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
+  Map<String, dynamic> get json => serializers.serializeWith(serializer, this) as Map<String, dynamic>;
 
   static Serializer<RestaurantReview> get serializer => _$restaurantReviewSerializer;
 }

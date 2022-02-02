@@ -1,5 +1,5 @@
 import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/models/app_state.dart';
+import 'package:uber_food/models/index.dart';
 import 'package:uber_food/reducer/auth_reducer.dart';
 import 'package:uber_food/reducer/favorite_restaurant_reducer.dart';
 import 'package:uber_food/reducer/restaurants_reducer.dart';

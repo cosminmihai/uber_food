@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:uber_food/actions/index.dart';
 import 'package:uber_food/containers/favorite_restaurants_container.dart';
 import 'package:uber_food/containers/user_container.dart';
 import 'package:uber_food/containers/user_reviews_container.dart';
-import 'package:uber_food/models/auth/app_user.dart';
-import 'package:uber_food/models/restaurant_reviews/restaurant_review.dart';
-import 'package:uber_food/models/restaurants/favorite_restaurant.dart';
+import 'package:uber_food/models/index.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
@@ -13,7 +12,9 @@ class ProfilePage extends StatelessWidget {
     return FavoriteRestaurantsContainer(
       builder: (BuildContext context, List<FavoriteRestaurant> favoriteRestaurants) {
         return UserContainer(
-          builder: (BuildContext context, AppUser currentUser) {
+          builder: (BuildContext context, AppUser? user) {
+            final AppUser currentUser = user!;
+
             return UserReviewsContainer(
               builder: (BuildContext context, List<RestaurantReview> userReviews) {
                 return Scaffold(
@@ -42,9 +43,7 @@ class ProfilePage extends StatelessWidget {
                                   children: <Widget>[
                                     const Text('Log Out'),
                                     IconButton(
-                                      onPressed: () {
-                                        print('Log out');
-                                      },
+                                      onPressed: () => StoreProvider.of<AppState>(context).dispatch(LogOut()),
                                       icon: const Icon(Icons.exit_to_app),
                                     ),
                                   ],
@@ -68,9 +67,8 @@ class ProfilePage extends StatelessWidget {
                                     ]),
                                     child: CircleAvatar(
                                       radius: 45,
-                                      backgroundImage: currentUser != null
-                                          ? NetworkImage(currentUser.photoUrl)
-                                          : Image.asset('res/profile_logo.png'),
+                                      backgroundImage:
+                                          currentUser.photoUrl != null ? NetworkImage(currentUser.photoUrl!) : null,
                                     ),
                                   ),
                                   Container(

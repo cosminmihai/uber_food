@@ -1,4 +1,4 @@
-import 'package:uber_food/models/auth/app_user.dart';
+import 'package:uber_food/models/auth/index.dart';
 
 abstract class AppAction {}
 
@@ -9,5 +9,5 @@ abstract class ErrorAction extends AppAction {
 }
 
 abstract class UserAction extends AppAction {
-  AppUser get user;
+  AppUser? get user;
 }

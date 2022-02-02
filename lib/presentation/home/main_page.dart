@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
-import 'package:uber_food/actions/auth/get_current_user_location.dart';
-import 'package:uber_food/actions/auth/logout.dart';
-import 'package:uber_food/actions/restaurants/filter_restaurants.dart';
-import 'package:uber_food/actions/restaurants/get_recommended_restaurants.dart';
+import 'package:uber_food/actions/index.dart';
 import 'package:uber_food/containers/recommended_restaurants_container.dart';
 import 'package:uber_food/containers/user_container.dart';
-import 'package:uber_food/models/app_state.dart';
-import 'package:uber_food/models/auth/app_user.dart';
-import 'package:uber_food/models/restaurants/restaurant.dart';
+import 'package:uber_food/models/index.dart';
 import 'package:uber_food/presentation/restaurants/restaurant_card_list.dart';
 
 class MainPage extends StatefulWidget {
@@ -25,7 +18,9 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return UserContainer(
-      builder: (BuildContext context, AppUser user) {
+      builder: (BuildContext context, AppUser? currentUser) {
+        final AppUser user = currentUser!;
+
         return Scaffold(
           appBar: AppBar(
             title: Text('Welcome, ${user.username}!'),
@@ -74,10 +69,12 @@ class _MainPageState extends State<MainPage> {
                                 contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 16.0),
                               ),
                               controller: searchController,
-                              validator: (String value) {
-                                if (!(value.length > 4)) {
+                              validator: (String? value) {
+                                final String query = value ?? '';
+                                if (query.length < 4) {
                                   return 'Please enter a longer restaurant location.';
                                 }
+
                                 return null;
                               },
                               onChanged: (String value) {

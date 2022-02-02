@@ -1,8 +1,7 @@
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/actions/auth/get_first_user_location.dart';
-import 'package:uber_food/actions/initialize_app.dart';
+import 'package:uber_food/actions/index.dart';
 import 'package:uber_food/data/auth_api.dart';
 import 'package:uber_food/data/favorite_restaurant_api.dart';
 import 'package:uber_food/data/restaurant_api.dart';
@@ -11,21 +10,15 @@ import 'package:uber_food/epics/auth_epics.dart';
 import 'package:uber_food/epics/favorite_restaurant_epics.dart';
 import 'package:uber_food/epics/restaurants_epics.dart';
 import 'package:uber_food/epics/reviews_epics.dart';
-import 'package:uber_food/models/app_state.dart';
-import 'package:meta/meta.dart';
-import 'package:uber_food/models/auth/app_user.dart';
+import 'package:uber_food/models/index.dart';
 
 class AppEpics {
-  AppEpics(
-      {@required AuthApi authApi,
-      @required RestaurantApi restaurantApi,
-      @required ReviewsApi reviewsApi,
-      @required FavoriteRestaurantApi favoriteRestaurantApi})
-      : assert(authApi != null),
-        assert(restaurantApi != null),
-        assert(reviewsApi != null),
-        assert(favoriteRestaurantApi != null),
-        _authApi = authApi,
+  AppEpics({
+    required AuthApi authApi,
+    required RestaurantApi restaurantApi,
+    required ReviewsApi reviewsApi,
+    required FavoriteRestaurantApi favoriteRestaurantApi,
+  })  : _authApi = authApi,
         _restaurantApi = restaurantApi,
         _reviewsApi = reviewsApi,
         _favoriteRestaurantApi = favoriteRestaurantApi;
@@ -50,10 +43,10 @@ class AppEpics {
         .flatMap<AppAction>((InitializeApp action) => _authApi
             .getUser()
             .asStream()
-            .expand<AppAction>((AppUser user) => <AppAction>[
+            .expand<AppAction>((AppUser? user) => <AppAction>[
                   InitializeAppSuccessful(user),
                   if (user != null) GetFirstUserLocation(),
                 ])
-            .onErrorReturnWith((dynamic error) => InitializeAppError(error)));
+            .onErrorReturnWith((dynamic error, _) => InitializeAppError(error)));
   }
 }

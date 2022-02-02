@@ -1,15 +1,9 @@
-library user_rating;
-
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:uber_food/models/serializers.dart';
-
-part 'user_rating.g.dart';
+part of restaurant_models;
 
 abstract class UserRating implements Built<UserRating, UserRatingBuilder> {
   factory UserRating([void Function(UserRatingBuilder b) updates]) = _$UserRating;
 
-  factory UserRating.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json);
+  factory UserRating.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json)!;
 
   UserRating._();
 
@@ -20,10 +14,11 @@ abstract class UserRating implements Built<UserRating, UserRatingBuilder> {
   int get ratingColor;
 
   int get votes;
+
   @BuiltValueField(wireName: 'aggregate_rating')
   double get rating;
 
-  Map<String, dynamic> get json => serializers.serializeWith(serializer, this);
+  Map<String, dynamic> get json => serializers.serializeWith(serializer, this) as Map<String, dynamic>;
 
   static Serializer<UserRating> get serializer => _$userRatingSerializer;
 }

@@ -1,9 +1,4 @@
-library filter_restaurants;
-
-import 'package:built_value/built_value.dart';
-import 'package:uber_food/actions/actions.dart';
-
-part 'filter_restaurants.g.dart';
+part of restaurant_actions;
 
 abstract class FilterRestaurant //
     implements

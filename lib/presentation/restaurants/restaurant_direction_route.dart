@@ -4,11 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class RestaurantDirectionRoute extends StatefulWidget {
-  const RestaurantDirectionRoute({@required LatLng restaurantLocation, @required LatLng userLocation})
-      : assert(restaurantLocation != null),
-        assert(userLocation != null),
-        restaurantLocation = restaurantLocation,
-        userLocation = userLocation;
+  const RestaurantDirectionRoute({required this.restaurantLocation, required this.userLocation});
 
   final LatLng restaurantLocation;
   final LatLng userLocation;
@@ -18,7 +14,7 @@ class RestaurantDirectionRoute extends StatefulWidget {
 }
 
 class _RestaurantDirectionRouteState extends State<RestaurantDirectionRoute> {
-  GoogleMapController _googleMapController;
+  late GoogleMapController _googleMapController;
 
   Future<void> _centerView() async {
     await _googleMapController.getVisibleRegion();
@@ -37,12 +33,10 @@ class _RestaurantDirectionRouteState extends State<RestaurantDirectionRoute> {
   }
 
   Set<Marker> _createMarkers() {
-    final Set<Marker> tmp = <Marker>{}..add(
-        Marker(
-          markerId: MarkerId('restaurantLocation'),
-          position: widget.restaurantLocation,
-        ),
-      );
+    final Set<Marker> tmp = <Marker>{}..add(Marker(
+        markerId: const MarkerId('restaurantLocation'),
+        position: widget.restaurantLocation,
+      ));
     return tmp;
   }
 

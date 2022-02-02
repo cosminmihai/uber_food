@@ -1,9 +1,4 @@
-library set_selected_restaurant;
-
-import 'package:built_value/built_value.dart';
-import 'package:uber_food/actions/actions.dart';
-
-part 'set_selected_restaurant.g.dart';
+part of restaurant_actions;
 
 abstract class SetSelectedRestaurant //
     implements

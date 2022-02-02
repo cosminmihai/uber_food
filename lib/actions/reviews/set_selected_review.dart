@@ -1,9 +1,4 @@
-library set_selected_review;
-
-import 'package:built_value/built_value.dart';
-import 'package:uber_food/actions/actions.dart';
-
-part 'set_selected_review.g.dart';
+part of reviews_actions;
 
 abstract class SetSelectedReview //
     implements

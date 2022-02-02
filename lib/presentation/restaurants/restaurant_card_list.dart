@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:uber_food/actions/restaurants/set_selected_restaurant.dart';
-import 'package:uber_food/actions/reviews/listen_for_restaurant_reviews.dart';
-import 'package:uber_food/models/app_state.dart';
-import 'package:uber_food/models/restaurants/restaurant.dart';
+import 'package:uber_food/actions/index.dart';
+import 'package:uber_food/models/index.dart';
 import 'package:uber_food/presentation/restaurants/restaurant_details_page.dart';
 
 class RestaurantCard extends StatelessWidget {
-  const RestaurantCard({this.restaurantData, this.indexTag});
+  const RestaurantCard({required this.restaurantData, required this.indexTag});
 
   final Restaurant restaurantData;
   final int indexTag;
@@ -16,10 +14,9 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('${restaurantData.name}');
-        StoreProvider.of<AppState>(context).dispatch(SetSelectedRestaurant(restaurantData.id));
-        StoreProvider.of<AppState>(context).dispatch(ListenForReviews());
-        print(restaurantData.id);
+        StoreProvider.of<AppState>(context)
+          ..dispatch(SetSelectedRestaurant(restaurantData.id))
+          ..dispatch(ListenForReviews());
         Navigator.push(
           context,
           MaterialPageRoute<Widget>(
@@ -32,20 +29,19 @@ class RestaurantCard extends StatelessWidget {
       },
       child: Stack(
         children: <Widget>[
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
-            child: Hero(
-              tag: indexTag,
-              child: Image(
-                // color: Color.fromRGBO(0, 0, 0, 0.4),
-                // colorBlendMode: BlendMode.darken,
-                height: 180.0,
-                width: double.infinity,
-                image: NetworkImage(restaurantData.featuredPhoto),
-                fit: BoxFit.cover,
+          if (restaurantData.featuredPhoto != null)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+              child: Hero(
+                tag: indexTag,
+                child: Image(
+                  height: 180.0,
+                  width: double.infinity,
+                  image: NetworkImage(restaurantData.featuredPhoto!),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 7.0),
             height: 180.0,
@@ -66,22 +62,28 @@ class RestaurantCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(restaurantData.name,
-                    style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white)),
+                Text(
+                  restaurantData.name,
+                  style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
                 const SizedBox(height: 10.0),
                 Expanded(
                   child: Text('${restaurantData.location.localityVerbose}'),
                 ),
                 Row(
                   children: <Widget>[
-                    Text(restaurantData.userRating.rating.toString(),
-                        style: const TextStyle(color: Colors.white, fontSize: 16.0)),
+                    Text(
+                      restaurantData.userRating.rating.toString(),
+                      style: const TextStyle(color: Colors.white, fontSize: 16.0),
+                    ),
                     const Icon(
                       Icons.star,
                       color: Colors.yellow,
                     ),
-                    Text(' (${restaurantData.userRating.votes}) ${restaurantData.userRating.ratingText}',
-                        style: const TextStyle(color: Colors.white, fontSize: 16.0)),
+                    Text(
+                      ' (${restaurantData.userRating.votes}) ${restaurantData.userRating.ratingText}',
+                      style: const TextStyle(color: Colors.white, fontSize: 16.0),
+                    ),
                   ],
                 ),
               ],

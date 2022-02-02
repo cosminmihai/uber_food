@@ -1,11 +1,7 @@
 import 'package:redux/redux.dart';
 import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/actions/auth/get_current_user_location.dart';
-import 'package:uber_food/actions/auth/get_first_user_location.dart';
-import 'package:uber_food/actions/auth/google_sign_in.dart';
-import 'package:uber_food/actions/auth/logout.dart';
-import 'package:uber_food/actions/reviews/get_user_for_review.dart';
-import 'package:uber_food/models/auth/auth_state.dart';
+import 'package:uber_food/actions/index.dart';
+import 'package:uber_food/models/auth/index.dart';
 
 Reducer<AuthState> authReducer = combineReducers<AuthState>(<Reducer<AuthState>>[
   TypedReducer<AuthState, UserAction>(_userAction),
@@ -27,7 +23,7 @@ AuthState _logoutSuccessful(AuthState state, LogOutSuccessful action) {
 }
 
 AuthState _googleConnectSuccessful(AuthState state, GoogleConnectSuccessful action) {
-  return state.rebuild((AuthStateBuilder b) => b.user = action.user?.toBuilder());
+  return state.rebuild((AuthStateBuilder b) => b.user = action.user.toBuilder());
 }
 
 AuthState _getCurrentUserLocation(AuthState state, GetCurrentUserLocation action) {
