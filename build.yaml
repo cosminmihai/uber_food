@@ -1,0 +1,11 @@
+targets:
+  $default:
+    builders:
+      json_serializable|json_serializable:
+        generate_for:
+          - "**/models/**.dart"
+      freezed|freezed:
+        generate_for:
+          - "**/actions/**.dart"
+          - "**/models/**.dart"
+          - "**/containers/**.dart"

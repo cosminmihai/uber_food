@@ -3,17 +3,18 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:uber_food/models/index.dart';
 
-class RestaurantReviewsContainer extends StatelessWidget {
-  const RestaurantReviewsContainer({Key? key, required this.builder}) : super(key: key);
-  final ViewModelBuilder<List<RestaurantReview>> builder;
+class ReviewsContainer extends StatelessWidget {
+  const ReviewsContainer({Key? key, required this.builder}) : super(key: key);
+  final ViewModelBuilder<List<Review>> builder;
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, List<RestaurantReview>>(
+    return StoreConnector<AppState, List<Review>>(
       converter: (Store<AppState> store) {
-        return store.state.reviewsState.reviews.values.where((RestaurantReview review) {
-          return review.restaurantId == store.state.restaurantState.selectedRestaurantId;
-        }).toList();
+        final RestaurantsState state = store.state.restaurants;
+        return state.reviews.values
+            .where((Review review) => review.restaurantId == state.selectedRestaurantId)
+            .toList();
       },
       builder: builder,
     );

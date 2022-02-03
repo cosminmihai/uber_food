@@ -14,56 +14,47 @@ class AuthEpics {
 
   Epic<AppState> get epics {
     return combineEpics(<Epic<AppState>>[
-      TypedEpic<AppState, GoogleConnect>(_googleSignIn),
-      TypedEpic<AppState, LogOut>(_logout),
-      TypedEpic<AppState, GetFirstUserLocation>(_getFirstUserLocation),
-      TypedEpic<AppState, GetUserForReview>(_getUserForReview),
+      TypedEpic<AppState, SignInWithGoogleStart>(_signInWithGoogle),
+      TypedEpic<AppState, Logout$>(_logout),
+      TypedEpic<AppState, GetUserLocationStart>(_getUserLocation),
+      TypedEpic<AppState, GetUser$>(_getUser),
     ]);
   }
 
-  Stream<AppAction> _googleSignIn(Stream<GoogleConnect> actions, EpicStore<AppState> store) {
+  Stream<AppAction> _signInWithGoogle(Stream<SignInWithGoogleStart> actions, EpicStore<AppState> store) {
     return actions //
-        .flatMap((GoogleConnect action) => _authApi
-            .createGoogleUser()
-            .asStream()
+        .flatMap((SignInWithGoogleStart action) => Stream<void>.value(null)
+            .asyncMap((_) => _authApi.signInWithGoogle())
             .expand<AppAction>((AppUser user) => <AppAction>[
-                  GoogleConnectSuccessful(user),
-                  GetFirstUserLocation(),
+                  SignInWithGoogle.successful(user),
+                  const GetUserLocation.start(),
                 ])
-            .onErrorReturnWith((Object error, _) => RegistrationError(error))
+            .onErrorReturnWith($SignInWithGoogle.error)
             .doOnData(action.result));
   }
 
-  Stream<AppAction> _logout(Stream<LogOut> actions, EpicStore<AppState> store) {
+  Stream<AppAction> _getUserLocation(Stream<GetUserLocationStart> actions, EpicStore<AppState> store) {
     return actions //
-        .flatMap((LogOut action) => _authApi
-            .logOut()
-            .asStream()
-            .expand<AppAction>((_) => <AppAction>[
-                  LogOutSuccessful(),
-                ])
-            .onErrorReturnWith((dynamic error, _) => LogOutError(error)));
+        .flatMap((GetUserLocationStart action) => Stream<void>.value(null)
+                .asyncMap((_) => _authApi.getCurrentUserPosition())
+                .map<AppAction>((LocationData location) {
+              return GetUserLocation.successful(LatLng(location.latitude!, location.longitude!));
+            }).onErrorReturnWith($GetUserLocation.error));
   }
 
-  Stream<AppAction> _getFirstUserLocation(Stream<GetFirstUserLocation> actions, EpicStore<AppState> store) {
+  Stream<AppAction> _getUser(Stream<GetUser$> actions, EpicStore<AppState> store) {
     return actions //
-        .flatMap((GetFirstUserLocation action) => _authApi
-            .getCurrentUserPosition()
-            .asStream()
-            .expand<AppAction>((LocationData locationData) => <AppAction>[
-                  GetFirstUserLocationSuccessful(LatLng(locationData.latitude!, locationData.longitude!)),
-                  GetFavoriteRestaurants(store.state.auth.user!.uid),
-                  GetRecommendedRestaurants(locationData: LatLng(locationData.latitude!, locationData.longitude!))
-                ])
-            .onErrorReturnWith((dynamic error, _) => GetFirstUserLocationError(error)));
+        .flatMap((GetUser$ action) => Stream<void>.value(null) //
+            .asyncMap((_) => _authApi.getUser(action.uid))
+            .map<AppAction>((AppUser user) => GetUser.successful(user))
+            .onErrorReturnWith($GetUser.error));
   }
 
-  Stream<AppAction> _getUserForReview(Stream<GetUserForReview> actions, EpicStore<AppState> store) {
+  Stream<AppAction> _logout(Stream<Logout$> actions, EpicStore<AppState> store) {
     return actions //
-        .flatMap((GetUserForReview action) => _authApi
-            .getUserForReview(action.uid)
-            .asStream()
-            .map<AppAction>((AppUser userForReview) => GetUserForReviewSuccessful(userForReview))
-            .onErrorReturnWith((dynamic error, _) => GetUserForReviewError(error)));
+        .flatMap((Logout$ action) => Stream<void>.value(null)
+            .asyncMap((_) => _authApi.logOut())
+            .mapTo(const Logout.successful())
+            .onErrorReturnWith($Logout.error));
   }
 }

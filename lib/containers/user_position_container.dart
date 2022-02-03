@@ -6,13 +6,13 @@ import 'package:uber_food/models/index.dart';
 
 class UserLocationContainer extends StatelessWidget {
   const UserLocationContainer({Key? key, required this.builder}) : super(key: key);
-  final ViewModelBuilder<LatLng> builder;
+  final ViewModelBuilder<LatLng?> builder;
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, LatLng>(
+    return StoreConnector<AppState, LatLng?>(
       converter: (Store<AppState> store) {
-        return store.state.auth.user!.userLocation;
+        return store.state.auth.user!.currentLocation;
       },
       builder: builder,
     );

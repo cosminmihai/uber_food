@@ -1,6 +1,5 @@
 library serializer;
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 import 'package:location/location.dart';
@@ -15,11 +14,9 @@ part 'serializers.g.dart';
   Restaurant,
   RestaurantLocation,
   RestaurantsState,
-  UserRating,
-  ReviewsState,
-  RestaurantReview,
+  UsersRating,
+  Review,
   FavoriteRestaurant,
-  FavoriteRestaurantsState,
 ])
 Serializers serializers = (_$serializers.toBuilder() //
       ..add(IntSerializer())

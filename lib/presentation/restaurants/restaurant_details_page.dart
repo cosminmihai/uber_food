@@ -8,19 +8,22 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:uber_food/actions/index.dart';
-import 'package:uber_food/containers/favorite_restaurants_container.dart';
-import 'package:uber_food/containers/restaurant_reviews_container.dart';
-import 'package:uber_food/containers/review_user_container.dart';
-import 'package:uber_food/containers/user_container.dart';
-import 'package:uber_food/containers/user_position_container.dart';
+import 'package:uber_food/containers/index.dart';
 import 'package:uber_food/models/index.dart';
 import 'package:uber_food/presentation/restaurants/restaurant_direction_route.dart';
 
-class RestaurantDetails extends StatelessWidget {
+class RestaurantDetails extends StatefulWidget {
   const RestaurantDetails({required this.restaurantData, required this.indexHero});
 
   final Restaurant restaurantData;
   final int indexHero;
+
+  @override
+  State<RestaurantDetails> createState() => _RestaurantDetailsState();
+}
+
+class _RestaurantDetailsState extends State<RestaurantDetails> {
+  int rating = 0;
 
   void _onResult(dynamic action) {
     if (action is CreateRestaurantReviewSuccessful) {
@@ -33,7 +36,6 @@ class RestaurantDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    int stars = 0;
     final TextEditingController textController = TextEditingController();
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -41,21 +43,22 @@ class RestaurantDetails extends StatelessWidget {
         leading: IconButton(
             icon: Platform.isIOS ? const Icon(Icons.arrow_back_ios) : const Icon(Icons.arrow_back),
             onPressed: () {
-              StoreProvider.of<AppState>(context).dispatch(StopListenForReviews());
+              StoreProvider.of<AppState>(context).dispatch(const ListenForRestaurantReview.done());
               Navigator.pop(context);
             }),
         elevation: 0.0,
         backgroundColor: Colors.transparent,
         actions: <Widget>[
           UserLocationContainer(
-            builder: (BuildContext context, LatLng userLocation) {
-              final LatLng restaurantLoc = LatLng(restaurantData.location.latitude, restaurantData.location.longitude);
+            builder: (BuildContext context, LatLng? userLocation) {
+              final LatLng restaurantLoc =
+                  LatLng(widget.restaurantData.location.latitude, widget.restaurantData.location.longitude);
               return TextButton.icon(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute<Widget>(
                     builder: (BuildContext context) {
                       return RestaurantDirectionRoute(
-                        userLocation: userLocation,
+                        userLocation: userLocation!,
                         restaurantLocation: restaurantLoc,
                       );
                     },
@@ -87,7 +90,7 @@ class RestaurantDetails extends StatelessWidget {
 
                       if (reviews.length < 3) {
                         return 'Enter a review text please.';
-                      } else if (stars == 0) {
+                      } else if (rating == 0) {
                         return 'Don\'t forget the stars.';
                       } else {
                         return null;
@@ -128,10 +131,7 @@ class RestaurantDetails extends StatelessWidget {
                             size: 2,
                           ),
                         ),
-                        onRatingUpdate: (double value) {
-                          stars = value.toInt();
-                          print(stars);
-                        },
+                        onRatingUpdate: (double value) => setState(() => rating = value.toInt()),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -152,8 +152,11 @@ class RestaurantDetails extends StatelessWidget {
                           child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                StoreProvider.of<AppState>(context).dispatch(
-                                    CreateRestaurantReview(text: textController.text, stars: stars, result: _onResult));
+                                StoreProvider.of<AppState>(context).dispatch(CreateRestaurantReview(
+                                  text: textController.text,
+                                  rating: rating,
+                                  actionResult: _onResult,
+                                ));
                                 Navigator.pop(context);
                               }
                             },
@@ -180,16 +183,16 @@ class RestaurantDetails extends StatelessWidget {
         children: <Widget>[
           Stack(
             children: <Widget>[
-              if (restaurantData.featuredPhoto != null)
+              if (widget.restaurantData.featuredPhoto != null)
                 Hero(
-                  tag: indexHero,
+                  tag: widget.indexHero,
                   child: ClipRRect(
                     child: Image(
                       color: const Color.fromRGBO(0, 0, 0, 0.4),
                       colorBlendMode: BlendMode.darken,
                       height: MediaQuery.of(context).size.width - 100,
                       width: MediaQuery.of(context).size.width,
-                      image: NetworkImage(restaurantData.featuredPhoto!),
+                      image: NetworkImage(widget.restaurantData.featuredPhoto!),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -205,7 +208,7 @@ class RestaurantDetails extends StatelessWidget {
                         child: Container(
                       alignment: AlignmentDirectional.bottomCenter,
                       child: Center(
-                        child: Text(restaurantData.name,
+                        child: Text(widget.restaurantData.name,
                             style: const TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white)),
                       ),
                     )),
@@ -218,7 +221,7 @@ class RestaurantDetails extends StatelessWidget {
                           child: Row(
                             children: <Widget>[
                               Text(
-                                '${restaurantData.userRating.rating} ',
+                                '${widget.restaurantData.usersRating.rating} ',
                                 style: const TextStyle(color: Colors.white, fontSize: 16.0),
                               ),
                               const Icon(
@@ -226,7 +229,7 @@ class RestaurantDetails extends StatelessWidget {
                                 color: Colors.yellow,
                               ),
                               Text(
-                                ' (${restaurantData.userRating.votes})',
+                                ' (${widget.restaurantData.usersRating.votes})',
                                 style: const TextStyle(color: Colors.white, fontSize: 16.0),
                               )
                             ],
@@ -238,7 +241,7 @@ class RestaurantDetails extends StatelessWidget {
                               builder: (BuildContext context, List<FavoriteRestaurant> favoriteRestaurants) {
                                 final List<FavoriteRestaurant> favorite = favoriteRestaurants.toList();
                                 final FavoriteRestaurant? favoriteLike = favorite.firstWhereOrNull(
-                                    (FavoriteRestaurant element) => element.restaurantData.id == restaurantData.id);
+                                    (FavoriteRestaurant element) => element.data.id == widget.restaurantData.id);
                                 return IconButton(
                                     icon: Icon(
                                       favoriteLike != null ? FontAwesomeIcons.solidHeart : Icons.favorite_border,
@@ -251,7 +254,7 @@ class RestaurantDetails extends StatelessWidget {
                                       } else if (favoriteLike == null) {
                                         StoreProvider.of<AppState>(context).dispatch(AddToFavorite(
                                           userId: currentUser!.uid,
-                                          selectedRestaurant: restaurantData,
+                                          selectedRestaurant: widget.restaurantData,
                                         ));
                                       }
                                     });
@@ -275,7 +278,7 @@ class RestaurantDetails extends StatelessWidget {
                 const Text('Location:',
                     style: TextStyle(color: Colors.white, fontSize: 18.0, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10.0),
-                Text(restaurantData.location.address, style: const TextStyle(color: Colors.white)),
+                Text(widget.restaurantData.location.address, style: const TextStyle(color: Colors.white)),
               ],
             ),
           ),
@@ -290,11 +293,11 @@ class RestaurantDetails extends StatelessWidget {
                 const SizedBox(height: 10.0),
                 Row(
                   children: <Widget>[
-                    for (int i = 0; i < restaurantData.cuisines.length; i++)
-                      if (i == restaurantData.cuisines.length - 1)
-                        Text('${restaurantData.cuisines[i]}', style: const TextStyle(color: Colors.white))
+                    for (int i = 0; i < widget.restaurantData.cuisines.length; i++)
+                      if (i == widget.restaurantData.cuisines.length - 1)
+                        Text('${widget.restaurantData.cuisines[i]}', style: const TextStyle(color: Colors.white))
                       else
-                        Text('${restaurantData.cuisines[i]}, ', style: const TextStyle(color: Colors.white))
+                        Text('${widget.restaurantData.cuisines[i]}, ', style: const TextStyle(color: Colors.white))
                   ],
                 ),
               ],
@@ -308,17 +311,17 @@ class RestaurantDetails extends StatelessWidget {
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(bottom: 16.0),
-              child: UsersForReviewContainer(
+              child: UsersContainer(
                 builder: (BuildContext context, Map<String, AppUser> usersForReview) {
-                  return RestaurantReviewsContainer(
-                    builder: (BuildContext context, List<RestaurantReview> review) {
+                  return ReviewsContainer(
+                    builder: (BuildContext context, List<Review> review) {
                       return review.isNotEmpty
                           ? ListView.builder(
                               shrinkWrap: true,
                               padding: const EdgeInsets.all(8.0),
                               itemCount: review.length,
                               itemBuilder: (BuildContext context, int index) {
-                                final RestaurantReview reviewInfo = review[index];
+                                final Review reviewInfo = review[index];
                                 final AppUser? userForReview = usersForReview[reviewInfo.uid];
                                 return usersForReview.isEmpty || userForReview?.photoUrl == null
                                     ? const ListTile(

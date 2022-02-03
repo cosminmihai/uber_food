@@ -44,9 +44,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 _selectedIndex = index;
                 pageController.jumpToPage(index);
                 if (index == 1) {
-                  store.dispatch(ListenForUserReviews());
+                  store.dispatch(const ListenForUserReview.start());
                 } else if (index != 1) {
-                  store.dispatch(StopListenForUserReviews());
+                  store.dispatch(const ListenForUserReview.done());
                 }
               });
             },

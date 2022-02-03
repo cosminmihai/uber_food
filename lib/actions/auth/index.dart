@@ -1,15 +1,13 @@
 library auth_actions;
 
-import 'package:built_collection/built_collection.dart';
-import 'package:built_value/built_value.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uber_food/actions/actions.dart';
-import 'package:uber_food/models/auth/index.dart';
+import 'package:uber_food/models/index.dart';
 
-part 'get_current_user_location.dart';
-part 'get_first_user_location.dart';
-part 'get_users.dart';
-part 'google_sign_in.dart';
-part 'index.g.dart';
+part 'get_user.dart';
+part 'get_user_location.dart';
+part 'index.freezed.dart';
 part 'logout.dart';
-part 'registration.dart';
+part 'set_user_location.dart';
+part 'sign_in_with_google.dart';

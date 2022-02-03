@@ -30,10 +30,10 @@ class FavoriteRestaurantsPage extends StatelessWidget {
                                           physics: const BouncingScrollPhysics(),
                                           itemCount: favoriteRestaurant.length,
                                           itemBuilder: (BuildContext context, int index) {
-                                            final FavoriteRestaurant restaurant = favoriteRestaurant[index];
+                                            final FavoriteRestaurant favorite = favoriteRestaurant[index];
                                             return Container(
                                                 child: RestaurantCard(
-                                              restaurantData: restaurant.restaurantData,
+                                              restaurantData: favorite.data,
                                               indexTag: index,
                                             ));
                                           },

@@ -1,27 +1,14 @@
 part of auth_models;
 
-abstract class AppUser implements Built<AppUser, AppUserBuilder> {
-  factory AppUser([void Function(AppUserBuilder b) updates]) = _$AppUser;
+@freezed
+class AppUser with _$AppUser {
+  const factory AppUser({
+    required String uid,
+    required String email,
+    required String username,
+    String? photoUrl,
+    @JsonKey(ignore: true) LatLng? currentLocation,
+  }) = _AppUser$;
 
-  factory AppUser.fromJson(Map<dynamic, dynamic> json) => serializers.deserializeWith(serializer, json)!;
-
-  AppUser._();
-
-  String get uid;
-
-  String get email;
-
-  String get username;
-
-  String? get photoUrl;
-
-  String get phone;
-
-  // App related fields
-  @BuiltValueField(serialize: false)
-  LatLng get userLocation;
-
-  Map<String, dynamic> get json => serializers.serializeWith(serializer, this) as Map<String, dynamic>;
-
-  static Serializer<AppUser> get serializer => _$appUserSerializer;
+  factory AppUser.fromJson(Map<dynamic, dynamic> json) => _$AppUserFromJson(Map<String, dynamic>.from(json));
 }

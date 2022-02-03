@@ -1,46 +1,28 @@
 part of restaurant_actions;
 
-abstract class GetRecommendedRestaurants //
-    implements
-        Built<GetRecommendedRestaurants, GetRecommendedRestaurantsBuilder>,
-        AppAction //
-{
-  factory GetRecommendedRestaurants({required LatLng locationData}) {
-    return _$GetRecommendedRestaurants((GetRecommendedRestaurantsBuilder b) => b.location = locationData);
-  }
+const String _kGetRecommendedRestaurantsPendingId = 'GetRecommendedRestaurants';
 
-  GetRecommendedRestaurants._();
+@freezed
+class GetRecommendedRestaurants with _$GetRecommendedRestaurants implements AppAction {
+  @Implements<ActionStart>()
+  const factory GetRecommendedRestaurants.start({
+    required LatLng location,
+    @Default(_kGetRecommendedRestaurantsPendingId) String pendingId,
+  }) = GetRecommendedRestaurantsStart;
 
-  LatLng get location;
-}
+  @Implements<ActionDone>()
+  const factory GetRecommendedRestaurants.successful(
+    List<Restaurant> restaurants, [
+    @Default(_kGetRecommendedRestaurantsPendingId) String pendingId,
+  ]) = GetRecommendedRestaurantsSuccessful;
 
-abstract class GetRecommendedRestaurantsSuccessful //
-    implements
-        Built<GetRecommendedRestaurantsSuccessful, GetRecommendedRestaurantsSuccessfulBuilder>,
-        AppAction //
-{
-  factory GetRecommendedRestaurantsSuccessful(List<Restaurant> recommendedRestaurants) {
-    return _$GetRecommendedRestaurantsSuccessful((GetRecommendedRestaurantsSuccessfulBuilder b) {
-      b.recommendedRestaurants = ListBuilder<Restaurant>(recommendedRestaurants);
-    });
-  }
+  @Implements<ActionDone>()
+  @Implements<ErrorAction>()
+  const factory GetRecommendedRestaurants.error(
+    Object error,
+    StackTrace stackTrace, [
+    @Default(_kGetRecommendedRestaurantsPendingId) String pendingId,
+  ]) = GetRecommendedRestaurantsError;
 
-  GetRecommendedRestaurantsSuccessful._();
-
-  BuiltList<Restaurant> get recommendedRestaurants;
-}
-
-abstract class GetRecommendedRestaurantsError //
-    implements
-        Built<GetRecommendedRestaurantsError, GetRecommendedRestaurantsErrorBuilder>,
-        ErrorAction //
-{
-  factory GetRecommendedRestaurantsError(Object error) {
-    return _$GetRecommendedRestaurantsError((GetRecommendedRestaurantsErrorBuilder b) => b.error = error);
-  }
-
-  GetRecommendedRestaurantsError._();
-
-  @override
-  Object get error;
+  static String get pendingKey => _kGetRecommendedRestaurantsPendingId;
 }

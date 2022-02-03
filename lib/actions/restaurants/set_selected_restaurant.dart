@@ -1,15 +1,6 @@
 part of restaurant_actions;
 
-abstract class SetSelectedRestaurant //
-    implements
-        Built<SetSelectedRestaurant, SetSelectedRestaurantBuilder>,
-        AppAction //
-{
-  factory SetSelectedRestaurant(String restaurantId) {
-    return _$SetSelectedRestaurant((SetSelectedRestaurantBuilder b) => b.restaurantId = restaurantId);
-  }
-
-  SetSelectedRestaurant._();
-
-  String get restaurantId;
+@freezed
+class SetSelectedRestaurant with _$SetSelectedRestaurant implements AppAction {
+  const factory SetSelectedRestaurant(String id) = SetSelectedRestaurant$;
 }

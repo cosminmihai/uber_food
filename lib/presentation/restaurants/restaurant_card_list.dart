@@ -16,7 +16,7 @@ class RestaurantCard extends StatelessWidget {
       onTap: () {
         StoreProvider.of<AppState>(context)
           ..dispatch(SetSelectedRestaurant(restaurantData.id))
-          ..dispatch(ListenForReviews());
+          ..dispatch(const ListenForRestaurantReview.start());
         Navigator.push(
           context,
           MaterialPageRoute<Widget>(
@@ -73,7 +73,7 @@ class RestaurantCard extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     Text(
-                      restaurantData.userRating.rating.toString(),
+                      restaurantData.usersRating.rating.toString(),
                       style: const TextStyle(color: Colors.white, fontSize: 16.0),
                     ),
                     const Icon(
@@ -81,7 +81,7 @@ class RestaurantCard extends StatelessWidget {
                       color: Colors.yellow,
                     ),
                     Text(
-                      ' (${restaurantData.userRating.votes}) ${restaurantData.userRating.ratingText}',
+                      ' (${restaurantData.usersRating.votes}) ${restaurantData.usersRating.ratingText}',
                       style: const TextStyle(color: Colors.white, fontSize: 16.0),
                     ),
                   ],

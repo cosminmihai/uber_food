@@ -12,6 +12,7 @@
         android:label="uber_food"
         android:icon="@mipmap/ic_launcher">
 
+        <!--TODO: Remove this before making this rep public -->
         <meta-data android:name="com.google.android.geo.API_KEY"
                    android:value="AIzaSyB3hiE3QJMshFyfMNxU7uSTR_Fx22BFXP4"/>
         <activity

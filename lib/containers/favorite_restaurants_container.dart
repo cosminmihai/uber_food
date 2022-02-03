@@ -11,9 +11,8 @@ class FavoriteRestaurantsContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, List<FavoriteRestaurant>>(
       converter: (Store<AppState> store) {
-        return store.state.favoriteRestaurantsState.favoriteRestaurantsState
-            .where((FavoriteRestaurant restaurant) => restaurant.userId == store.state.auth.user!.uid)
-            .toSet()
+        return store.state.restaurants.favorite
+            .where((FavoriteRestaurant favorite) => favorite.userId == store.state.auth.user!.uid)
             .toList();
       },
       builder: builder,

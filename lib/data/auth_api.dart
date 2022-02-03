@@ -20,12 +20,12 @@ class AuthApi {
   final GoogleSignIn _googleSignIn;
   final Location _location;
 
-  Future<AppUser> login(String email, String password) async {
+  Future<AppUser> signInWithEmailAndPassword(String email, String password) async {
     final UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
     return (await _buildUser(result.user))!;
   }
 
-  Future<AppUser> registerWithEmailAndPassword({
+  Future<AppUser> signUpWithEmailAndPassword({
     required String email,
     required String password,
     required String username,
@@ -34,7 +34,27 @@ class AuthApi {
     return (await _buildUser(result.user, username))!;
   }
 
-  Future<AppUser> createGoogleUser() async {
+  Future<AppUser?> _buildUser(User? user, [String? username]) async {
+    if (user == null) {
+      return null;
+    }
+    final DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore.doc('users/${user.uid}').get();
+    if (snapshot.exists) {
+      return AppUser.fromJson(snapshot.data()!);
+    }
+
+    final AppUser appUser = AppUser(
+      uid: user.uid,
+      email: user.email!,
+      username: user.displayName!,
+      photoUrl: user.photoURL,
+    );
+
+    await _firestore.doc('users/${user.uid}').set(appUser.toJson());
+    return appUser;
+  }
+
+  Future<AppUser> signInWithGoogle() async {
     final GoogleSignInAccount? account = await _googleSignIn.signIn();
     if (account == null) {
       throw UserCanceled();
@@ -49,38 +69,12 @@ class AuthApi {
 
   Future<void> logOut() async => _auth.signOut();
 
-  Future<AppUser?> getUser() {
-    final User? user = _auth.currentUser;
-    return _buildUser(user);
-  }
+  Future<AppUser?> getCurrentUser() => _buildUser(_auth.currentUser);
 
-  Future<AppUser?> _buildUser(User? user, [String? username]) async {
-    if (user == null) {
-      return null;
-    }
-    final DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore.doc('users/${user.uid}').get();
-    if (snapshot.exists) {
-      return AppUser.fromJson(snapshot.data()!);
-    }
+  Future<LocationData> getCurrentUserPosition() => _location.getLocation();
 
-    final AppUser appUser = AppUser((AppUserBuilder b) {
-      b
-        ..username = username
-        ..email = user.email!
-        ..uid = user.uid
-        ..photoUrl = user.photoURL!;
-    });
-
-    await _firestore.doc('users/${user.uid}').set(appUser.json);
-    return appUser;
-  }
-
-  Future<LocationData> getCurrentUserPosition() async {
-    return _location.getLocation();
-  }
-
-  Future<AppUser> getUserForReview(String userUid) async {
-    final DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore.doc('users/$userUid').get();
+  Future<AppUser> getUser(String uid) async {
+    final DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore.doc('users/$uid').get();
     return AppUser.fromJson(snapshot.data()!);
   }
 }

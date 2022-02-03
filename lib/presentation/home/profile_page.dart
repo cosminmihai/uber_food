@@ -16,7 +16,7 @@ class ProfilePage extends StatelessWidget {
             final AppUser currentUser = user!;
 
             return UserReviewsContainer(
-              builder: (BuildContext context, List<RestaurantReview> userReviews) {
+              builder: (BuildContext context, List<Review> userReviews) {
                 return Scaffold(
                   extendBodyBehindAppBar: true,
                   appBar: AppBar(
@@ -43,7 +43,7 @@ class ProfilePage extends StatelessWidget {
                                   children: <Widget>[
                                     const Text('Log Out'),
                                     IconButton(
-                                      onPressed: () => StoreProvider.of<AppState>(context).dispatch(LogOut()),
+                                      onPressed: () => StoreProvider.of<AppState>(context).dispatch(const Logout()),
                                       icon: const Icon(Icons.exit_to_app),
                                     ),
                                   ],
@@ -57,14 +57,17 @@ class ProfilePage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    decoration: const BoxDecoration(shape: BoxShape.circle, boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                        color: Colors.black,
-                                        blurRadius: 70,
-                                        spreadRadius: 0.0,
-                                        offset: Offset(2.0, 2.0),
-                                      )
-                                    ]),
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      boxShadow: <BoxShadow>[
+                                        BoxShadow(
+                                          color: Colors.black,
+                                          blurRadius: 70,
+                                          spreadRadius: 0.0,
+                                          offset: Offset(2.0, 2.0),
+                                        )
+                                      ],
+                                    ),
                                     child: CircleAvatar(
                                       radius: 45,
                                       backgroundImage:
@@ -113,20 +116,30 @@ class ProfilePage extends StatelessWidget {
                                                   child: const Text('Favorite Restaurants:',
                                                       style: TextStyle(color: Colors.black))),
                                               Container(
-                                                  padding: const EdgeInsets.only(bottom: 15),
-                                                  child: Text('${favoriteRestaurants.length}',
-                                                      style: const TextStyle(color: Colors.black87, fontSize: 16))),
+                                                padding: const EdgeInsets.only(bottom: 15),
+                                                child: Text(
+                                                  '${favoriteRestaurants.length}',
+                                                  style: const TextStyle(color: Colors.black87, fontSize: 16),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                           Column(
                                             children: <Widget>[
                                               Container(
-                                                  padding: const EdgeInsets.only(top: 15, bottom: 5),
-                                                  child: const Text('Reviews:', style: TextStyle(color: Colors.black))),
+                                                padding: const EdgeInsets.only(top: 15, bottom: 5),
+                                                child: const Text(
+                                                  'Reviews:',
+                                                  style: TextStyle(color: Colors.black),
+                                                ),
+                                              ),
                                               Container(
-                                                  padding: const EdgeInsets.only(bottom: 15),
-                                                  child: Text('${userReviews.length}',
-                                                      style: const TextStyle(color: Colors.black87, fontSize: 16))),
+                                                padding: const EdgeInsets.only(bottom: 15),
+                                                child: Text(
+                                                  '${userReviews.length}',
+                                                  style: const TextStyle(color: Colors.black87, fontSize: 16),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
