@@ -21,6 +21,7 @@ dependencies:
   flutter_redux: ^0.8.2
   font_awesome_flutter: ^9.2.0
   freezed_annotation: ^1.1.0
+  google_fonts: ^2.2.0
   google_maps_flutter: ^2.1.1
   google_sign_in: ^5.2.3
   location: ^4.3.0

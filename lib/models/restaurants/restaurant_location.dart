@@ -6,8 +6,8 @@ class RestaurantLocation with _$RestaurantLocation {
     required String address,
     required String locality,
     required String city,
-    required double latitude,
-    required double longitude,
+    @DoubleConverter() required double latitude,
+    @DoubleConverter() required double longitude,
     @JsonKey(name: 'locality_verbose') required String localityVerbose,
   }) = _RestaurantLocation$;
 

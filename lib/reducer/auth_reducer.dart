@@ -5,6 +5,7 @@ import 'package:uber_food/models/index.dart';
 
 Reducer<AuthState> authReducer = combineReducers<AuthState>(<Reducer<AuthState>>[
   TypedReducer<AuthState, UserAction>(_userAction),
+  TypedReducer<AuthState, UserAction>(_userAction),
   TypedReducer<AuthState, GetUserSuccessful>(_getUserSuccessful),
   TypedReducer<AuthState, GetUserLocationSuccessful>(_getUserLocationSuccessful),
   TypedReducer<AuthState, LogoutSuccessful>(_logoutSuccessful),
@@ -21,7 +22,8 @@ AuthState _getUserSuccessful(AuthState state, GetUserSuccessful action) {
 }
 
 AuthState _getUserLocationSuccessful(AuthState state, GetUserLocationSuccessful action) {
-  return state.copyWith(userLocation: action.location);
+  final AuthState updatedState = state.copyWith(userLocation: action.location);
+  return updatedState;
 }
 
 AuthState _logoutSuccessful(AuthState state, LogoutSuccessful action) => const AuthState();

@@ -1,7 +1,6 @@
 library restaurant_actions;
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:uber_food/actions/actions.dart';
 import 'package:uber_food/models/restaurants/index.dart';
 

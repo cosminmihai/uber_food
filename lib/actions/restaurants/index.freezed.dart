@@ -1822,10 +1822,8 @@ class _$GetRecommendedRestaurantsTearOff {
   const _$GetRecommendedRestaurantsTearOff();
 
   GetRecommendedRestaurantsStart start(
-      {required LatLng location,
-      String pendingId = _kGetRecommendedRestaurantsPendingId}) {
+      {String pendingId = _kGetRecommendedRestaurantsPendingId}) {
     return GetRecommendedRestaurantsStart(
-      location: location,
       pendingId: pendingId,
     );
   }
@@ -1857,7 +1855,7 @@ mixin _$GetRecommendedRestaurants {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(LatLng location, String pendingId) start,
+    required TResult Function(String pendingId) start,
     required TResult Function(List<Restaurant> restaurants, String pendingId)
         successful,
     required TResult Function(
@@ -1867,7 +1865,7 @@ mixin _$GetRecommendedRestaurants {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(LatLng location, String pendingId)? start,
+    TResult Function(String pendingId)? start,
     TResult Function(List<Restaurant> restaurants, String pendingId)?
         successful,
     TResult Function(Object error, StackTrace stackTrace, String pendingId)?
@@ -1876,7 +1874,7 @@ mixin _$GetRecommendedRestaurants {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(LatLng location, String pendingId)? start,
+    TResult Function(String pendingId)? start,
     TResult Function(List<Restaurant> restaurants, String pendingId)?
         successful,
     TResult Function(Object error, StackTrace stackTrace, String pendingId)?
@@ -1951,7 +1949,7 @@ abstract class $GetRecommendedRestaurantsStartCopyWith<$Res>
           $Res Function(GetRecommendedRestaurantsStart) then) =
       _$GetRecommendedRestaurantsStartCopyWithImpl<$Res>;
   @override
-  $Res call({LatLng location, String pendingId});
+  $Res call({String pendingId});
 }
 
 /// @nodoc
@@ -1969,14 +1967,9 @@ class _$GetRecommendedRestaurantsStartCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? location = freezed,
     Object? pendingId = freezed,
   }) {
     return _then(GetRecommendedRestaurantsStart(
-      location: location == freezed
-          ? _value.location
-          : location // ignore: cast_nullable_to_non_nullable
-              as LatLng,
       pendingId: pendingId == freezed
           ? _value.pendingId
           : pendingId // ignore: cast_nullable_to_non_nullable
@@ -1991,18 +1984,15 @@ class _$GetRecommendedRestaurantsStartCopyWithImpl<$Res>
 class _$GetRecommendedRestaurantsStart
     implements GetRecommendedRestaurantsStart {
   const _$GetRecommendedRestaurantsStart(
-      {required this.location,
-      this.pendingId = _kGetRecommendedRestaurantsPendingId});
+      {this.pendingId = _kGetRecommendedRestaurantsPendingId});
 
-  @override
-  final LatLng location;
   @JsonKey()
   @override
   final String pendingId;
 
   @override
   String toString() {
-    return 'GetRecommendedRestaurants.start(location: $location, pendingId: $pendingId)';
+    return 'GetRecommendedRestaurants.start(pendingId: $pendingId)';
   }
 
   @override
@@ -2010,15 +2000,12 @@ class _$GetRecommendedRestaurantsStart
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is GetRecommendedRestaurantsStart &&
-            const DeepCollectionEquality().equals(other.location, location) &&
             const DeepCollectionEquality().equals(other.pendingId, pendingId));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(location),
-      const DeepCollectionEquality().hash(pendingId));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(pendingId));
 
   @JsonKey(ignore: true)
   @override
@@ -2029,32 +2016,32 @@ class _$GetRecommendedRestaurantsStart
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(LatLng location, String pendingId) start,
+    required TResult Function(String pendingId) start,
     required TResult Function(List<Restaurant> restaurants, String pendingId)
         successful,
     required TResult Function(
             Object error, StackTrace stackTrace, String pendingId)
         error,
   }) {
-    return start(location, pendingId);
+    return start(pendingId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(LatLng location, String pendingId)? start,
+    TResult Function(String pendingId)? start,
     TResult Function(List<Restaurant> restaurants, String pendingId)?
         successful,
     TResult Function(Object error, StackTrace stackTrace, String pendingId)?
         error,
   }) {
-    return start?.call(location, pendingId);
+    return start?.call(pendingId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(LatLng location, String pendingId)? start,
+    TResult Function(String pendingId)? start,
     TResult Function(List<Restaurant> restaurants, String pendingId)?
         successful,
     TResult Function(Object error, StackTrace stackTrace, String pendingId)?
@@ -2062,7 +2049,7 @@ class _$GetRecommendedRestaurantsStart
     required TResult orElse(),
   }) {
     if (start != null) {
-      return start(location, pendingId);
+      return start(pendingId);
     }
     return orElse();
   }
@@ -2105,11 +2092,9 @@ class _$GetRecommendedRestaurantsStart
 
 abstract class GetRecommendedRestaurantsStart
     implements GetRecommendedRestaurants, ActionStart {
-  const factory GetRecommendedRestaurantsStart(
-      {required LatLng location,
-      String pendingId}) = _$GetRecommendedRestaurantsStart;
+  const factory GetRecommendedRestaurantsStart({String pendingId}) =
+      _$GetRecommendedRestaurantsStart;
 
-  LatLng get location;
   @override
   String get pendingId;
   @override
@@ -2205,7 +2190,7 @@ class _$GetRecommendedRestaurantsSuccessful
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(LatLng location, String pendingId) start,
+    required TResult Function(String pendingId) start,
     required TResult Function(List<Restaurant> restaurants, String pendingId)
         successful,
     required TResult Function(
@@ -2218,7 +2203,7 @@ class _$GetRecommendedRestaurantsSuccessful
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(LatLng location, String pendingId)? start,
+    TResult Function(String pendingId)? start,
     TResult Function(List<Restaurant> restaurants, String pendingId)?
         successful,
     TResult Function(Object error, StackTrace stackTrace, String pendingId)?
@@ -2230,7 +2215,7 @@ class _$GetRecommendedRestaurantsSuccessful
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(LatLng location, String pendingId)? start,
+    TResult Function(String pendingId)? start,
     TResult Function(List<Restaurant> restaurants, String pendingId)?
         successful,
     TResult Function(Object error, StackTrace stackTrace, String pendingId)?
@@ -2391,7 +2376,7 @@ class _$GetRecommendedRestaurantsError
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(LatLng location, String pendingId) start,
+    required TResult Function(String pendingId) start,
     required TResult Function(List<Restaurant> restaurants, String pendingId)
         successful,
     required TResult Function(
@@ -2404,7 +2389,7 @@ class _$GetRecommendedRestaurantsError
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(LatLng location, String pendingId)? start,
+    TResult Function(String pendingId)? start,
     TResult Function(List<Restaurant> restaurants, String pendingId)?
         successful,
     TResult Function(Object error, StackTrace stackTrace, String pendingId)?
@@ -2416,7 +2401,7 @@ class _$GetRecommendedRestaurantsError
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(LatLng location, String pendingId)? start,
+    TResult Function(String pendingId)? start,
     TResult Function(List<Restaurant> restaurants, String pendingId)?
         successful,
     TResult Function(Object error, StackTrace stackTrace, String pendingId)?

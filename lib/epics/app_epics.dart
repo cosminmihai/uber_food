@@ -28,12 +28,23 @@ class AppEpics {
 
   Stream<AppAction> _initializeApp(Stream<InitializeApp> actions, EpicStore<AppState> store) {
     return actions //
-        .flatMap<AppAction>((InitializeApp action) => Stream<void>.value(null)
-            .asyncMap((_) => _authApi.getCurrentUser())
-            .expand<AppAction>((AppUser? user) => <AppAction>[
-                  InitializeAppSuccessful(user),
-                  if (user != null) const GetUserLocation.start(),
-                ])
-            .onErrorReturnWith($InitializeApp.error));
+        .flatMap<AppAction>((InitializeApp action) => _authApi.authState
+                .startWith(null)
+                .pairwise()
+                .map((Iterable<AppUser?> event) => event.toList())
+                .expand((List<AppUser?> users) {
+              final bool loggedIn = users.first == null && users.last != null;
+              final bool loggedOut = users.first != null && users.last == null;
+              final bool userUpdate = users.first != null && users.last != null;
+
+              return <AppAction>[
+                InitializeApp.successful(users.last),
+                if (loggedIn) ...<AppAction>[
+                  const GetUserLocation.start(),
+                ],
+                if (userUpdate) ...<AppAction>[],
+                if (loggedOut) ...<AppAction>[]
+              ];
+            }).onErrorReturnWith($InitializeApp.error));
   }
 }

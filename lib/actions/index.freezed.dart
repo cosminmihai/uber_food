@@ -262,6 +262,7 @@ class _$InitializeAppSuccessfulCopyWithImpl<$Res>
 
 /// @nodoc
 
+@Implements<UserAction>()
 class _$InitializeAppSuccessful implements InitializeAppSuccessful {
   const _$InitializeAppSuccessful(this.user);
 
@@ -360,7 +361,7 @@ class _$InitializeAppSuccessful implements InitializeAppSuccessful {
   }
 }
 
-abstract class InitializeAppSuccessful implements InitializeApp {
+abstract class InitializeAppSuccessful implements InitializeApp, UserAction {
   const factory InitializeAppSuccessful(AppUser? user) =
       _$InitializeAppSuccessful;
 

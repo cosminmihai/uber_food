@@ -69,8 +69,8 @@ _$_RestaurantLocation$ _$$_RestaurantLocation$FromJson(
       address: json['address'] as String,
       locality: json['locality'] as String,
       city: json['city'] as String,
-      latitude: (json['latitude'] as num).toDouble(),
-      longitude: (json['longitude'] as num).toDouble(),
+      latitude: const DoubleConverter().fromJson(json['latitude'] as Object),
+      longitude: const DoubleConverter().fromJson(json['longitude'] as Object),
       localityVerbose: json['locality_verbose'] as String,
     );
 
@@ -80,8 +80,8 @@ Map<String, dynamic> _$$_RestaurantLocation$ToJson(
       'address': instance.address,
       'locality': instance.locality,
       'city': instance.city,
-      'latitude': instance.latitude,
-      'longitude': instance.longitude,
+      'latitude': const DoubleConverter().toJson(instance.latitude),
+      'longitude': const DoubleConverter().toJson(instance.longitude),
       'locality_verbose': instance.localityVerbose,
     };
 
@@ -108,14 +108,13 @@ _$_UsersRating$ _$$_UsersRating$FromJson(Map<String, dynamic> json) =>
     _$_UsersRating$(
       votes: json['votes'] as int,
       ratingText: json['rating_text'] as String,
-      ratingColor: json['rating_color'] as int,
-      rating: (json['aggregate_rating'] as num).toDouble(),
+      rating:
+          const DoubleConverter().fromJson(json['aggregate_rating'] as Object),
     );
 
 Map<String, dynamic> _$$_UsersRating$ToJson(_$_UsersRating$ instance) =>
     <String, dynamic>{
       'votes': instance.votes,
       'rating_text': instance.ratingText,
-      'rating_color': instance.ratingColor,
-      'aggregate_rating': instance.rating,
+      'aggregate_rating': const DoubleConverter().toJson(instance.rating),
     };

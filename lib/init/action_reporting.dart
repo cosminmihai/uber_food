@@ -14,9 +14,7 @@ class ActionReporting {
       final StackTrace stackTrace = action.stackTrace;
 
       if (shouldReport(action, error)) {
-        if (kReleaseMode) {
-          log('$action', time: DateTime.now(), error: error, stackTrace: stackTrace);
-        }
+        log('$action', time: DateTime.now(), error: error, stackTrace: stackTrace);
       }
     } else if (kDebugMode) {
       if (shouldPrint(action)) {

@@ -27,7 +27,6 @@ class AuthEpics {
             .asyncMap((_) => _authApi.signInWithGoogle())
             .expand<AppAction>((AppUser user) => <AppAction>[
                   SignInWithGoogle.successful(user),
-                  const GetUserLocation.start(),
                 ])
             .onErrorReturnWith($SignInWithGoogle.error)
             .doOnData(action.result));

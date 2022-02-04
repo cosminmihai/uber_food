@@ -61,7 +61,7 @@ class RestaurantsEpics {
   ) {
     return actions //
         .flatMap((GetRecommendedRestaurantsStart action) => Stream<void>.value(null)
-            .asyncMap((_) => _restaurantApi.getRecommendedRestaurants(action.location))
+            .asyncMap((_) => _restaurantApi.getRecommendedRestaurants(store.state.auth.userLocation!))
             .map<AppAction>((List<Restaurant> restaurants) => GetRecommendedRestaurants.successful(restaurants))
             .onErrorReturnWith($GetRecommendedRestaurants.error));
   }

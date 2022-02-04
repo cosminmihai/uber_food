@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:location/location.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:uber_food/models/index.dart';
 
 class AuthApi {
@@ -10,15 +13,64 @@ class AuthApi {
     required FirebaseFirestore firestore,
     required GoogleSignIn googleSignIn,
     required Location location,
+    StreamController<User>? controller,
   })  : _googleSignIn = googleSignIn,
         _auth = auth,
         _firestore = firestore,
-        _location = location;
+        _location = location,
+        _controller = controller ?? StreamController<User>.broadcast();
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
   final GoogleSignIn _googleSignIn;
   final Location _location;
+  final StreamController<User> _controller;
+  Stream<AppUser?>? _authState;
+
+  Stream<AppUser?> get authState {
+    return _authState ??= MergeStream<User?>(<Stream<User?>>[
+      _auth.authStateChanges(),
+      _auth.idTokenChanges(),
+      _auth.userChanges(),
+      _controller.stream,
+    ])
+        .startWith(null) //
+        .switchMap(_ensureUser)
+        .share();
+  }
+
+  Stream<AppUser?> _ensureUser(User? user) {
+    if (user == null) {
+      return Stream<AppUser?>.value(null);
+    }
+
+    return _firestore //
+        .doc('users/${user.uid}')
+        .get()
+        .asStream()
+        .asyncMap((DocumentSnapshot<Map<String, dynamic>> snapshot) async {
+      late AppUser appUser;
+      if (!snapshot.exists) {
+        appUser = AppUser(
+          uid: user.uid,
+          email: user.email!,
+          username: user.displayName!,
+          photoUrl: user.photoURL,
+        );
+        await snapshot.reference.set(appUser.toJson());
+      } else {
+        appUser = AppUser.fromJson(snapshot.data()!);
+      }
+
+      return appUser;
+    }).flatMap((AppUser user) {
+      return _firestore
+          .doc('users/${user.uid}')
+          .snapshots()
+          .map((DocumentSnapshot<Map<String, dynamic>> document) => AppUser.fromJson(document.data()!))
+          .startWith(user);
+    });
+  }
 
   Future<AppUser> signInWithEmailAndPassword(String email, String password) async {
     final UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -77,6 +129,8 @@ class AuthApi {
     final DocumentSnapshot<Map<String, dynamic>> snapshot = await _firestore.doc('users/$uid').get();
     return AppUser.fromJson(snapshot.data()!);
   }
+
+  void notify() => _controller.add(_auth.currentUser!);
 }
 
 class UserCanceled extends Error {}

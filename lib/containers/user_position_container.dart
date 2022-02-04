@@ -12,7 +12,7 @@ class UserLocationContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, LatLng?>(
       converter: (Store<AppState> store) {
-        return store.state.auth.user!.currentLocation;
+        return store.state.auth.userLocation;
       },
       builder: builder,
     );

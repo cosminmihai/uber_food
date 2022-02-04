@@ -698,8 +698,8 @@ class _$RestaurantLocationTearOff {
       {required String address,
       required String locality,
       required String city,
-      required double latitude,
-      required double longitude,
+      @DoubleConverter() required double latitude,
+      @DoubleConverter() required double longitude,
       @JsonKey(name: 'locality_verbose') required String localityVerbose}) {
     return _RestaurantLocation$(
       address: address,
@@ -724,7 +724,9 @@ mixin _$RestaurantLocation {
   String get address => throw _privateConstructorUsedError;
   String get locality => throw _privateConstructorUsedError;
   String get city => throw _privateConstructorUsedError;
+  @DoubleConverter()
   double get latitude => throw _privateConstructorUsedError;
+  @DoubleConverter()
   double get longitude => throw _privateConstructorUsedError;
   @JsonKey(name: 'locality_verbose')
   String get localityVerbose => throw _privateConstructorUsedError;
@@ -744,8 +746,8 @@ abstract class $RestaurantLocationCopyWith<$Res> {
       {String address,
       String locality,
       String city,
-      double latitude,
-      double longitude,
+      @DoubleConverter() double latitude,
+      @DoubleConverter() double longitude,
       @JsonKey(name: 'locality_verbose') String localityVerbose});
 }
 
@@ -807,8 +809,8 @@ abstract class _$RestaurantLocation$CopyWith<$Res>
       {String address,
       String locality,
       String city,
-      double latitude,
-      double longitude,
+      @DoubleConverter() double latitude,
+      @DoubleConverter() double longitude,
       @JsonKey(name: 'locality_verbose') String localityVerbose});
 }
 
@@ -868,8 +870,8 @@ class _$_RestaurantLocation$ implements _RestaurantLocation$ {
       {required this.address,
       required this.locality,
       required this.city,
-      required this.latitude,
-      required this.longitude,
+      @DoubleConverter() required this.latitude,
+      @DoubleConverter() required this.longitude,
       @JsonKey(name: 'locality_verbose') required this.localityVerbose});
 
   factory _$_RestaurantLocation$.fromJson(Map<String, dynamic> json) =>
@@ -882,8 +884,10 @@ class _$_RestaurantLocation$ implements _RestaurantLocation$ {
   @override
   final String city;
   @override
+  @DoubleConverter()
   final double latitude;
   @override
+  @DoubleConverter()
   final double longitude;
   @override
   @JsonKey(name: 'locality_verbose')
@@ -935,8 +939,8 @@ abstract class _RestaurantLocation$ implements RestaurantLocation {
           {required String address,
           required String locality,
           required String city,
-          required double latitude,
-          required double longitude,
+          @DoubleConverter() required double latitude,
+          @DoubleConverter() required double longitude,
           @JsonKey(name: 'locality_verbose') required String localityVerbose}) =
       _$_RestaurantLocation$;
 
@@ -950,8 +954,10 @@ abstract class _RestaurantLocation$ implements RestaurantLocation {
   @override
   String get city;
   @override
+  @DoubleConverter()
   double get latitude;
   @override
+  @DoubleConverter()
   double get longitude;
   @override
   @JsonKey(name: 'locality_verbose')
@@ -1520,13 +1526,14 @@ class _$UsersRatingTearOff {
 
   _UsersRating$ call(
       {required int votes,
-      @JsonKey(name: 'rating_text') required String ratingText,
-      @JsonKey(name: 'rating_color') required int ratingColor,
-      @JsonKey(name: 'aggregate_rating') required double rating}) {
+      @JsonKey(name: 'rating_text')
+          required String ratingText,
+      @DoubleConverter()
+      @JsonKey(name: 'aggregate_rating')
+          required double rating}) {
     return _UsersRating$(
       votes: votes,
       ratingText: ratingText,
-      ratingColor: ratingColor,
       rating: rating,
     );
   }
@@ -1544,8 +1551,7 @@ mixin _$UsersRating {
   int get votes => throw _privateConstructorUsedError;
   @JsonKey(name: 'rating_text')
   String get ratingText => throw _privateConstructorUsedError;
-  @JsonKey(name: 'rating_color')
-  int get ratingColor => throw _privateConstructorUsedError;
+  @DoubleConverter()
   @JsonKey(name: 'aggregate_rating')
   double get rating => throw _privateConstructorUsedError;
 
@@ -1563,8 +1569,7 @@ abstract class $UsersRatingCopyWith<$Res> {
   $Res call(
       {int votes,
       @JsonKey(name: 'rating_text') String ratingText,
-      @JsonKey(name: 'rating_color') int ratingColor,
-      @JsonKey(name: 'aggregate_rating') double rating});
+      @DoubleConverter() @JsonKey(name: 'aggregate_rating') double rating});
 }
 
 /// @nodoc
@@ -1579,7 +1584,6 @@ class _$UsersRatingCopyWithImpl<$Res> implements $UsersRatingCopyWith<$Res> {
   $Res call({
     Object? votes = freezed,
     Object? ratingText = freezed,
-    Object? ratingColor = freezed,
     Object? rating = freezed,
   }) {
     return _then(_value.copyWith(
@@ -1591,10 +1595,6 @@ class _$UsersRatingCopyWithImpl<$Res> implements $UsersRatingCopyWith<$Res> {
           ? _value.ratingText
           : ratingText // ignore: cast_nullable_to_non_nullable
               as String,
-      ratingColor: ratingColor == freezed
-          ? _value.ratingColor
-          : ratingColor // ignore: cast_nullable_to_non_nullable
-              as int,
       rating: rating == freezed
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
@@ -1613,8 +1613,7 @@ abstract class _$UsersRating$CopyWith<$Res>
   $Res call(
       {int votes,
       @JsonKey(name: 'rating_text') String ratingText,
-      @JsonKey(name: 'rating_color') int ratingColor,
-      @JsonKey(name: 'aggregate_rating') double rating});
+      @DoubleConverter() @JsonKey(name: 'aggregate_rating') double rating});
 }
 
 /// @nodoc
@@ -1631,7 +1630,6 @@ class __$UsersRating$CopyWithImpl<$Res> extends _$UsersRatingCopyWithImpl<$Res>
   $Res call({
     Object? votes = freezed,
     Object? ratingText = freezed,
-    Object? ratingColor = freezed,
     Object? rating = freezed,
   }) {
     return _then(_UsersRating$(
@@ -1643,10 +1641,6 @@ class __$UsersRating$CopyWithImpl<$Res> extends _$UsersRatingCopyWithImpl<$Res>
           ? _value.ratingText
           : ratingText // ignore: cast_nullable_to_non_nullable
               as String,
-      ratingColor: ratingColor == freezed
-          ? _value.ratingColor
-          : ratingColor // ignore: cast_nullable_to_non_nullable
-              as int,
       rating: rating == freezed
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
@@ -1660,9 +1654,11 @@ class __$UsersRating$CopyWithImpl<$Res> extends _$UsersRatingCopyWithImpl<$Res>
 class _$_UsersRating$ implements _UsersRating$ {
   const _$_UsersRating$(
       {required this.votes,
-      @JsonKey(name: 'rating_text') required this.ratingText,
-      @JsonKey(name: 'rating_color') required this.ratingColor,
-      @JsonKey(name: 'aggregate_rating') required this.rating});
+      @JsonKey(name: 'rating_text')
+          required this.ratingText,
+      @DoubleConverter()
+      @JsonKey(name: 'aggregate_rating')
+          required this.rating});
 
   factory _$_UsersRating$.fromJson(Map<String, dynamic> json) =>
       _$$_UsersRating$FromJson(json);
@@ -1673,15 +1669,13 @@ class _$_UsersRating$ implements _UsersRating$ {
   @JsonKey(name: 'rating_text')
   final String ratingText;
   @override
-  @JsonKey(name: 'rating_color')
-  final int ratingColor;
-  @override
+  @DoubleConverter()
   @JsonKey(name: 'aggregate_rating')
   final double rating;
 
   @override
   String toString() {
-    return 'UsersRating(votes: $votes, ratingText: $ratingText, ratingColor: $ratingColor, rating: $rating)';
+    return 'UsersRating(votes: $votes, ratingText: $ratingText, rating: $rating)';
   }
 
   @override
@@ -1692,8 +1686,6 @@ class _$_UsersRating$ implements _UsersRating$ {
             const DeepCollectionEquality().equals(other.votes, votes) &&
             const DeepCollectionEquality()
                 .equals(other.ratingText, ratingText) &&
-            const DeepCollectionEquality()
-                .equals(other.ratingColor, ratingColor) &&
             const DeepCollectionEquality().equals(other.rating, rating));
   }
 
@@ -1702,7 +1694,6 @@ class _$_UsersRating$ implements _UsersRating$ {
       runtimeType,
       const DeepCollectionEquality().hash(votes),
       const DeepCollectionEquality().hash(ratingText),
-      const DeepCollectionEquality().hash(ratingColor),
       const DeepCollectionEquality().hash(rating));
 
   @JsonKey(ignore: true)
@@ -1718,11 +1709,12 @@ class _$_UsersRating$ implements _UsersRating$ {
 
 abstract class _UsersRating$ implements UsersRating {
   const factory _UsersRating$(
-          {required int votes,
-          @JsonKey(name: 'rating_text') required String ratingText,
-          @JsonKey(name: 'rating_color') required int ratingColor,
-          @JsonKey(name: 'aggregate_rating') required double rating}) =
-      _$_UsersRating$;
+      {required int votes,
+      @JsonKey(name: 'rating_text')
+          required String ratingText,
+      @DoubleConverter()
+      @JsonKey(name: 'aggregate_rating')
+          required double rating}) = _$_UsersRating$;
 
   factory _UsersRating$.fromJson(Map<String, dynamic> json) =
       _$_UsersRating$.fromJson;
@@ -1733,9 +1725,7 @@ abstract class _UsersRating$ implements UsersRating {
   @JsonKey(name: 'rating_text')
   String get ratingText;
   @override
-  @JsonKey(name: 'rating_color')
-  int get ratingColor;
-  @override
+  @DoubleConverter()
   @JsonKey(name: 'aggregate_rating')
   double get rating;
   @override

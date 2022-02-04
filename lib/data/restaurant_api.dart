@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -34,13 +35,17 @@ class RestaurantApi {
     final Response response = await _client.get(url, headers: <String, String>{'user-key': zomatoKey});
 
     return List<Map<String, dynamic>>.from(jsonDecode(response.body)['restaurants'])
-        .map((Map<String, dynamic> json) => Restaurant.fromJson(
+        .map((Map<String, dynamic> json) {
+          log('Restaurant.fromJson: ${jsonEncode(json)}');
+
+          return Restaurant.fromJson(
               <String, dynamic>{
                 ...json['restaurant'],
                 'cuisines': json['restaurant']['cuisines'].split(', '),
                 'phone_numbers': json['restaurant']['phone_numbers'].split(', '),
               },
-            ))
+            );
+        })
         .toList();
   }
 

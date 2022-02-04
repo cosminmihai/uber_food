@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:place_picker/place_picker.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:uber_food/actions/index.dart';
 import 'package:uber_food/containers/index.dart';
 import 'package:uber_food/keys.dart';
 import 'package:uber_food/models/index.dart';
+import 'package:uber_food/presentation/api_dependencies.dart';
 import 'package:uber_food/presentation/restaurants/restaurant_card_list.dart';
 
-class MainPage extends StatefulWidget {
+class RestaurantsPage extends StatefulWidget {
   @override
-  _MainPageState createState() => _MainPageState();
+  _RestaurantsPageState createState() => _RestaurantsPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _RestaurantsPageState extends State<RestaurantsPage> {
   final TextEditingController searchController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      await ApiDependencies.of(context).actions.whereType<GetUserLocationSuccessful>().first;
+      StoreProvider.of<AppState>(context).dispatch(const GetRecommendedRestaurants.start());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +118,7 @@ class _MainPageState extends State<MainPage> {
                                   final LatLng? location = result.latLng;
                                   StoreProvider.of<AppState>(context)
                                     ..dispatch(SetUserLocation(location!))
-                                    ..dispatch(GetRecommendedRestaurants.start(location: location));
+                                    ..dispatch(const GetRecommendedRestaurants.start());
                                 }
                               },
                               child: const Icon(

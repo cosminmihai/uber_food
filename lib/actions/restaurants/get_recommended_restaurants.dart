@@ -6,7 +6,6 @@ const String _kGetRecommendedRestaurantsPendingId = 'GetRecommendedRestaurants';
 class GetRecommendedRestaurants with _$GetRecommendedRestaurants implements AppAction {
   @Implements<ActionStart>()
   const factory GetRecommendedRestaurants.start({
-    required LatLng location,
     @Default(_kGetRecommendedRestaurantsPendingId) String pendingId,
   }) = GetRecommendedRestaurantsStart;
 
